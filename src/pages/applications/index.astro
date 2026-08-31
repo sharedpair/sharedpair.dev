@@ -4,6 +4,7 @@ import BondMark from '../../components/BondMark.astro';
 import { applications, blockedApplications, runtimes } from '../../data/project';
 
 const runtimeGroups = runtimes.map((runtime) => ({ version: runtime.version, packageName: runtime.packageName, apps: applications.filter((app) => app.runtime === runtime.packageName) }));
+const catalogSize = applications.length + blockedApplications.length;
 ---
 
 <BaseLayout title="Applications — Shared Pair" description="Application packages and their technical reports for Shared Pair runtimes.">
@@ -11,20 +12,96 @@ const runtimeGroups = runtimes.map((runtime) => ({ version: runtime.version, pac
     <div><p class="eyebrow">Applications</p><h1>{applications.length} apps.<br />{runtimes.length} runtimes.</h1><p class="lede">Each application owns its packaging, compatibility, provenance, and test report. Results describe the package that was actually built and tested.</p></div>
     <BondMark compact />
   </header>
-  {runtimeGroups.map((group) => <section class="records shell">
-    <header class="runtime-heading"><div><p class="eyebrow">Shared runtime</p><h2>Electron <em>{group.version}</em></h2></div><div><strong>{group.packageName}</strong><small>{group.apps.length} {group.apps.length === 1 ? 'application' : 'applications'} tested</small></div></header>
-    {group.apps.map((app, index) => <a class={`record ${(app.interfaceScreenshot || app.screenshot) ? 'has-image' : ''}`} href={`/applications/${app.slug}/`}><span>{String(index + 1).padStart(2, '0')}</span>{(app.interfaceScreenshot || app.screenshot) && <img src={(app.interfaceScreenshot || app.screenshot)!.src} alt="" loading="lazy" />}<div><h3>{app.name}</h3><p>{app.purpose}. {app.test}</p></div><small><b>Electron {app.electron}</b><br />{app.version}</small><b>→</b></a>)}
-  </section>)}
-  <section class="records shell blocked">
-    <p class="eyebrow">Publication blocked</p>
-    {blockedApplications.map((app) => <a class={`record ${app.interfaceScreenshot ? 'has-image' : ''}`} href={`/applications/${app.slug}/`}><span>01</span>{app.interfaceScreenshot && <img src={app.interfaceScreenshot.src} alt="" loading="lazy" />}<div><h3>{app.name}</h3><p>{app.proof}</p></div><small><b>Electron {app.electron}</b><br />Review required</small><b>→</b></a>)}
+  <section class="filters shell" aria-labelledby="filter-heading">
+    <div class="filter-heading"><div><p class="eyebrow">Find an application</p><h2 id="filter-heading">Filter the catalog</h2></div><p id="result-count" aria-live="polite">Showing all {catalogSize} applications</p></div>
+    <form id="catalog-filters" action="/applications/" method="get">
+      <label class="search"><span>Search by name or purpose</span><input type="search" name="q" autocomplete="off" /></label>
+      <label><span>Category</span><select name="category"><option value="">All categories</option><option value="communication">Communication</option><option value="data-science">Data science</option><option value="media">Media</option><option value="productivity">Productivity</option></select></label>
+      <label><span>Runtime version</span><select name="runtime"><option value="">All runtimes</option>{runtimes.map((runtime) => <option value={runtime.packageName}>Electron {runtime.major}</option>)}</select></label>
+      <label><span>Publication status</span><select name="status"><option value="">Any status</option><option value="tested">Tested</option><option value="blocked">Blocked</option></select></label>
+      <label><span>Release channel</span><select name="channel"><option value="">Any channel</option><option value="stable">Stable</option><option value="prerelease">Prerelease</option><option value="candidate">Candidate snapshot</option></select></label>
+      <button type="button" id="reset-filters">Reset</button>
+    </form>
   </section>
+  {runtimeGroups.map((group) => <section class="records shell catalog-group" data-catalog-group>
+    <header class="runtime-heading"><div><p class="eyebrow">Shared runtime</p><h2>Electron <em>{group.version}</em></h2></div><div><strong>{group.packageName}</strong><small>{group.apps.length} {group.apps.length === 1 ? 'application' : 'applications'} tested</small></div></header>
+    {group.apps.map((app, index) => <a class={`record ${(app.interfaceScreenshot || app.screenshot) ? 'has-image' : ''}`} href={`/applications/${app.slug}/`} data-catalog-record data-name={`${app.name} ${app.purpose}`.toLowerCase()} data-category={app.category} data-runtime={app.runtime} data-status={app.state} data-channel={app.releaseChannel}><span>{String(index + 1).padStart(2, '0')}</span>{(app.interfaceScreenshot || app.screenshot) && <img src={(app.interfaceScreenshot || app.screenshot)!.src} alt="" loading="lazy" />}<div><h3>{app.name}</h3><p>{app.purpose}. {app.test}</p></div><small><b>Electron {app.electron}</b><br />{app.version}</small><b>→</b></a>)}
+  </section>)}
+  <section class="records shell blocked catalog-group" data-catalog-group>
+    <p class="eyebrow">Publication blocked</p>
+    {blockedApplications.map((app) => <a class={`record ${app.interfaceScreenshot ? 'has-image' : ''}`} href={`/applications/${app.slug}/`} data-catalog-record data-name={`${app.name} ${app.purpose}`.toLowerCase()} data-category={app.category} data-runtime={app.runtime} data-status={app.state} data-channel={app.releaseChannel}><span>01</span>{app.interfaceScreenshot && <img src={app.interfaceScreenshot.src} alt="" loading="lazy" />}<div><h3>{app.name}</h3><p>{app.proof}</p></div><small><b>Electron {app.electron}</b><br />Review required</small><b>→</b></a>)}
+  </section>
+  <section class="empty shell" id="empty-results" hidden><p class="eyebrow">No matches</p><h2>No applications match those filters.</h2><button type="button" data-reset-filters>Clear filters</button></section>
 </BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#catalog-filters');
+  const records = [...document.querySelectorAll<HTMLElement>('[data-catalog-record]')];
+  const groups = [...document.querySelectorAll<HTMLElement>('[data-catalog-group]')];
+  const count = document.querySelector<HTMLElement>('#result-count');
+  const empty = document.querySelector<HTMLElement>('#empty-results');
+
+  function restoreFilters() {
+    if (!form) return;
+    const params = new URLSearchParams(window.location.search);
+    for (const element of form.elements) {
+      if (element instanceof HTMLInputElement || element instanceof HTMLSelectElement) element.value = params.get(element.name) ?? '';
+    }
+  }
+
+  function applyFilters() {
+    if (!form || !count || !empty) return;
+    const data = new FormData(form);
+    const query = String(data.get('q') ?? '').trim().toLowerCase();
+    const facets = ['category', 'runtime', 'status', 'channel'] as const;
+    let visible = 0;
+
+    for (const record of records) {
+      const matchesQuery = !query || (record.dataset.name ?? '').includes(query);
+      const matchesFacets = facets.every((facet) => !data.get(facet) || record.dataset[facet] === data.get(facet));
+      record.hidden = !(matchesQuery && matchesFacets);
+      if (!record.hidden) visible += 1;
+    }
+
+    for (const group of groups) group.hidden = !group.querySelector('[data-catalog-record]:not([hidden])');
+    empty.hidden = visible !== 0;
+    count.textContent = visible === records.length ? `Showing all ${visible} applications` : `Showing ${visible} of ${records.length} applications`;
+
+    const params = new URLSearchParams();
+    for (const [key, value] of data.entries()) if (value) params.set(key, String(value));
+    history.replaceState(null, '', `${location.pathname}${params.size ? `?${params}` : ''}`);
+  }
+
+  function resetFilters() {
+    form?.reset();
+    applyFilters();
+    form?.querySelector<HTMLInputElement>('input')?.focus();
+  }
+
+  restoreFilters();
+  applyFilters();
+  form?.addEventListener('input', applyFilters);
+  form?.addEventListener('submit', (event) => event.preventDefault());
+  document.querySelector('#reset-filters')?.addEventListener('click', resetFilters);
+  document.querySelector('[data-reset-filters]')?.addEventListener('click', resetFilters);
+  window.addEventListener('popstate', () => { restoreFilters(); applyFilters(); });
+</script>
 
 <style>
   .page-hero { min-height: 44vh; display: grid; grid-template-columns: 1.35fr .65fr; gap: 4vw; align-items: center; padding-block: 3.5rem; border-bottom: 1px solid var(--line); }
   .page-hero h1 { margin-bottom: 1rem; font-size: clamp(3rem, 5.5vw, 5.8rem); }
   em { color: var(--lime); font-style: normal; }
+  [hidden] { display: none !important; }
+  .filters { padding-block: 2rem; border-bottom: 1px solid var(--line); }
+  .filter-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 1.25rem; }
+  .filter-heading h2 { margin: 0; font-size: clamp(1.8rem, 3vw, 3rem); }
+  .filter-heading > p { margin: 0; color: var(--faint); font: .65rem var(--mono); text-transform: uppercase; }
+  form { display: grid; grid-template-columns: minmax(190px, 1.35fr) repeat(4, minmax(130px, 1fr)) auto; gap: .7rem; align-items: end; }
+  label span { display: block; margin-bottom: .4rem; color: var(--faint); font: .59rem var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+  input, select, form button, .empty button { width: 100%; min-height: 44px; border: 1px solid var(--line-strong); border-radius: 0; background: var(--surface); color: var(--ink); padding: 0 .75rem; font: .7rem var(--mono); }
+  select { cursor: pointer; }
+  form button, .empty button { width: auto; cursor: pointer; color: var(--muted); text-transform: uppercase; }
+  form button:hover, .empty button:hover { border-color: var(--lime); color: var(--ink); }
   .records { padding-block: 3rem; border-bottom: 1px solid var(--line); }
   .records.blocked { padding-top: 0; }
   .runtime-heading { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; margin-bottom: 1.5rem; }
@@ -42,5 +119,9 @@ const runtimeGroups = runtimes.map((runtime) => ({ version: runtime.version, pac
   .record p { color: var(--muted); }
   .record small b { color: var(--lime); font-weight: 500; }
   .record:hover h3 { color: var(--lime); }
-  @media (max-width: 760px) { .page-hero { min-height: auto; grid-template-columns: 1fr; padding-block: 4rem; } .page-hero :global(svg) { order: -1; width: 70%; margin: auto; } .runtime-heading { grid-template-columns: 1fr; gap: .5rem; } .runtime-heading > div:last-child { text-align: left; } .record, .record.has-image, .record:not(.has-image) { grid-template-columns: 42px 1fr 20px; align-items: start; } .record > span:first-child { grid-column: 1; grid-row: 1 / span 2; padding-top: .3rem; } .record > img { grid-column: 2; width: min(180px, 100%); height: 88px; margin-bottom: .4rem; } .record > div { grid-column: 2; } .record > b:last-child { grid-column: 3; grid-row: 1 / span 2; align-self: center; } .record small { display: none; } }
+  .empty { padding-block: 4rem; text-align: center; }
+  .empty h2 { font-size: clamp(2rem, 4vw, 4rem); }
+  @media (max-width: 1040px) { form { grid-template-columns: repeat(3, 1fr); } .search { grid-column: span 2; } }
+  @media (max-width: 760px) { .page-hero { min-height: auto; grid-template-columns: 1fr; padding-block: 4rem; } .page-hero :global(svg) { order: -1; width: 70%; margin: auto; } .filter-heading { display: block; } .filter-heading > p { margin-top: 1rem; } form { grid-template-columns: 1fr 1fr; } .search { grid-column: 1 / -1; } .runtime-heading { grid-template-columns: 1fr; gap: .5rem; } .runtime-heading > div:last-child { text-align: left; } .record, .record.has-image, .record:not(.has-image) { grid-template-columns: 42px 1fr 20px; align-items: start; } .record > span:first-child { grid-column: 1; grid-row: 1 / span 2; padding-top: .3rem; } .record > img { grid-column: 2; width: min(180px, 100%); height: 88px; margin-bottom: .4rem; } .record > div { grid-column: 2; } .record > b:last-child { grid-column: 3; grid-row: 1 / span 2; align-self: center; } .record small { display: none; } }
+  @media (max-width: 480px) { form { grid-template-columns: 1fr; } .search { grid-column: auto; } }
 </style>

@@ -37,6 +37,8 @@ export interface AppRecord {
   electron: string;
   runtime: string;
   state: State;
+  category: 'media' | 'productivity' | 'communication' | 'data-science';
+  releaseChannel: 'stable' | 'prerelease' | 'candidate';
   proof: string;
   test: string;
   notes: string[];
@@ -69,6 +71,8 @@ export const applications: AppRecord[] = [
     name: 'LosslessCut',
     purpose: 'Lossless video and audio cutting',
     state: 'tested',
+    category: 'media',
+    releaseChannel: 'stable',
     proof: 'Split from its bundled runtime and tested alongside the Electron 42 application set.',
     test: 'Starts through the shared runtime; its private FFmpeg remains with the app.',
     notes: ['Application payload and private FFmpeg stay app-owned.', 'Depends on Electron 42 rather than carrying Chromium.', 'The earlier monolithic package remains the rollback path until publication.'],
@@ -80,6 +84,8 @@ export const applications: AppRecord[] = [
     name: 'draw.io Desktop',
     purpose: 'Offline diagram editor',
     state: 'tested',
+    category: 'productivity',
+    releaseChannel: 'stable',
     proof: 'Packaged without Electron; clean-container CLI export passed.',
     test: 'draw.io and LosslessCut co-install on Electron 42; CLI diagram export works.',
     notes: ['Uses the shared sandbox owned by the runtime.', 'Keeps application resources separate from Electron files.', 'CLI export is tested, not merely GUI startup.'],
@@ -95,6 +101,8 @@ export const applications: AppRecord[] = [
     name: 'MarkText',
     purpose: 'Visual Markdown editor',
     state: 'tested',
+    category: 'productivity',
+    releaseChannel: 'stable',
     proof: 'Packaged without Electron; its packaged-mode adaptation preserves electron-log and its ABI 146 native modules.',
     test: 'A fresh-container test opens and renders a real Markdown document on Electron 42.',
     notes: ['Native modules remain in the application package.', 'Dependency bounds require Electron 42.9.3.', 'The test requires a rendered editor window and rejects main-process JavaScript errors.'],
@@ -111,6 +119,8 @@ export const applications: AppRecord[] = [
     name: 'Joplin',
     purpose: 'Notes and knowledge management',
     state: 'tested',
+    category: 'productivity',
+    releaseChannel: 'prerelease',
     proof: 'The 3.7 prerelease package persists and reopens its SQLite profile.',
     test: 'Fresh-container profile creation, persistence, and reopen passed.',
     notes: ['This package follows Joplin’s 3.7 prerelease channel.', 'SQLite state survives a full close and reopen.', 'The app depends on Electron 42.9.3.'],
@@ -122,6 +132,8 @@ export const applications: AppRecord[] = [
     name: 'Teams for Linux',
     purpose: 'Unofficial Microsoft Teams wrapper',
     state: 'tested',
+    category: 'communication',
+    releaseChannel: 'stable',
     proof: 'Initializes and reopens its profile through the shared runtime.',
     test: 'Fresh-container initialization and profile reopen passed.',
     notes: ['Unofficial and not affiliated with Microsoft.', 'The wrapper no longer carries its own Electron copy.', 'Persistent application state is exercised by the test.'],
@@ -137,6 +149,8 @@ export const applications: AppRecord[] = [
     name: 'JupyterLab Desktop',
     purpose: 'Desktop notebooks and data tools',
     state: 'tested',
+    category: 'data-science',
+    releaseChannel: 'stable',
     proof: 'Runs its private Jupyter environment and persists its desktop profile.',
     test: 'Jupyter server startup and desktop-profile persistence passed.',
     notes: ['The offline Python/Jupyter environment remains app-private.', 'Only the generic Electron runtime is shared.', 'Both server and desktop behavior are tested.'],
@@ -148,6 +162,8 @@ export const applications: AppRecord[] = [
     name: 'Netron',
     purpose: 'Neural-network model viewer',
     state: 'tested',
+    category: 'data-science',
+    releaseChannel: 'stable',
     proof: 'Packaged as a plain app payload without Electron, Chromium, or its upstream self-updater.',
     test: 'An unprivileged user opened a model on Electron 44 in a fresh container.',
     notes: ['Exact runtime bounds require Electron 44 and reject Electron 45.', 'The upstream self-updater is removed in favor of package updates.', 'Model opening—not just process startup—is verified.'],
@@ -159,6 +175,8 @@ export const applications: AppRecord[] = [
     name: 'Trilium Notes',
     purpose: 'Hierarchical notes and personal knowledge bases',
     state: 'tested',
+    category: 'productivity',
+    releaseChannel: 'candidate',
     proof: 'The pinned development snapshot is packaged as an application-only payload with its private SQLite module and no bundled Electron or Chromium.',
     test: 'A fresh unprivileged profile initialized a valid SQLite database and reopened successfully on Electron 44.',
     notes: ['This is an immutable candidate snapshot, not a stable upstream release.', 'The application retains its N-API better-sqlite3 module.', 'Exact dependency bounds require Electron 44 and reject Electron 45.', 'APT is the only package update path.'],
@@ -177,6 +195,8 @@ export const blockedApplications: AppRecord[] = [{
   name: 'Audex Player',
   purpose: 'Media player and downloader',
   state: 'blocked',
+  category: 'media',
+  releaseChannel: 'stable',
   proof: 'The package builds and its media/profile test passes, but it is not cleared for publication.',
   test: 'Media helpers and persistent GUI profile passed on shared Electron 42.',
   notes: ['Publication is blocked pending redistribution review.', 'The concern is its bundled Chrome/Widevine payload.', 'A successful build does not override redistribution requirements.'],
