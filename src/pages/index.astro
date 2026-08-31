@@ -37,7 +37,7 @@ import { applications, progress, projectStatus, reports, sizeAccounting } from '
   </section>
 
   <section class="section shell">
-    <div class="section-head"><div><p class="eyebrow">Packaged applications</p><h2>Compatibility is earned.</h2></div><p>Matching an Electron major starts an audit. Each report records the package boundary and the behavior actually tested.</p></div>
+    <div class="section-head"><div><p class="eyebrow">Packaged applications</p><h2>Tested against the shared runtime.</h2></div><p>Matching an Electron major starts an audit. Each report records the package boundary and the behavior actually tested.</p></div>
     <div class="cards">
       {applications.map((app, index) => <a class="card" href={`/applications/${app.slug}/`}><div class="card-top"><span>0{index + 1}</span><span class={`state ${app.state}`}>{app.state}</span></div><h3>{app.name}</h3><p>{app.purpose}</p><dl><div><dt>Package</dt><dd>{app.version}</dd></div><div><dt>Runtime</dt><dd>{app.runtime}</dd></div></dl><small>{app.proof}</small><b>Read technical report →</b></a>)}
     </div>

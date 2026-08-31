@@ -47,13 +47,11 @@
 <style>
   .copy-command { position: relative; }
   pre { overflow-x: auto; margin: 0; padding: 1rem 6.5rem 1rem 1rem; border: 1px solid var(--line); background: var(--surface); color: var(--lime); font: .72rem/1.7 var(--mono); }
-  .copy-command__button { position: absolute; top: .55rem; right: .55rem; display: inline-flex; align-items: center; gap: .4rem; min-height: 34px; padding: 0 .62rem; border: 1px solid var(--line-strong); background: rgba(23,26,33,.94); color: var(--muted); cursor: pointer; font: .62rem var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+  .copy-command__button { position: absolute; top: .55rem; right: .55rem; display: inline-flex; width: 34px; min-height: 34px; padding: 0; align-items: center; justify-content: center; border: 1px solid var(--line-strong); background: rgba(23,26,33,.94); color: var(--muted); cursor: pointer; }
   .copy-command__button:hover { border-color: var(--lime); color: var(--ink); }
   .copy-command__button:active { transform: translateY(1px); }
-  .copy-command__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .copy-command__button span, .copy-command__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   @media (max-width: 560px) {
     pre { padding-right: 3.4rem; }
-    .copy-command__button { width: 34px; padding: 0; justify-content: center; }
-    .copy-command__button span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   }
 </style>
