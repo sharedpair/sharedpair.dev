@@ -1,0 +1,59 @@
+<div class="copy-command">
+  <pre><code><slot /></code></pre>
+  <button type="button" class="copy-command__button" aria-label="Copy command" title="Copy command">
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="8" y="8" width="12" height="12" rx="2"></rect>
+      <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+    </svg>
+    <span>Copy</span>
+  </button>
+  <span class="copy-command__status" role="status" aria-live="polite"></span>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.copy-command').forEach((block) => {
+    const button = block.querySelector<HTMLButtonElement>('.copy-command__button');
+    const code = block.querySelector<HTMLElement>('code');
+    const label = button?.querySelector('span');
+    const status = block.querySelector<HTMLElement>('.copy-command__status');
+
+    button?.addEventListener('click', async () => {
+      if (!code || !label || !status) return;
+
+      try {
+        await navigator.clipboard.writeText(code.textContent ?? '');
+        label.textContent = 'Copied';
+        button.setAttribute('aria-label', 'Command copied');
+        status.textContent = 'Command copied to clipboard.';
+        window.setTimeout(() => {
+          label.textContent = 'Copy';
+          button.setAttribute('aria-label', 'Copy command');
+          status.textContent = '';
+        }, 1800);
+      } catch {
+        label.textContent = 'Select';
+        button.setAttribute('aria-label', 'Select command to copy');
+        status.textContent = 'Clipboard unavailable. Select the command text to copy it.';
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(code);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+      }
+    });
+  });
+</script>
+
+<style>
+  .copy-command { position: relative; }
+  pre { overflow-x: auto; margin: 0; padding: 1rem 6.5rem 1rem 1rem; border: 1px solid var(--line); background: var(--surface); color: var(--lime); font: .72rem/1.7 var(--mono); }
+  .copy-command__button { position: absolute; top: .55rem; right: .55rem; display: inline-flex; align-items: center; gap: .4rem; min-height: 34px; padding: 0 .62rem; border: 1px solid var(--line-strong); background: rgba(23,26,33,.94); color: var(--muted); cursor: pointer; font: .62rem var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+  .copy-command__button:hover { border-color: var(--lime); color: var(--ink); }
+  .copy-command__button:active { transform: translateY(1px); }
+  .copy-command__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 560px) {
+    pre { padding-right: 3.4rem; }
+    .copy-command__button { width: 34px; padding: 0; justify-content: center; }
+    .copy-command__button span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  }
+</style>

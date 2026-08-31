@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CopyCommand from '../../components/CopyCommand.astro';
 import { applications, registryStatus } from '../../data/project';
 
 const installPackages = applications.map((app) => app.slug).join(' ');
@@ -8,10 +9,10 @@ const installPackages = applications.map((app) => app.slug).join(' ');
 <BaseLayout title="Install — Shared Pair" description="Final repository and package installation structure for Shared Pair.">
   <header class="page-hero shell"><div><p class="eyebrow">Install</p><h1>Commands ready.<br /><em>Repository pending.</em></h1><p class="lede">These are the intended public commands and URLs. Do not run them yet: <code>apt.sharedpair.dev</code> has not been promoted and verified.</p></div><div class="state"><span>Availability</span><strong>Not active</strong><small>Publication pending approval</small></div></header>
   <section class="steps shell">
-    <article><span>01</span><div><h2>Add the signing key</h2><pre><code>curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg</code></pre></div></article>
-    <article><span>02</span><div><h2>Add the repository</h2><pre><code>echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list</code></pre></div></article>
-    <article><span>03</span><div><h2>Install applications</h2><pre><code>sudo apt update
-sudo apt install {installPackages}</code></pre></div></article>
+    <article><span>01</span><div><h2>Add the signing key</h2><CopyCommand>curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg</CopyCommand></div></article>
+    <article><span>02</span><div><h2>Add the repository</h2><CopyCommand>echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list</CopyCommand></div></article>
+    <article><span>03</span><div><h2>Install applications</h2><CopyCommand>sudo apt update
+sudo apt install {installPackages}</CopyCommand></div></article>
   </section>
   <section class="identity shell"><p class="eyebrow">Signing identity</p><dl><div><dt>Fingerprint</dt><dd>{registryStatus.signingFingerprint}</dd></div><div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div><div><dt>Architecture</dt><dd>{registryStatus.architecture}</dd></div></dl><p>Verify the fingerprint independently before trusting repository metadata. These commands become active only after repository promotion and a fresh APT installation test.</p></section>
 </BaseLayout>
@@ -27,7 +28,6 @@ sudo apt install {installPackages}</code></pre></div></article>
   article { display: grid; grid-template-columns: 70px 1fr; gap: 1rem; padding: 1.6rem 0; border-bottom: 1px solid var(--line); }
   article > span { color: var(--violet); font: .68rem var(--mono); }
   h2 { margin-bottom: 1rem; font-size: clamp(1.7rem, 3vw, 2.8rem); }
-  pre { overflow-x: auto; margin: 0; padding: 1rem; border: 1px solid var(--line); background: var(--surface); color: var(--lime); font: .72rem/1.7 var(--mono); }
   .identity { padding-block: 2.5rem; border-top: 1px solid var(--line); }
   .identity dl { display: grid; grid-template-columns: 2fr 1fr 1fr; }
   .identity dl div { padding: 1rem 0; border-bottom: 1px solid var(--line); }
