@@ -7,6 +7,7 @@
     </svg>
     <span>Copy</span>
   </button>
+  <span class="copy-command__feedback" aria-hidden="true">Copied</span>
   <span class="copy-command__status" role="status" aria-live="polite"></span>
 </div>
 
@@ -15,20 +16,25 @@
     const button = block.querySelector<HTMLButtonElement>('.copy-command__button');
     const code = block.querySelector<HTMLElement>('code');
     const label = button?.querySelector('span');
+    const feedback = block.querySelector<HTMLElement>('.copy-command__feedback');
     const status = block.querySelector<HTMLElement>('.copy-command__status');
 
     button?.addEventListener('click', async () => {
-      if (!code || !label || !status) return;
+      if (!code || !label || !feedback || !status) return;
 
       try {
         await navigator.clipboard.writeText(code.textContent ?? '');
         label.textContent = 'Copied';
         button.setAttribute('aria-label', 'Command copied');
         status.textContent = 'Command copied to clipboard.';
+        feedback.classList.remove('is-visible');
+        void feedback.offsetWidth;
+        feedback.classList.add('is-visible');
         window.setTimeout(() => {
           label.textContent = 'Copy';
           button.setAttribute('aria-label', 'Copy command');
           status.textContent = '';
+          feedback.classList.remove('is-visible');
         }, 1800);
       } catch {
         label.textContent = 'Select';
@@ -50,7 +56,15 @@
   .copy-command__button { position: absolute; top: .55rem; right: .55rem; display: inline-flex; width: 34px; min-height: 34px; padding: 0; align-items: center; justify-content: center; border: 1px solid var(--line-strong); background: rgba(23,26,33,.94); color: var(--muted); cursor: pointer; }
   .copy-command__button:hover { border-color: var(--lime); color: var(--ink); }
   .copy-command__button:active { transform: translateY(1px); }
+  .copy-command__feedback { position: absolute; z-index: 2; top: .55rem; right: .55rem; transform: translateY(-.25rem); padding: .3rem .48rem; border: 1px solid var(--lime); background: var(--lime); color: #10130d; opacity: 0; pointer-events: none; font: 700 .58rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+  .copy-command__feedback.is-visible { animation: copy-feedback 1.35s ease-out both; }
   .copy-command__button span, .copy-command__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @keyframes copy-feedback {
+    0% { opacity: 0; transform: translateY(-.25rem); }
+    15% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-2.35rem); }
+  }
   @media (max-width: 560px) {
     pre { padding-right: 3.4rem; }
   }
