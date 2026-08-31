@@ -11,14 +11,14 @@ const { record } = Astro.props as { record: ReportRecord };
 
 <BaseLayout title={`${record.title} — Shared Pair report`} description={record.detail}>
   <header class="report-hero shell">
-    <div><a class="back" href="/reports/">← Reports</a><p class="eyebrow">{record.index} · {record.state}</p><h1>{record.title}</h1><p class="lede">{record.detail}</p></div>
+    <div><a class="back" href="/runtimes/#technical-notes">← Runtimes</a><p class="eyebrow">{record.index} · {record.state}</p><h1>{record.title}</h1><p class="lede">{record.detail}</p></div>
     <dl><div><dt>Review state</dt><dd>Draft for approval</dd></div><div><dt>Updated</dt><dd>{record.updated}</dd></div><div><dt>Scope</dt><dd>Cross-project</dd></div></dl>
   </header>
   <section class="conclusion shell"><p class="eyebrow">Conclusion</p><p>{record.conclusion}</p></section>
   <section class="body shell">
     {record.sections.map((section, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><div><h2>{section.title}</h2>{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}{section.points && <ul>{section.points.map((point) => <li>{point}</li>)}</ul>}</div></article>)}
   </section>
-  <nav class="report-nav shell" aria-label="Other reports">{reports.filter((report) => report.slug !== record.slug).map((report) => <a href={`/reports/${report.slug}/`}><span>{report.index}</span>{report.title} →</a>)}</nav>
+  <nav class="report-nav shell" aria-label="Other runtime notes">{reports.filter((report) => report.slug !== record.slug).map((report) => <a href={`/runtimes/${report.slug}/`}><span>{report.index}</span>{report.title} →</a>)}</nav>
 </BaseLayout>
 
 <style>

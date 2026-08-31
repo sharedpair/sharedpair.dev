@@ -282,10 +282,11 @@ export const reports: ReportRecord[] = [
 ];
 
 export const progress = [
-  ['31 Aug 2026', 'Trilium Notes passed SQLite profile creation, integrity, and reopen tests on Electron 44.'],
-  ['31 Aug 2026', 'Netron passed model-opening tests on the new Electron 44 runtime.'],
-  ['31 Aug 2026', 'Electron 42 and 44 were verified side by side.'],
-  ['30 Aug 2026', 'The first seven applications were split from their bundled Electron runtimes.'],
+  { date: '2026-08-31', displayDate: 'Next', state: 'next', entry: 'Publish the signed APT repository and verify a clean installation from apt.sharedpair.dev.' },
+  { date: '2026-08-31', displayDate: '31 Aug 2026', state: 'shipped', entry: 'Trilium Notes passed SQLite profile creation, integrity, and reopen tests on Electron 44.' },
+  { date: '2026-08-31', displayDate: '31 Aug 2026', state: 'shipped', entry: 'Netron passed model-opening tests on the new Electron 44 runtime.' },
+  { date: '2026-08-31', displayDate: '31 Aug 2026', state: 'shipped', entry: 'Electron 42 and 44 were verified side by side.' },
+  { date: '2026-08-30', displayDate: '30 Aug 2026', state: 'shipped', entry: 'The first seven applications were split from their bundled Electron runtimes.' },
 ] as const;
 
 export const sections = {
