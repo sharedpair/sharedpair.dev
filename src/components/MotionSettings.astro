@@ -59,7 +59,7 @@ import { effectVariants, heroVariants, logoVariants, recommendedMotion, motionSt
   };
   let settings = load(); fill(settings); apply(settings);
   form?.addEventListener('input', () => { settings = fromForm(); apply(settings); });
-  document.querySelector('[data-motion-open]')?.addEventListener('click', () => dialog?.showModal());
+  document.querySelectorAll('[data-motion-open]').forEach((trigger) => trigger.addEventListener('click', () => dialog?.showModal()));
   document.querySelector('[data-motion-recommended]')?.addEventListener('click', () => { settings = defaults(); fill(settings); apply(settings); });
   document.querySelector('[data-motion-disable]')?.addEventListener('click', () => { settings = { ...fromForm(), enabled: false, effects: [] }; fill(settings); apply(settings); });
   document.querySelector('[data-motion-save]')?.addEventListener('click', () => { settings = fromForm(); localStorage.setItem(motionStorageKey, JSON.stringify(settings)); apply(settings); dialog?.close(); });
