@@ -4,16 +4,20 @@ import CopyCommand from '../../components/CopyCommand.astro';
 import { applications, registryStatus } from '../../data/project';
 
 const installPackages = applications.map((app) => app.slug).join(' ');
+const installCommand = [
+  'curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg',
+  'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list',
+  'sudo apt update',
+  `sudo apt install ${installPackages}`,
+].join('\n');
+const displayedInstallCommand = installCommand.replaceAll(' | ', ' |\n  ');
 ---
 
 <BaseLayout title="Install — Shared Pair" description="Final repository and package installation structure for Shared Pair.">
   <header class="page-hero shell"><div><p class="eyebrow">Install</p><h1>Commands ready.<br /><em>Repository pending.</em></h1><p class="lede">These are the intended public commands and URLs. Do not run them yet: <code>apt.sharedpair.dev</code> has not been promoted and verified.</p></div><div class="state"><span>Availability</span><strong>Not active</strong><small>Publication pending approval</small></div></header>
   <section class="commands shell" aria-label="Installation commands">
     <p class="eyebrow">APT setup · run in order</p>
-    <CopyCommand>curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list
-sudo apt update
-sudo apt install {installPackages}</CopyCommand>
+    <CopyCommand command={installCommand} displayCommand={displayedInstallCommand} />
   </section>
   <section class="identity shell"><p class="eyebrow">Signing identity</p><dl><div><dt>Fingerprint</dt><dd>{registryStatus.signingFingerprint}</dd></div><div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div><div><dt>Architecture</dt><dd>{registryStatus.architecture}</dd></div></dl><p>Verify the fingerprint independently before trusting repository metadata. These commands become active only after repository promotion and a fresh APT installation test.</p></section>
 </BaseLayout>

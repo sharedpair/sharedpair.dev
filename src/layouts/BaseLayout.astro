@@ -3,13 +3,17 @@ interface Props {
   title: string;
   description: string;
 }
+import MotionHero from '../components/MotionHero.astro';
+import MotionLogo from '../components/MotionLogo.astro';
+import MotionSettings from '../components/MotionSettings.astro';
+import { progress } from '../data/project';
 const { title, description } = Astro.props;
 const path = Astro.url.pathname;
 const links = ['install', 'applications', 'runtimes', 'security', 'status'];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-motion-enabled="true" data-motion-logo="L7" data-motion-hero="H6" data-motion-effects="F2 F7" data-motion-paused="false" data-motion-debug="false">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -22,7 +26,7 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
     <a class="skip" href="#content">Skip to content</a>
     <header class="topbar">
       <a class="brand" href="/" aria-label="Shared Pair home">
-        <span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>
+        <MotionLogo />
         <span>SHARED PAIR</span>
         <small>2c–2e</small>
       </a>
@@ -31,14 +35,15 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
       </nav>
       <a class="source" href="/about/">About →</a>
     </header>
-    <main id="content"><slot /></main>
+    <main id="content"><MotionHero /><slot /></main>
     <footer>
       <div>
-        <a class="brand footer-brand" href="/"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span><span>SHARED PAIR</span></a>
+        <a class="brand footer-brand" href="/"><MotionLogo /><span>SHARED PAIR</span></a>
         <p>Shared Electron runtimes for Linux.</p>
+        <MotionSettings />
       </div>
       <div class="footer-links"><a href="/about/">About</a><a href="/runtimes/">Runtimes</a><a href="/security/">Security</a><a href="/status/">Status</a></div>
-      <p class="legal">Packages are built and tested; APT publication is pending approval. Independent of Electron, OpenJS, Debian, and Ubuntu.</p>
+      <div class="footer-tail"><a class="activity-ticker" href="/feed.xml"><span>{progress[0].state}</span>{progress[0].entry}</a><p class="legal">Packages are built and tested; APT publication is pending approval. Independent of Electron, OpenJS, Debian, and Ubuntu.</p></div>
     </footer>
   </body>
 </html>
@@ -72,11 +77,6 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
   .topbar { position: sticky; top: 0; z-index: 30; min-height: 72px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 clamp(1.2rem, 4vw, 4rem); border-bottom: 1px solid var(--line); background: rgba(10,11,14,.82); backdrop-filter: blur(18px); }
   .brand { display: inline-flex; align-items: center; gap: .68rem; text-decoration: none; font: 700 .76rem/1 var(--mono); letter-spacing: .13em; }
   .brand small { color: var(--faint); font-weight: 400; }
-  .brand-symbol { width: 31px; height: 18px; display: inline-flex; align-items: center; justify-content: center; position: relative; }
-  .brand-symbol::after { content: ''; position: absolute; width: 11px; height: 11px; border: 1px solid var(--ink); transform: rotate(45deg); }
-  .brand-symbol i { position: absolute; width: 10px; height: 10px; border-radius: 50%; filter: blur(1px); }
-  .brand-symbol i:first-child { left: 2px; background: var(--lime); }
-  .brand-symbol i:last-child { right: 2px; background: var(--violet); }
   nav { display: flex; gap: clamp(.8rem, 2vw, 1.7rem); }
   nav a, .source, .footer-links a { color: var(--muted); text-decoration: none; font: .68rem/1 var(--mono); text-transform: uppercase; letter-spacing: .1em; }
   nav a:hover, nav a[aria-current='page'], .source:hover, .footer-links a:hover { color: var(--ink); }
@@ -100,6 +100,29 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
   footer p { margin: .8rem 0 0; color: var(--faint); font-size: .82rem; }
   .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; }
   .legal { justify-self: end; max-width: 340px; text-align: right; }
+  .footer-tail { justify-self: end; max-width: 360px; }
+  .activity-ticker { display: none; padding: .7rem; border: 1px solid var(--line); color: var(--muted); text-decoration: none; font-size: .78rem; }
+  .activity-ticker span { display: block; margin-bottom: .25rem; color: var(--violet); font: .6rem var(--mono); text-transform: uppercase; }
+  html[data-motion-enabled='true'][data-motion-effects~='F1'] nav a[aria-current='page']::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: .45rem; border-radius: 50%; background: var(--lime); animation: nav-electron 1.8s ease-in-out infinite; }
+  html[data-motion-enabled='true'][data-motion-effects~='F2'] nav a { position: relative; }
+  html[data-motion-enabled='true'][data-motion-effects~='F2'] nav a[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.7rem; height: 1px; background: linear-gradient(90deg,var(--lime),var(--violet)); animation: bond-in .7s ease-out both; }
+  html[data-motion-enabled='true'][data-motion-effects~='F3'] .footer-brand :is(.logo-loop,.logo-electron) { animation-direction: reverse !important; }
+  html[data-motion-enabled='true'][data-motion-effects~='F4'] .topbar::after { content: '42 TESTED  ·  44 TESTED'; position: absolute; right: 1rem; bottom: 3px; color: var(--faint); font: .52rem var(--mono); }
+  html[data-motion-enabled='true'][data-motion-effects~='F5'] .topbar::before { content: ''; position: absolute; left: 0; bottom: 0; width: calc(var(--reading-progress, 0) * 100%); height: 2px; background: linear-gradient(90deg,var(--lime),var(--violet)); }
+  html[data-motion-enabled='true'][data-motion-effects~='F6'] footer::before { content: ''; position: absolute; left: 15%; right: 15%; top: -1px; height: 2px; background: linear-gradient(90deg,transparent,var(--lime),var(--violet),transparent); animation: recombine 3s ease-in-out infinite; }
+  html[data-motion-enabled='true'][data-motion-effects~='F7'] .activity-ticker { display: block; animation: ticker-in .6s ease-out both; }
+  html[data-motion-enabled='true'][data-motion-effects~='F8'] :is(nav,.footer-links) a { transition: transform .2s ease, color .2s ease; }
+  html[data-motion-enabled='true'][data-motion-effects~='F8'] :is(nav,.footer-links) a:hover { transform: translateY(-3px) scale(1.04); }
+  html[data-motion-enabled='true'][data-motion-effects~='F9'] .activity-ticker span::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: .4rem; border-radius: 50%; background: var(--lime); animation: heartbeat 1.5s ease-in-out infinite; }
+  html[data-motion-enabled='true'][data-motion-effects~='F10'] { view-transition-name: sharedpair-page; }
+  footer { position: relative; }
+  @keyframes nav-electron { 50% { transform: translateY(-4px); box-shadow: 0 0 8px var(--lime); } }
+  @keyframes bond-in { from { transform: scaleX(0); } }
+  @keyframes recombine { 50% { left: 45%; right: 45%; filter: drop-shadow(0 0 8px var(--lime)); } }
+  @keyframes ticker-in { from { opacity: 0; transform: translateY(8px); } }
+  @keyframes heartbeat { 50% { opacity: .35; transform: scale(.7); } }
+  @view-transition { navigation: auto; }
+  ::view-transition-old(sharedpair-page), ::view-transition-new(sharedpair-page) { animation-duration: .35s; }
   /* The site is documentation first: keep display type and section rhythm subordinate to the content. */
   main h1 { font-size: clamp(2.7rem, 5vw, 5rem) !important; }
   main h2 { font-size: clamp(1.9rem, 3.5vw, 3.5rem) !important; }
@@ -114,7 +137,7 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
     .topbar nav a { flex: 0 0 auto; }
     .topbar .source { grid-column: 2; grid-row: 1; }
     footer { grid-template-columns: 1fr; }
-    .legal { justify-self: start; text-align: left; }
+    .legal, .footer-tail { justify-self: start; text-align: left; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }

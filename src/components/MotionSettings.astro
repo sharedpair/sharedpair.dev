@@ -1,0 +1,91 @@
+---
+import { effectVariants, heroVariants, logoVariants, recommendedMotion, motionStorageKey } from '../data/motion';
+---
+
+<button class="motion-settings-trigger" type="button" data-motion-open aria-haspopup="dialog">Motion settings</button>
+<dialog class="motion-settings" id="motion-settings" aria-labelledby="motion-settings-title">
+  <form method="dialog" class="motion-settings__panel">
+    <header><div><p>Visual system</p><h2 id="motion-settings-title">Motion settings</h2></div><button value="close" aria-label="Close motion settings">×</button></header>
+    <div class="motion-globals">
+      <label><input type="checkbox" name="enabled" checked={recommendedMotion.enabled}/> Enable motion</label>
+      <label><input type="checkbox" name="ambientPaused"/> Pause ambient loops</label>
+      <label><input type="checkbox" name="debug"/> Show labels/debug bounds</label>
+      <label><input type="checkbox" name="reducedPreview"/> Preview reduced-motion frame</label>
+    </div>
+    <div class="motion-selects">
+      <label>Tiny logo<select name="logo">{logoVariants.map(([code, name]) => <option value={code} selected={code === recommendedMotion.logo}>{code} · {name}</option>)}</select></label>
+      <label>Home hero<select name="homeHero">{heroVariants.map(([code, name]) => <option value={code} selected={code === recommendedMotion.homeHero}>{code} · {name}</option>)}</select></label>
+      <label>Runtimes hero<select name="runtimeHero">{heroVariants.map(([code, name]) => <option value={code} selected={code === recommendedMotion.runtimeHero}>{code} · {name}</option>)}</select></label>
+      <label>Applications / Status<select name="applicationHero">{heroVariants.map(([code, name]) => <option value={code} selected={code === recommendedMotion.applicationHero}>{code} · {name}</option>)}</select></label>
+      <label>General pages<select name="generalHero">{heroVariants.map(([code, name]) => <option value={code} selected={code === recommendedMotion.generalHero}>{code} · {name}</option>)}</select></label>
+    </div>
+    <fieldset><legend>Header and footer effects</legend><div class="effect-grid">{effectVariants.map(([code, name]) => <label><input type="checkbox" name="effects" value={code} checked={recommendedMotion.effects.includes(code as 'F2' | 'F7')}/><span>{code}</span> {name}</label>)}</div></fieldset>
+    <footer><button type="button" data-motion-recommended>Use recommended</button><button type="button" data-motion-disable>Disable all</button><button type="button" data-motion-save>Save settings</button></footer>
+  </form>
+</dialog>
+
+<script is:inline define:vars={{ motionStorageKey, recommendedMotion }}>
+  const root = document.documentElement;
+  const dialog = document.querySelector('#motion-settings');
+  const form = dialog?.querySelector('form');
+  const heroFamily = location.pathname === '/' ? 'homeHero' : location.pathname.startsWith('/runtimes') ? 'runtimeHero' : (location.pathname.startsWith('/applications') || location.pathname.startsWith('/status')) ? 'applicationHero' : 'generalHero';
+
+  const defaults = () => ({ ...recommendedMotion, effects: [...recommendedMotion.effects], reducedPreview: false });
+  const load = () => {
+    try { return { ...defaults(), ...JSON.parse(localStorage.getItem(motionStorageKey) || '{}') }; } catch { return defaults(); }
+  };
+  const fromForm = () => {
+    const data = new FormData(form);
+    return {
+      enabled: data.has('enabled'), ambientPaused: data.has('ambientPaused'), debug: data.has('debug'), reducedPreview: data.has('reducedPreview'),
+      logo: data.get('logo'), homeHero: data.get('homeHero'), runtimeHero: data.get('runtimeHero'), applicationHero: data.get('applicationHero'), generalHero: data.get('generalHero'), effects: data.getAll('effects'),
+    };
+  };
+  const fill = (settings) => {
+    for (const element of form.elements) {
+      if (!(element instanceof HTMLInputElement || element instanceof HTMLSelectElement) || !element.name) continue;
+      if (element.type === 'checkbox') element.checked = element.name === 'effects' ? settings.effects.includes(element.value) : Boolean(settings[element.name]);
+      else element.value = settings[element.name];
+    }
+  };
+  const apply = (settings) => {
+    root.dataset.motionEnabled = String(settings.enabled);
+    root.dataset.motionPaused = String(settings.ambientPaused || settings.reducedPreview);
+    root.dataset.motionDebug = String(settings.debug);
+    root.dataset.motionLogo = settings.logo;
+    root.dataset.motionHero = settings[heroFamily];
+    root.dataset.motionEffects = settings.effects.join(' ');
+    document.querySelector('.motion-label')?.setAttribute('data-code', settings[heroFamily]);
+  };
+  let settings = load(); fill(settings); apply(settings);
+  form?.addEventListener('input', () => { settings = fromForm(); apply(settings); });
+  document.querySelector('[data-motion-open]')?.addEventListener('click', () => dialog?.showModal());
+  document.querySelector('[data-motion-recommended]')?.addEventListener('click', () => { settings = defaults(); fill(settings); apply(settings); });
+  document.querySelector('[data-motion-disable]')?.addEventListener('click', () => { settings = { ...fromForm(), enabled: false, effects: [] }; fill(settings); apply(settings); });
+  document.querySelector('[data-motion-save]')?.addEventListener('click', () => { settings = fromForm(); localStorage.setItem(motionStorageKey, JSON.stringify(settings)); apply(settings); dialog?.close(); });
+  dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+  addEventListener('scroll', () => root.style.setProperty('--reading-progress', String(scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight))), { passive: true });
+</script>
+
+<style>
+  .motion-settings-trigger { border: 0; background: none; color: var(--faint); cursor: pointer; padding: 0; font: .68rem var(--mono); text-transform: uppercase; letter-spacing: .1em; }
+  .motion-settings-trigger:hover { color: var(--ink); }
+  .motion-settings { width: min(780px, calc(100% - 2rem)); max-height: calc(100vh - 2rem); padding: 0; border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink); }
+  .motion-settings::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(5px); }
+  .motion-settings__panel { padding: 1.25rem; }
+  header { display: flex; justify-content: space-between; gap: 1rem; align-items: start; border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
+  header p { margin: 0; color: var(--lime); font: .62rem var(--mono); text-transform: uppercase; }
+  header h2 { margin: .2rem 0 0; font-size: 1.8rem !important; }
+  header button { border: 0; background: none; color: var(--muted); font-size: 1.8rem; cursor: pointer; }
+  .motion-globals, .effect-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem 1rem; }
+  .motion-globals { padding: 1rem 0; }
+  .motion-selects { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+  label, legend { color: var(--muted); font: .7rem/1.4 var(--mono); }
+  select { display: block; width: 100%; min-height: 42px; margin-top: .35rem; padding: 0 .6rem; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  fieldset { margin: 1rem 0; padding: 1rem; border: 1px solid var(--line); }
+  .effect-grid span { color: var(--violet); }
+  footer { display: flex; flex-wrap: wrap; gap: .6rem; margin: 0; padding: 1rem 0 0; border-top: 1px solid var(--line); }
+  footer button { min-height: 40px; padding: 0 .8rem; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); cursor: pointer; font: .65rem var(--mono); text-transform: uppercase; }
+  footer button:last-child { margin-left: auto; border-color: var(--lime); color: var(--lime); }
+  @media (max-width: 600px) { .motion-selects, .motion-globals, .effect-grid { grid-template-columns: 1fr; } }
+</style>
