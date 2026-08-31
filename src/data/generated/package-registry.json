@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-31T20:09:09.575Z",
+  "generatedAt": "2026-08-31T20:54:32.237Z",
   "suite": "resolute",
   "architecture": "amd64",
   "signingFingerprint": "0D77 B60F 37B8 A4AA B404 626D F567 ACF6 B6B8 F861",
@@ -18,10 +18,16 @@
     "audex-player"
   ],
   "discoveredNotEnrolled": {
+    "effetune": "Package definition is in progress; no verified artifact has been enrolled in the Shared Pair application test cohort.",
     "opencomic": "Present in status.json but not yet enrolled in the Shared Pair application test cohort.",
     "jbrowse-desktop": "Present in status.json but not yet enrolled in the Shared Pair application test cohort."
   },
-  "unresolvedStatusPackages": {},
+  "unresolvedStatusPackages": {
+    "effetune": {
+      "version": "2.7.0~git20260831.bedc6c66-1foundry1",
+      "reason": "Package definition is in progress; no verified artifact has been enrolled in the Shared Pair application test cohort."
+    }
+  },
   "packages": {
     "electron-runtime-42": {
       "packageName": "electron-runtime-42",
@@ -229,15 +235,15 @@
     },
     "penpot-desktop": {
       "packageName": "penpot-desktop",
-      "version": "0.24.0~git20260827.7889365b-1foundry1",
+      "version": "0.24.0-1foundry1",
       "architecture": "amd64",
-      "archiveBytes": 2853256,
+      "archiveBytes": 2853234,
       "archiveMiB": 2.7,
       "installedKiB": 29178,
       "installedMiB": 28.5,
-      "sha256": "bde8902744805116ce30b36b055c9c1d95a10c7b2af0abcd06215c925dfec629",
-      "sourceArtifact": "penpot-desktop_0.24.0~git20260827.7889365b-1foundry1_amd64.deb",
-      "artifactModifiedAt": "2026-08-31T20:09:09.575Z",
+      "sha256": "cfb91286cb95e80bf8aee4725a8b3801c0fefc23e09567c4fb5d3fe042cdf42c",
+      "sourceArtifact": "penpot-desktop_0.24.0-1foundry1_amd64.deb",
+      "artifactModifiedAt": "2026-08-31T20:37:49.001Z",
       "depends": "electron-runtime-44 (>= 44.0.0), electron-runtime-44 (<< 45)",
       "runtime": "electron-runtime-44",
       "runtimeMajor": 44,

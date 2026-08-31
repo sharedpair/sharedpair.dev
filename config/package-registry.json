@@ -13,6 +13,7 @@
     "audex-player"
   ],
   "discoveredNotEnrolled": {
+    "effetune": "Package definition is in progress; no verified artifact has been enrolled in the Shared Pair application test cohort.",
     "opencomic": "Present in status.json but not yet enrolled in the Shared Pair application test cohort.",
     "jbrowse-desktop": "Present in status.json but not yet enrolled in the Shared Pair application test cohort."
   },
