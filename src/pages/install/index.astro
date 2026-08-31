@@ -9,10 +9,11 @@ const installPackages = applications.map((app) => app.slug).join(' ');
 <BaseLayout title="Install — Shared Pair" description="Final repository and package installation structure for Shared Pair.">
   <header class="page-hero shell"><div><p class="eyebrow">Install</p><h1>Commands ready.<br /><em>Repository pending.</em></h1><p class="lede">These are the intended public commands and URLs. Do not run them yet: <code>apt.sharedpair.dev</code> has not been promoted and verified.</p></div><div class="state"><span>Availability</span><strong>Not active</strong><small>Publication pending approval</small></div></header>
   <section class="commands shell" aria-label="Installation commands">
-    <article><h2><span>01</span>Add the signing key</h2><CopyCommand>curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg</CopyCommand></article>
-    <article><h2><span>02</span>Add the repository</h2><CopyCommand>echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list</CopyCommand></article>
-    <article><h2><span>03</span>Install applications</h2><CopyCommand>sudo apt update
-sudo apt install {installPackages}</CopyCommand></article>
+    <p class="eyebrow">APT setup · run in order</p>
+    <CopyCommand>curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list
+sudo apt update
+sudo apt install {installPackages}</CopyCommand>
   </section>
   <section class="identity shell"><p class="eyebrow">Signing identity</p><dl><div><dt>Fingerprint</dt><dd>{registryStatus.signingFingerprint}</dd></div><div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div><div><dt>Architecture</dt><dd>{registryStatus.architecture}</dd></div></dl><p>Verify the fingerprint independently before trusting repository metadata. These commands become active only after repository promotion and a fresh APT installation test.</p></section>
 </BaseLayout>
@@ -25,14 +26,11 @@ sudo apt install {installPackages}</CopyCommand></article>
   .state span, .state small { display: block; color: var(--faint); font: .63rem var(--mono); text-transform: uppercase; }
   .state strong { display: block; margin: .7rem 0; color: var(--violet); font-size: 1.4rem; }
   .commands { padding-block: 1.5rem; }
-  article { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 1rem; align-items: center; padding: .75rem 0; border-bottom: 1px solid var(--line); }
-  h2 { margin: 0; font: 600 .78rem/1.4 var(--mono); }
-  h2 span { display: block; margin-bottom: .25rem; color: var(--violet); font-size: .62rem; font-weight: 400; }
   .identity { padding-block: 2.5rem; border-top: 1px solid var(--line); }
   .identity dl { display: grid; grid-template-columns: 2fr 1fr 1fr; }
   .identity dl div { padding: 1rem 0; border-bottom: 1px solid var(--line); }
   dt { color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; }
   dd { margin: .4rem 0 0; overflow-wrap: anywhere; font: .73rem var(--mono); }
   .identity > p:last-child { max-width: 780px; margin-top: 1.5rem; color: var(--muted); }
-  @media (max-width: 760px) { .page-hero { grid-template-columns: 1fr; } article { grid-template-columns: 1fr; gap: .55rem; } h2 span { display: inline; margin-right: .6rem; } .identity dl { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) { .page-hero { grid-template-columns: 1fr; } .identity dl { grid-template-columns: 1fr; } }
 </style>
