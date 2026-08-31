@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BondMark from '../components/BondMark.astro';
+import { sections } from '../data/project';
+
+export function getStaticPaths() {
+  return Object.entries(sections)
+    .filter(([section]) => !['applications', 'status', 'reports', 'runtimes', 'install'].includes(section))
+    .map(([section, content]) => ({ params: { section }, props: { content } }));
+}
+
+const { content } = Astro.props;
+---
+
+<BaseLayout title={`${content.eyebrow} — Shared Pair`} description={content.intro}>
+  <header class="page-hero shell">
+    <div><p class="eyebrow">{content.eyebrow}</p><h1>{content.title}</h1><p class="lede">{content.intro}</p></div>
+    <BondMark compact />
+  </header>
+  <section class="records shell">
+    {content.blocks.map(([title, detail], index) => <article><span>{String(index + 1).padStart(2, '0')}</span><div><h2>{title}</h2><p>{detail}</p></div></article>)}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero { min-height: 44vh; display: grid; grid-template-columns: 1.35fr .65fr; gap: 4vw; align-items: center; padding-block: 3.5rem; border-bottom: 1px solid var(--line); }
+  .page-hero h1 { max-width: 900px; margin-bottom: 1rem; font-size: clamp(3rem, 5.5vw, 5.8rem); }
+  .records { padding-block: 3rem; }
+  article { display: grid; grid-template-columns: 58px 1fr; gap: 1rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  article > span { color: var(--violet); font: .72rem var(--mono); }
+  article h2 { margin-bottom: .5rem; font-size: clamp(1.7rem, 3vw, 2.8rem); }
+  article p { max-width: 760px; color: var(--muted); }
+  @media (max-width: 760px) { .page-hero { min-height: auto; grid-template-columns: 1fr; padding-block: 4rem; } .page-hero :global(svg) { order: -1; width: 70%; margin: auto; } }
+</style>

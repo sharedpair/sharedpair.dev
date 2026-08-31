@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+apt_root=${SHARED_ELECTRON_ROOT:-/home/will/shared-electron}
+output_root=/home/will/sharedpair.dev/public/images/applications/drawio-desktop
+mkdir -p "$output_root"
+
+runtime_deb=$(find "$apt_root/dist" -maxdepth 1 -name 'electron-runtime-42_*_amd64.deb' -print | sort -V | tail -1)
+app_deb="$apt_root/dist/drawio-desktop_31.3.1-1foundry1_amd64.deb"
+test -f "$runtime_deb"
+test -f "$app_deb"
+
+docker run --rm -i \
+  --security-opt seccomp=unconfined \
+  -e DEBIAN_FRONTEND=noninteractive \
+  -v "$apt_root/dist:/debs:ro" \
+  -v "$apt_root/test/fixtures:/fixtures:ro" \
+  ubuntu:26.04 bash -s -- \
+  "$(basename "$runtime_deb")" "$(basename "$app_deb")" <<'CONTAINER' |
+set -euo pipefail
+apt-get update -qq
+apt-get install -y --no-install-recommends \
+  xvfb xauth x11-utils dbus-x11 openbox wmctrl imagemagick \
+  "/debs/$1" "/debs/$2" >/dev/null
+useradd --create-home --shell /bin/bash electron-test
+install -o electron-test -g electron-test -m 0644 \
+  /fixtures/shared-electron.drawio /tmp/shared-electron.drawio
+
+Xvfb :99 -screen 0 1440x960x24 -ac -nolisten tcp >/tmp/xvfb.log 2>&1 &
+xvfb_pid=$!
+trap 'kill "$xvfb_pid" 2>/dev/null || true' EXIT
+export DISPLAY=:99
+for _ in $(seq 1 50); do xdpyinfo >/dev/null 2>&1 && break; sleep .1; done
+
+runuser -u electron-test -- env DISPLAY=:99 openbox >/tmp/openbox.log 2>&1 &
+sleep 1
+runuser -u electron-test -- env \
+  DISPLAY=:99 \
+  HOME=/home/electron-test \
+  XDG_CONFIG_HOME=/home/electron-test/.config \
+  XDG_CACHE_HOME=/home/electron-test/.cache \
+  dbus-run-session -- /usr/bin/drawio --disable-gpu /tmp/shared-electron.drawio \
+  >/tmp/drawio.log 2>&1 &
+app_pid=$!
+
+window_id=
+for _ in $(seq 1 120); do
+  window_id=$(wmctrl -l | awk 'tolower($0) ~ /draw\.io/ { print $1; exit }')
+  [[ -n "$window_id" ]] && break
+  sleep .25
+done
+[[ -n "$window_id" ]] || { cat /tmp/drawio.log >&2; exit 1; }
+wmctrl -ir "$window_id" -b add,maximized_vert,maximized_horz
+sleep 25
+import -display :99 -window "$window_id" /tmp/drawio-interface.png
+test -s /tmp/drawio-interface.png
+identify /tmp/drawio-interface.png >&2
+kill "$app_pid" 2>/dev/null || true
+base64 -w0 /tmp/drawio-interface.png
+CONTAINER
+base64 -d > "$output_root/drawio-desktop-31.3.1-electron-42.9.3.png"
+test -s "$output_root/drawio-desktop-31.3.1-electron-42.9.3.png"

@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BondMark from '../components/BondMark.astro';
+import { applications, progress, projectStatus, reports, sizeAccounting } from '../data/project';
+---
+
+<BaseLayout title="Shared Pair — Electron, shared" description="Shared, versioned Electron runtimes and compatible desktop applications for Linux.">
+  <section class="hero shell">
+    <div class="hero-copy">
+      <p class="eyebrow">Shared Electron runtimes for Linux</p>
+      <h1>One runtime.<br /><em>More room.</em></h1>
+      <p class="lede">Shared Pair separates compatible desktop applications from the versioned Electron runtime they have in common—and keeps the packages, tests, provenance, and security updates together.</p>
+      <div class="actions"><a class="button primary" href="/install/">Installation status</a><a class="button" href="#architecture">See the bond</a></div>
+      <p class="disclaimer">Packages built and tested · APT publication pending approval</p>
+    </div>
+    <div class="hero-art"><BondMark /></div>
+  </section>
+
+  <section class="trust" aria-label="Project status">
+    <div class="shell trust-grid">
+      {Object.entries(projectStatus).map(([key, value]) => <div><span>{key}</span><strong>{value}</strong></div>)}
+    </div>
+  </section>
+
+  <section class="section shell split" id="architecture">
+    <div><p class="eyebrow">The shared region</p><h2>Electron,<br /><em>shared.</em></h2></div>
+    <div class="prose"><p>In the ordinary 2c–2e model, two centres are held together by a shared electron pair. Shared Pair applies that compact idea to desktop packaging: applications remain distinct while a compatible runtime occupies the common region.</p><p>The electrons are shown with opposite spin projections. They share the bonding region; the spin itself is not “shared.” The chemistry is a metaphor, but we intend to get the metaphor right.</p></div>
+  </section>
+
+  <section class="section shell savings">
+    <div class="section-head"><div><p class="eyebrow">Measured package set</p><h2>Save <em>{sizeAccounting.archiveSavedMiB} MiB.</em></h2></div><p>Seven tested applications use two runtime lines. Sharing one runtime per line reduces the modeled compressed package set by {sizeAccounting.archiveSavedPercent}%.</p></div>
+    <div class="bar-chart" aria-label="Compressed package-set comparison">
+      <div class="bar-row"><span>Runtime per app</span><div class="bar bundled"><i style="width: 100%"></i></div><strong>{sizeAccounting.bundledModelArchiveMiB} MiB</strong></div>
+      <div class="bar-row"><span>Shared Pair</span><div class="bar shared"><i style={`width: ${(sizeAccounting.sharedArchiveMiB / sizeAccounting.bundledModelArchiveMiB) * 100}%`}></i></div><strong>{sizeAccounting.sharedArchiveMiB} MiB</strong></div>
+    </div>
+    <p class="chart-note">Package-set accounting from built `.deb` files · measured {sizeAccounting.measured} · the bundled case adds one actual runtime archive per app</p>
+  </section>
+
+  <section class="section shell">
+    <div class="section-head"><div><p class="eyebrow">Packaged applications</p><h2>Compatibility is earned.</h2></div><p>Matching an Electron major starts an audit. Each report records the package boundary and the behavior actually tested.</p></div>
+    <div class="cards">
+      {applications.map((app, index) => <a class="card" href={`/applications/${app.slug}/`}><div class="card-top"><span>0{index + 1}</span><span class={`state ${app.state}`}>{app.state}</span></div><h3>{app.name}</h3><p>{app.purpose}</p><dl><div><dt>Package</dt><dd>{app.version}</dd></div><div><dt>Runtime</dt><dd>{app.runtime}</dd></div></dl><small>{app.proof}</small><b>Read technical report →</b></a>)}
+    </div>
+    <a class="text-link" href="/applications/">Explore applications →</a>
+  </section>
+
+  <section class="section boundary">
+    <div class="shell"><div class="section-head"><div><p class="eyebrow">Package boundary</p><h2>Common core.<br />Private edges.</h2></div><p>Only generic Electron/Chromium files move into the shared runtime. Application code, native modules, helpers, and identity remain application-owned.</p></div>
+      <div class="layers"><div class="runtime"><span>shared</span><strong>electron-runtime-44</strong><small>Electron · Chromium · locales · sandbox</small></div><div class="apps-layer"><div><span>app</span><strong>Netron</strong><small>ASAR · native modules · desktop entry</small></div><div><span>app</span><strong>Next compatible app</strong><small>Audited private payload</small></div></div></div>
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="section-head"><div><p class="eyebrow">Reports</p><h2>Show the work.</h2></div><p>Read the decisions, measurements, failures, and test results behind the package cards.</p></div>
+    <div class="report-list">{reports.map((report) => <a href={`/reports/${report.slug}/`}><span>{report.index}</span><div><h3>{report.title}</h3><p>{report.detail}</p></div><small>{report.state}</small><b>↗</b></a>)}</div>
+  </section>
+
+  <section class="section shell security-grid">
+    <div class="security-lead"><p class="eyebrow">Security</p><h2>The runtime is a responsibility.</h2><p class="lede">One Chromium runtime means less duplication—and one place that must be patched quickly. Fast, visible updates are non-negotiable.</p><a class="button" href="/security/">Read the security model</a></div>
+    <div class="checks"><div><span>01</span><strong>Watch upstream</strong><p>Track supported Electron lines and Chromium fixes.</p></div><div><span>02</span><strong>Test every app</strong><p>Rebuild and test the full app set on every runtime update.</p></div><div><span>03</span><strong>Bring receipts</strong><p>Hashes, SBOM, provenance, test results, and rollback stay together.</p></div></div>
+  </section>
+
+  <section class="section shell progress">
+    <div><p class="eyebrow">Progress log</p><h2>What changed.<br />What’s next.</h2></div>
+    <ol>{progress.map(([date, entry]) => <li><time>{date}</time><p>{entry}</p></li>)}</ol>
+  </section>
+</BaseLayout>
+
+<style>
+  em { color: var(--lime); font-style: normal; }
+  .hero { min-height: calc(100vh - 72px); display: grid; grid-template-columns: 1.08fr .92fr; align-items: center; gap: 1rem; padding-block: 6rem; }
+  .hero h1 { margin-bottom: 2rem; }
+  .hero-art { margin-right: -3vw; }
+  .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+  .disclaimer { margin-top: 1rem; color: var(--faint); font: .65rem var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+  .trust { border-block: 1px solid var(--line); background: rgba(255,255,255,.018); }
+  .trust-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .trust-grid div { padding: 1.2rem; border-right: 1px solid var(--line); }
+  .trust-grid div:first-child { border-left: 1px solid var(--line); }
+  .trust span, .card-top span:first-child, .layers span { display: block; color: var(--faint); font: .61rem var(--mono); text-transform: uppercase; letter-spacing: .11em; }
+  .trust strong { display: block; margin-top: .4rem; font: 600 .76rem var(--mono); }
+  .section { padding-block: clamp(5rem, 10vw, 9rem); border-bottom: 1px solid var(--line); }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 7vw; align-items: end; }
+  .split h2, .section-head h2 { margin-bottom: 0; }
+  .prose { color: var(--muted); font-size: 1.12rem; }
+  .section-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 380px); gap: 3rem; align-items: end; margin-bottom: 3.2rem; }
+  .section-head > p { margin: 0; color: var(--muted); }
+  .bar-chart { display: grid; gap: 1.4rem; padding: 2rem 0; }
+  .bar-row { display: grid; grid-template-columns: 130px 1fr 120px; gap: 1rem; align-items: center; font: .7rem var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+  .bar { height: 52px; background: var(--surface-2); border: 1px solid var(--line); }
+  .bar i { display: block; height: 100%; background: linear-gradient(90deg, rgba(165,139,255,.28), rgba(165,139,255,.6)); border-right: 1px solid rgba(165,139,255,.55); }
+  .bar.shared i { background: linear-gradient(90deg, rgba(185,255,102,.25), rgba(185,255,102,.65)); border-color: rgba(185,255,102,.6); }
+  .chart-note { color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; text-align: right; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .card { min-height: 350px; padding: 1.5rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; background: linear-gradient(150deg, rgba(255,255,255,.018), transparent); text-decoration: none; }
+  .card-top { display: flex; justify-content: space-between; }
+  .state { color: var(--violet); font: .6rem var(--mono); text-transform: uppercase; letter-spacing: .1em; }
+  .card h3 { margin: 4rem 0 .3rem; font-size: 1.6rem; }
+  .card > p, .card small { color: var(--muted); }
+  .card > b { margin-top: 1.2rem; color: var(--lime); font: .65rem var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+  .card:hover h3 { color: var(--lime); }
+  .card dl { margin: auto 0 1rem; border-top: 1px solid var(--line); }
+  .card dl div { display: flex; justify-content: space-between; padding: .55rem 0; border-bottom: 1px solid var(--line); }
+  dt, dd, .card small { margin: 0; font: .66rem/1.5 var(--mono); }
+  dt { color: var(--faint); text-transform: uppercase; }
+  .text-link { display: inline-block; margin-top: 2rem; color: var(--lime); font: .72rem var(--mono); text-transform: uppercase; text-decoration: none; }
+  .boundary { width: 100%; background: linear-gradient(180deg, rgba(165,139,255,.06), rgba(185,255,102,.025)); }
+  .layers { border: 1px solid var(--line-strong); padding: 1rem; }
+  .runtime { padding: 2rem; background: linear-gradient(90deg, rgba(185,255,102,.18), rgba(165,139,255,.17)); border: 1px solid rgba(185,255,102,.35); }
+  .layers strong { display: block; margin: .45rem 0; font: 600 1.05rem var(--mono); }
+  .layers small { color: var(--muted); font: .68rem var(--mono); }
+  .apps-layer { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  .apps-layer > div { padding: 1.5rem 2rem; border: 1px solid var(--line); background: var(--surface); }
+  .report-list { border-top: 1px solid var(--line); }
+  .report-list a { display: grid; grid-template-columns: 64px 1fr 160px 20px; gap: 1rem; align-items: center; padding: 1.4rem 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+  .report-list a > span, .report-list small { color: var(--faint); font: .65rem var(--mono); }
+  .report-list h3, .report-list p { margin: 0; }
+  .report-list p { color: var(--muted); font-size: .85rem; }
+  .report-list a:hover h3 { color: var(--lime); }
+  .security-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8vw; }
+  .checks { border-top: 1px solid var(--line); }
+  .checks div { display: grid; grid-template-columns: 44px 1fr; padding: 1.3rem 0; border-bottom: 1px solid var(--line); }
+  .checks span { color: var(--violet); font: .68rem var(--mono); }
+  .checks p { grid-column: 2; color: var(--muted); margin: .3rem 0 0; font-size: .88rem; }
+  .progress { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; }
+  .progress ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .progress li { padding: 1.2rem 0; border-bottom: 1px solid var(--line); }
+  .progress time { color: var(--lime); font: .66rem var(--mono); }
+  .progress li p { margin: .45rem 0 0; }
+  @media (max-width: 880px) {
+    .hero { min-height: auto; grid-template-columns: 1fr; padding-block: 5rem 2rem; }
+    .hero-art { order: -1; width: 70%; margin: 0 auto -2rem; }
+    .trust-grid { grid-template-columns: 1fr 1fr; }
+    .trust-grid div { border-bottom: 1px solid var(--line); }
+    .split, .section-head, .security-grid, .progress { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+    .report-list a { grid-template-columns: 48px 1fr 20px; }
+    .report-list small { display: none; }
+  }
+  @media (max-width: 560px) {
+    .hero h1 { font-size: 3.6rem; }
+    .bar-row { grid-template-columns: 1fr; }
+    .bar { height: 42px; }
+    .apps-layer { grid-template-columns: 1fr; }
+  }
+</style>

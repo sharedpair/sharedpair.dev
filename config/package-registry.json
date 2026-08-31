@@ -1,0 +1,22 @@
+{
+  "testedApplications": [
+    "losslesscut",
+    "drawio-desktop",
+    "marktext",
+    "joplin",
+    "teams-for-linux",
+    "jupyterlab-desktop",
+    "netron",
+    "trilium-notes"
+  ],
+  "blockedApplications": [
+    "audex-player"
+  ],
+  "discoveredNotEnrolled": {
+    "opencomic": "Present in status.json but not yet enrolled in the Shared Pair application test cohort.",
+    "jbrowse-desktop": "Present in status.json but not yet enrolled in the Shared Pair application test cohort."
+  },
+  "monolithicComparisons": {
+    "losslesscut": "3.69.0-1foundry1"
+  }
+}

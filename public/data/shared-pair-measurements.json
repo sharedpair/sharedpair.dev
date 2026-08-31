@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-31T19:25:07.203Z",
+  "suite": "resolute",
+  "architecture": "amd64",
+  "cohort": [
+    "losslesscut",
+    "drawio-desktop",
+    "marktext",
+    "joplin",
+    "teams-for-linux",
+    "jupyterlab-desktop",
+    "netron",
+    "trilium-notes"
+  ],
+  "runtimeLines": [
+    "electron-runtime-42",
+    "electron-runtime-44"
+  ],
+  "accounting": {
+    "testedApplications": 8,
+    "runtimeLines": 2,
+    "sharedArchiveBytes": 775710028,
+    "sharedArchiveMiB": 739.8,
+    "bundledModelArchiveBytes": 1337455074,
+    "bundledModelArchiveMiB": 1275.5,
+    "archiveSavedBytes": 561745046,
+    "archiveSavedMiB": 535.7,
+    "archiveSavedPercent": 42,
+    "sharedInstalledKiB": 1990399,
+    "sharedInstalledMiB": 1943.7,
+    "bundledModelInstalledKiB": 3842233,
+    "bundledModelInstalledMiB": 3752.2,
+    "installedSavedKiB": 1851834,
+    "installedSavedMiB": 1808.4,
+    "installedSavedPercent": 48.2,
+    "methodology": "Actual split application archives plus one actual runtime archive per application versus one actual runtime archive per represented runtime line."
+  },
+  "sources": {
+    "losslesscut": {
+      "version": "3.69.0-1foundry2",
+      "archiveBytes": 74047438,
+      "installedKiB": 281483,
+      "sha256": "c3801526eaa4fabdb0260287b9dcf47a87dbc106a0faba821eb90a7464955f6c"
+    },
+    "drawio-desktop": {
+      "version": "31.3.1-1foundry1",
+      "archiveBytes": 32926342,
+      "installedKiB": 142600,
+      "sha256": "98d70b6022eb4a2857fbfa1fdb58bad2f72fbb4a6a87ee4314b067906bc6949e"
+    },
+    "marktext": {
+      "version": "0.19.1-1foundry2",
+      "archiveBytes": 16776686,
+      "installedKiB": 94014,
+      "sha256": "44a51e468ed73d8c49f67ea55d358cdcb852f880225a267e6b1e3dbbc7283b49"
+    },
+    "joplin": {
+      "version": "3.7.14-1foundry1",
+      "archiveBytes": 59725426,
+      "installedKiB": 315322,
+      "sha256": "eb2d3c415c6d05a99dc5f28ebd9efe1003c93ec07050f359ac0a75e4470a2dd9"
+    },
+    "teams-for-linux": {
+      "version": "2.18.1-1foundry1",
+      "archiveBytes": 15353252,
+      "installedKiB": 31563,
+      "sha256": "1c5d1b8ef344d303b9fc50f3ff81310f9f8410f8256d186885cbed3fddb0bc30"
+    },
+    "jupyterlab-desktop": {
+      "version": "4.6.3-1foundry1",
+      "archiveBytes": 326401798,
+      "installedKiB": 334826,
+      "sha256": "6273c69172dd8f31748d41b821ca405a54fad9e2d0bf2387c75b1b59616a3bac"
+    },
+    "netron": {
+      "version": "9.2.4-1foundry1",
+      "archiveBytes": 2642638,
+      "installedKiB": 27956,
+      "sha256": "b7f9796aadef8a0e16c7c820a010040fcb4ca8e552c25f334e45a8e81f35e254"
+    },
+    "trilium-notes": {
+      "version": "0.105.0~git20260831.d2df448d-1foundry1",
+      "archiveBytes": 59416394,
+      "installedKiB": 163293,
+      "sha256": "0fcff28524cbcc1d6d40485863d3ce4669a62629e87168926901c706224a3ba4"
+    },
+    "electron-runtime-42": {
+      "version": "42.9.3-1foundry1",
+      "archiveBytes": 93331248,
+      "installedKiB": 313123,
+      "sha256": "7a3b2057d667eb3a5a347988bbc42661544c3ff5459a18826a8eace732329c57"
+    },
+    "electron-runtime-44": {
+      "version": "44.0.0-1foundry1",
+      "archiveBytes": 95088806,
+      "installedKiB": 286219,
+      "sha256": "bae52c9340b50fd8b69b2cae58aef37b578a88cd5921f00c20df0720170ebc34"
+    }
+  },
+  "monolithicComparisons": {
+    "losslesscut": {
+      "version": "3.69.0-1foundry1",
+      "archiveBytes": 164323976,
+      "installedKiB": 587995,
+      "sha256": "24ae1dbf91fef11acc1a5fddc402ed60a7f21eb666d7eecd17d2ef8de33a4895"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BondMark from '../../components/BondMark.astro';
+import { applications, blockedApplications, runtimes } from '../../data/project';
+
+const runtimeGroups = runtimes.map((runtime) => ({ version: runtime.version, packageName: runtime.packageName, apps: applications.filter((app) => app.runtime === runtime.packageName) }));
+---
+
+<BaseLayout title="Applications — Shared Pair" description="Application packages and their technical reports for Shared Pair runtimes.">
+  <header class="page-hero shell">
+    <div><p class="eyebrow">Applications</p><h1>{applications.length} apps.<br />{runtimes.length} runtimes.</h1><p class="lede">Each application owns its packaging, compatibility, provenance, and test report. Results describe the package that was actually built and tested.</p></div>
+    <BondMark compact />
+  </header>
+  {runtimeGroups.map((group) => <section class="records shell">
+    <header class="runtime-heading"><div><p class="eyebrow">Shared runtime</p><h2>Electron <em>{group.version}</em></h2></div><div><strong>{group.packageName}</strong><small>{group.apps.length} {group.apps.length === 1 ? 'application' : 'applications'} tested</small></div></header>
+    {group.apps.map((app, index) => <a class={`record ${(app.interfaceScreenshot || app.screenshot) ? 'has-image' : ''}`} href={`/applications/${app.slug}/`}><span>{String(index + 1).padStart(2, '0')}</span>{(app.interfaceScreenshot || app.screenshot) && <img src={(app.interfaceScreenshot || app.screenshot)!.src} alt="" loading="lazy" />}<div><h3>{app.name}</h3><p>{app.purpose}. {app.test}</p></div><small><b>Electron {app.electron}</b><br />{app.version}</small><b>→</b></a>)}
+  </section>)}
+  <section class="records shell blocked">
+    <p class="eyebrow">Publication blocked</p>
+    {blockedApplications.map((app) => <a class={`record ${app.interfaceScreenshot ? 'has-image' : ''}`} href={`/applications/${app.slug}/`}><span>01</span>{app.interfaceScreenshot && <img src={app.interfaceScreenshot.src} alt="" loading="lazy" />}<div><h3>{app.name}</h3><p>{app.proof}</p></div><small><b>Electron {app.electron}</b><br />Review required</small><b>→</b></a>)}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero { min-height: 44vh; display: grid; grid-template-columns: 1.35fr .65fr; gap: 4vw; align-items: center; padding-block: 3.5rem; border-bottom: 1px solid var(--line); }
+  .page-hero h1 { margin-bottom: 1rem; font-size: clamp(3rem, 5.5vw, 5.8rem); }
+  em { color: var(--lime); font-style: normal; }
+  .records { padding-block: 3rem; border-bottom: 1px solid var(--line); }
+  .records.blocked { padding-top: 0; }
+  .runtime-heading { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; margin-bottom: 1.5rem; }
+  .runtime-heading h2 { margin: 0; font-size: clamp(2.4rem, 4vw, 4rem); }
+  .runtime-heading > div:last-child { padding-bottom: .35rem; text-align: right; font-family: var(--mono); }
+  .runtime-heading strong, .runtime-heading small { display: block; }
+  .runtime-heading strong { font-size: .8rem; }
+  .runtime-heading small { margin-top: .3rem; color: var(--faint); font-size: .63rem; text-transform: uppercase; }
+  .record { display: grid; grid-template-columns: 58px 1fr 210px 24px; gap: 1rem; align-items: center; padding: 1.25rem 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+  .record.has-image { grid-template-columns: 58px 150px 1fr 210px 24px; }
+  .record > img { width: 150px; height: 82px; object-fit: cover; object-position: center; border: 1px solid var(--line); background: var(--surface); }
+  .record > span, .record small { color: var(--faint); font: .68rem/1.7 var(--mono); }
+  .record h3, .record p { margin: 0; }
+  .record h3 { font-size: clamp(1.4rem, 2.5vw, 2.3rem); }
+  .record p { color: var(--muted); }
+  .record small b { color: var(--lime); font-weight: 500; }
+  .record:hover h3 { color: var(--lime); }
+  @media (max-width: 760px) { .page-hero { min-height: auto; grid-template-columns: 1fr; padding-block: 4rem; } .page-hero :global(svg) { order: -1; width: 70%; margin: auto; } .runtime-heading { grid-template-columns: 1fr; gap: .5rem; } .runtime-heading > div:last-child { text-align: left; } .record, .record.has-image, .record:not(.has-image) { grid-template-columns: 42px 1fr 20px; align-items: start; } .record > span:first-child { grid-column: 1; grid-row: 1 / span 2; padding-top: .3rem; } .record > img { grid-column: 2; width: min(180px, 100%); height: 88px; margin-bottom: .4rem; } .record > div { grid-column: 2; } .record > b:last-child { grid-column: 3; grid-row: 1 / span 2; align-self: center; } .record small { display: none; } }
+</style>

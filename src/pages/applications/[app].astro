@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { applications, blockedApplications, type AppRecord } from '../../data/project';
+
+export function getStaticPaths() {
+  return [...applications, ...blockedApplications].map((record) => ({ params: { app: record.slug }, props: { record } }));
+}
+
+const { record } = Astro.props as { record: AppRecord };
+const cleared = record.state === 'tested';
+---
+
+<BaseLayout title={`${record.name} technical report — Shared Pair`} description={`${record.name} packaging, compatibility, and test report.`}>
+  <header class="report-hero shell">
+    <div><a class="back" href="/applications/">← Applications</a><p class="eyebrow">Application technical report</p><h1>{record.name}</h1><p class="lede">{record.purpose}</p></div>
+    <div class={`verdict ${record.state}`}><span>Publication state</span><strong>{cleared ? 'Built and tested' : 'Blocked'}</strong><small>{cleared ? 'APT publication pending approval' : 'Redistribution review required'}</small></div>
+  </header>
+  {record.interfaceScreenshot && <figure class="interface shell">
+    <div class="image-frame"><img src={record.interfaceScreenshot.src} alt={record.interfaceScreenshot.alt} loading="eager" /></div>
+    <figcaption><span>Interface reference</span><p>Official upstream screenshot · <a href={record.interfaceScreenshot.source}>View source ↗</a></p></figcaption>
+  </figure>}
+  <section class="facts shell">
+    <dl><div><dt>Package</dt><dd>{record.version}</dd></div><div><dt>Runtime dependency</dt><dd>{record.runtime}</dd></div><div><dt>Electron</dt><dd>{record.electron}</dd></div><div><dt>Archive</dt><dd>{record.archiveMiB} MiB</dd></div><div><dt>Installed</dt><dd>{record.installedMiB} MiB</dd></div><div><dt>Test state</dt><dd>{record.state}</dd></div></dl>
+  </section>
+  {record.screenshot && <figure class="evidence shell">
+    <div class="image-frame"><img src={record.screenshot.src} alt={record.screenshot.alt} loading="eager" /></div>
+    <figcaption><span>Captured evidence</span><p>{record.screenshot.caption}</p></figcaption>
+  </figure>}
+  <section class="report shell">
+    <article><p class="eyebrow">Result</p><h2>What was verified</h2><p>{record.test}</p><p>{record.proof}</p></article>
+    <article><p class="eyebrow">Package boundary</p><h2>What belongs to the app</h2><ul>{record.notes.map((note) => <li>{note}</li>)}</ul></article>
+    <article><p class="eyebrow">Publication</p><h2>{cleared ? 'Ready for repository promotion' : 'Held from publication'}</h2><p>{cleared ? 'The package and its tested runtime are ready to enter the signed APT repository together after approval and final repository-level installation verification.' : 'The package remains outside the public repository until the Chrome/Widevine redistribution question is resolved. Its passing test result does not grant redistribution rights.'}</p></article>
+  </section>
+</BaseLayout>
+
+<style>
+  .report-hero { min-height: 44vh; display: grid; grid-template-columns: 1fr 300px; gap: 5vw; align-items: center; padding-block: 3.5rem; border-bottom: 1px solid var(--line); }
+  .report-hero h1 { font-size: clamp(3.2rem, 6vw, 6.2rem); margin-bottom: 1rem; }
+  .back { display: inline-block; margin-bottom: 2rem; color: var(--muted); font: .68rem var(--mono); text-decoration: none; text-transform: uppercase; }
+  .verdict { padding: 1.4rem; border: 1px solid var(--line-strong); background: var(--surface); }
+  .verdict span, .verdict small { display: block; color: var(--muted); font: .66rem/1.5 var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+  .verdict strong { display: block; margin: .8rem 0; color: var(--lime); font-size: 1.3rem; }
+  .verdict.blocked strong { color: var(--violet); }
+  .facts { padding-block: 2rem; border-bottom: 1px solid var(--line); }
+  .facts dl { display: grid; grid-template-columns: repeat(6, 1fr); margin: 0; }
+  .facts dl div { padding: 1rem; border-right: 1px solid var(--line); }
+  dt { color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; }
+  dd { margin: .5rem 0 0; font: .78rem var(--mono); }
+  .interface, .evidence { padding-block: 2.5rem; border-bottom: 1px solid var(--line); }
+  .image-frame { padding: .65rem; border: 1px solid var(--line-strong); background: var(--surface); }
+  .image-frame img { display: block; width: 100%; max-height: 720px; object-fit: contain; background: #fff; }
+  figcaption { display: grid; grid-template-columns: 190px 1fr; gap: 2rem; margin-top: 1rem; color: var(--muted); font: .67rem/1.6 var(--mono); }
+  figcaption span { color: var(--lime); text-transform: uppercase; letter-spacing: .08em; }
+  figcaption p { margin: 0; }
+  figcaption a { color: var(--ink); }
+  .report { padding-block: 2.5rem; }
+  article { display: grid; grid-template-columns: 160px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--line); }
+  article .eyebrow { grid-row: 1 / span 3; }
+  article h2 { margin-bottom: .5rem; font-size: clamp(1.8rem, 3vw, 3rem); }
+  article p, article ul { max-width: 760px; color: var(--muted); }
+  article li { margin-bottom: .7rem; }
+  @media (max-width: 900px) { .facts dl { grid-template-columns: 1fr 1fr 1fr; } }
+  @media (max-width: 760px) { .report-hero { min-height: auto; grid-template-columns: 1fr; padding-block: 4rem; } .facts dl { grid-template-columns: 1fr 1fr; } figcaption, article { grid-template-columns: 1fr; } article .eyebrow { grid-row: auto; } }
+</style>

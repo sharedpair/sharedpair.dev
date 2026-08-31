@@ -1,0 +1,28 @@
+{
+  "name": "sharedpair.dev",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "26.8.1"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "generate:data": "node scripts/generate-package-data.mjs",
+    "verify:data": "node scripts/generate-package-data.mjs --check",
+    "build": "npm run verify:data && astro build",
+    "deploy": "npm run build && wrangler deploy",
+    "preview": "astro preview",
+    "check": "npm run verify:data && astro check",
+    "verify:site": "node scripts/verify-built-site.mjs",
+    "validate": "npm run generate:data && npm run check && npm run build && npm run verify:site"
+  },
+  "dependencies": {
+    "@astrojs/check": "latest",
+    "astro": "7.2.9",
+    "typescript": "latest"
+  },
+  "devDependencies": {
+    "wrangler": "^4.90.1"
+  }
+}

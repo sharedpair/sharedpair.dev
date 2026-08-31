@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "images": {
+    "/images/applications/losslesscut/upstream-interface.jpg": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/mifi/lossless-cut/blob/master/main_screenshot.jpg"
+    },
+    "/images/applications/drawio-desktop/shared-electron-export.png": {
+      "kind": "captured-evidence",
+      "package": "drawio-desktop_31.3.1-1foundry1_amd64.deb",
+      "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "draw.io CLI PNG export at 4x scale",
+      "captured": "2026-08-31"
+    },
+    "/images/applications/drawio-desktop/drawio-desktop-31.3.1-electron-42.9.3.png": {
+      "kind": "captured-evidence",
+      "package": "drawio-desktop_31.3.1-1foundry1_amd64.deb",
+      "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Fresh isolated profile opened the Shared Pair sample diagram under Xvfb and Openbox; the maximized application window was captured after the editor rendered",
+      "captured": "2026-08-31"
+    },
+    "/images/applications/marktext/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/marktext/marktext/blob/develop/docs/assets/marktext.png"
+    },
+    "/images/applications/marktext/marktext-0.19.1-electron-42.9.3.png": {
+      "kind": "captured-evidence",
+      "package": "marktext_0.19.1-1foundry2_amd64.deb",
+      "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Fresh isolated profile opened a local Shared Pair Markdown fixture; the maximized editor window was captured after headings, lists, and a block quotation rendered",
+      "captured": "2026-08-31"
+    },
+    "/images/applications/joplin/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/laurent22/joplin/blob/dev/Assets/WebsiteAssets/images/home-top-img.png"
+    },
+    "/images/applications/jupyterlab-desktop/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/jupyterlab/jupyterlab-desktop/blob/master/media/jupyterlab-desktop.png"
+    },
+    "/images/applications/netron/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/lutzroeder/netron/blob/main/.github/screenshot.png"
+    },
+    "/images/applications/trilium-notes/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/TriliumNext/Trilium/blob/main/docs/app.png"
+    },
+    "/images/applications/trilium-notes/trilium-notes-0.105.0-electron-44.0.0.png": {
+      "kind": "captured-evidence",
+      "package": "trilium-notes_0.105.0~git20260831.d2df448d-1foundry1_amd64.deb",
+      "runtime": "electron-runtime-44_44.0.0-1foundry1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Fresh isolated profile completed local onboarding with upstream demo content under Xvfb and Openbox; the maximized notes workspace was captured after database initialization",
+      "captured": "2026-08-31"
+    },
+    "/images/applications/audex-player/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/MishaSok/audex-player/blob/main/docs/screenshots/library-dark.png"
+    },
+    "/images/applications/teams-for-linux/teams-for-linux-2.18.1-electron-42.9.3.png": {
+      "kind": "captured-evidence",
+      "package": "teams-for-linux_2.18.1-1foundry1_amd64.deb",
+      "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Fresh isolated profile opened to the unauthenticated Microsoft sign-in screen under Xvfb and Openbox",
+      "captured": "2026-08-31"
+    }
+  }
+}

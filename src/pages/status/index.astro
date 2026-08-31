@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BondMark from '../../components/BondMark.astro';
+import { applications, blockedApplications, registryStatus, runtimes } from '../../data/project';
+
+const runtime42 = applications.filter((app) => app.runtime === 'electron-runtime-42');
+const runtime44 = applications.filter((app) => app.runtime === 'electron-runtime-44');
+---
+
+<BaseLayout title="Status — Shared Pair" description="Build, test, and publication status for Shared Pair runtimes and applications.">
+  <header class="page-hero shell">
+    <div><p class="eyebrow">Status</p><h1>Built and tested.<br /><em>Publication next.</em></h1><p class="lede">The split packages exist and their clean-container application tests pass. They have not yet been promoted into the public APT index.</p></div>
+    <BondMark compact />
+  </header>
+
+  <section class="summary shell" aria-label="Current project status">
+    <div><span>Overall</span><strong>Pre-publication</strong><small>Pending approval</small></div>
+    <div><span>Runtimes</span><strong>{runtimes.length} tested</strong><small>{runtimes.map((runtime) => `Electron ${runtime.major}`).join(' + ')}</small></div>
+    <div><span>Applications</span><strong>{applications.length} tested</strong><small>{blockedApplications.length} held from publication</small></div>
+    <div><span>Target</span><strong>Ubuntu 26.04</strong><small>{registryStatus.architecture}</small></div>
+    <div><span>Verified</span><strong>{registryStatus.generatedAt}</strong><small>Build archive and tests</small></div>
+  </section>
+
+  <section class="status-section shell">
+    <div class="section-heading"><p class="eyebrow">Repository</p><h2>Public installation is not active yet.</h2></div>
+    <div class="repository-state">
+      <div class="signal" aria-hidden="true"></div>
+      <div><strong>APT promotion pending</strong><p>The complete split set must enter the signed repository together. Public installation commands will be enabled after an APT installation test against the promoted index.</p></div>
+    </div>
+    <dl class="identity">
+      <div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div>
+      <div><dt>Architecture</dt><dd>{registryStatus.architecture}</dd></div>
+      <div><dt>Signing fingerprint</dt><dd>{registryStatus.signingFingerprint}</dd></div>
+    </dl>
+  </section>
+
+  <section class="status-section shell">
+    <div class="section-heading"><p class="eyebrow">Runtime lines</p><h2>Co-installation verified.</h2></div>
+    <div class="runtime-grid">
+      <article><div><span>Runtime 42</span><b>Tested</b></div><h3>Electron 42.9.3</h3><p>{runtime42.length} application packages depend on this runtime.</p><ul>{runtime42.map((app) => <li><a href={`/applications/${app.slug}/`}>{app.name}</a></li>)}</ul></article>
+      <article><div><span>Runtime 44</span><b>Tested</b></div><h3>Electron 44.0.0</h3><p>{runtime44.length} application package depends on this runtime.</p><ul>{runtime44.map((app) => <li><a href={`/applications/${app.slug}/`}>{app.name}</a></li>)}</ul></article>
+    </div>
+  </section>
+
+  <section class="status-section shell">
+    <div class="section-heading"><p class="eyebrow">Registry discoveries</p><h2>Declared is not enrolled.</h2></div>
+    <div class="discoveries">{Object.entries(registryStatus.discoveredNotEnrolled).map(([name, reason]) => <div><strong>{name}</strong><p>{reason}</p>{name in registryStatus.unresolvedStatusPackages && <span>Declared artifact unresolved</span>}</div>)}</div>
+  </section>
+
+  <section class="status-section shell">
+    <div class="section-heading"><p class="eyebrow">Publication hold</p><h2>One package stays out.</h2></div>
+    {blockedApplications.map((app) => <a class="hold" href={`/applications/${app.slug}/`}><div><strong>{app.name} {app.version}</strong><p>{app.proof}</p></div><span>Read report →</span></a>)}
+  </section>
+
+  <section class="status-section shell">
+    <div class="section-heading"><p class="eyebrow">Release path</p><h2>What remains before install.</h2></div>
+    <ol class="release-path">
+      <li><span>01</span><div><strong>Approve the publication set</strong><p>Confirm the two runtimes and seven cleared applications as one repository change.</p></div></li>
+      <li><span>02</span><div><strong>Promote and sign</strong><p>Publish package files and regenerated repository metadata under the recorded signing identity.</p></div></li>
+      <li><span>03</span><div><strong>Install through APT</strong><p>Verify fresh installation, runtime co-installation, upgrades, and rollback from the public index.</p></div></li>
+      <li><span>04</span><div><strong>Publish installation commands</strong><p>Enable the final commands on the Install page once the repository path has passed verification.</p></div></li>
+    </ol>
+  </section>
+</BaseLayout>
+
+<style>
+  em { color: var(--lime); font-style: normal; }
+  .page-hero { min-height: 46vh; display: grid; grid-template-columns: 1.35fr .65fr; gap: 4vw; align-items: center; padding-block: 3.5rem; border-bottom: 1px solid var(--line); }
+  .page-hero h1 { margin-bottom: 1rem; font-size: clamp(3rem, 5.5vw, 5.8rem); }
+  .summary { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--line); }
+  .summary > div { padding: 1.5rem 1rem; border-right: 1px solid var(--line); }
+  .summary span, .summary small { display: block; color: var(--faint); font: .62rem/1.5 var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+  .summary strong { display: block; margin: .5rem 0; font: 600 .85rem var(--mono); }
+  .status-section { padding-block: 3rem; border-bottom: 1px solid var(--line); }
+  .section-heading { display: grid; grid-template-columns: 160px 1fr; gap: 2rem; margin-bottom: 2rem; }
+  .section-heading h2 { max-width: 850px; margin: 0; font-size: clamp(2rem, 3.5vw, 3.6rem); }
+  .repository-state { display: grid; grid-template-columns: 18px 1fr; gap: 1.3rem; max-width: 820px; padding: 1.6rem; border: 1px solid var(--line-strong); background: var(--surface); }
+  .signal { width: 9px; height: 9px; margin-top: .45rem; border-radius: 50%; background: var(--violet); box-shadow: 0 0 22px var(--violet); }
+  .repository-state p { margin: .4rem 0 0; color: var(--muted); }
+  .identity { display: grid; grid-template-columns: 1fr 1fr 2fr; margin: 2rem 0 0; border-top: 1px solid var(--line); }
+  .identity div { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  dt { color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; }
+  dd { margin: .45rem 0 0; overflow-wrap: anywhere; font: .73rem var(--mono); }
+  .runtime-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  article { padding: 2rem; border: 1px solid var(--line); background: linear-gradient(145deg, rgba(255,255,255,.02), transparent); }
+  article > div { display: flex; justify-content: space-between; color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; }
+  article b { color: var(--lime); }
+  article h3 { margin: 3rem 0 .5rem; font-size: 2rem; }
+  article p, article li { color: var(--muted); }
+  article ul { columns: 2; padding-left: 1.2rem; }
+  article a:hover { color: var(--lime); }
+  .hold { display: grid; grid-template-columns: 1fr auto; gap: 2rem; padding: 1.7rem; border: 1px solid rgba(165,139,255,.45); text-decoration: none; }
+  .hold p { margin: .4rem 0 0; color: var(--muted); }
+  .hold span { align-self: center; color: var(--violet); font: .67rem var(--mono); text-transform: uppercase; }
+  .release-path { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .release-path li { display: grid; grid-template-columns: 72px 1fr; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  .release-path li > span { color: var(--violet); font: .68rem var(--mono); }
+  .release-path p { margin: .35rem 0 0; color: var(--muted); }
+  .discoveries { border-top: 1px solid var(--line); }
+  .discoveries > div { display: grid; grid-template-columns: 190px 1fr 210px; gap: 1rem; padding: 1.2rem 0; border-bottom: 1px solid var(--line); }
+  .discoveries p { margin: 0; color: var(--muted); }
+  .discoveries span { color: var(--violet); font: .65rem var(--mono); text-transform: uppercase; }
+  @media (max-width: 760px) { .page-hero { min-height: auto; grid-template-columns: 1fr; padding-block: 4rem; } .page-hero :global(svg) { order: -1; width: 70%; margin: auto; } .summary { grid-template-columns: 1fr 1fr; } .section-heading, .runtime-grid, .discoveries > div { grid-template-columns: 1fr; } .identity { grid-template-columns: 1fr; } article ul { columns: 1; } }
+</style>
