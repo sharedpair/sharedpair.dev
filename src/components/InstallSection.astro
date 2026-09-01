@@ -1,0 +1,41 @@
+---
+import CopyCommand from './CopyCommand.astro';
+import { applications, registryStatus } from '../data/project';
+
+const installPackages = applications.map((app) => app.slug).join(' ');
+const installCommand = [
+  'curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg',
+  'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list',
+  'sudo apt update',
+  `sudo apt install ${installPackages}`,
+].join('\n');
+---
+
+<section class="one-section shell" id="install" aria-labelledby="install-heading">
+  <header class="section-heading"><div><p class="eyebrow">Install</p><h2 id="install-heading">Repository live.<br /><em>Signed and tested.</em></h2></div><div class="state"><span>Availability</span><strong>Active</strong><small>Ubuntu 26.04 · amd64</small></div></header>
+  <p class="lede">Add the Shared Pair signing key and repository, then install any published application.</p>
+  <div class="repo-link"><span>APT repository</span><a href="https://apt.sharedpair.dev/">apt.sharedpair.dev ↗</a></div>
+  <div class="commands"><p class="eyebrow">Run in order</p><CopyCommand command={installCommand} displayCommand={installCommand.replaceAll(' | ', ' |\n  ')} /></div>
+  <dl class="identity"><div><dt>Fingerprint</dt><dd>{registryStatus.signingFingerprint}</dd></div><div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div><div><dt>Architecture</dt><dd>{registryStatus.architecture}</dd></div></dl>
+  <p class="trust-note">Verify the fingerprint independently before trusting repository metadata. The public repository and clean installations from both runtime lines were verified on 2026-09-01.</p>
+</section>
+
+<style>
+  em { color: var(--lime); font-style: normal; }
+  .one-section { padding-block: 4rem; border-bottom: 1px solid var(--line); }
+  .section-heading { display: grid; grid-template-columns: 1fr 260px; gap: 3rem; align-items: end; }
+  .section-heading h2 { margin: 0; }
+  .state { padding: 1.1rem; border: 1px solid var(--violet); background: var(--surface); }
+  .state span, .state small { display: block; color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; }
+  .state strong { display: block; margin: .5rem 0; color: var(--violet); }
+  .repo-link { display: flex; justify-content: space-between; max-width: 760px; margin: 1.5rem 0; padding: 1rem; border: 1px solid var(--line-strong); font: .72rem var(--mono); text-transform: uppercase; }
+  .repo-link span { color: var(--faint); }
+  .repo-link a { color: var(--lime); }
+  .commands { margin-top: 2rem; }
+  .identity { display: grid; grid-template-columns: 2fr 1fr 1fr; margin: 2rem 0 0; }
+  .identity div { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  dt { color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; }
+  dd { margin: .4rem 0 0; overflow-wrap: anywhere; font: .73rem var(--mono); }
+  .trust-note { max-width: 780px; margin-top: 1.5rem; color: var(--muted); }
+  @media (max-width: 760px) { .section-heading, .identity { grid-template-columns: 1fr; } .repo-link { display: block; } .repo-link a { display: block; margin-top: .5rem; } }
+</style>

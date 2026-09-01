@@ -99,18 +99,6 @@ export default {
       return counter.fetch(new Request(`https://votes.internal/${slug}`, { method: "POST" }));
     }
 
-    if (url.pathname === "/reports" || url.pathname === "/reports/") {
-      url.pathname = "/runtimes/";
-      url.hash = "technical-notes";
-      return Response.redirect(url.toString(), 301);
-    }
-
-    const legacyReport = url.pathname.match(/^\/reports\/([^/]+)\/?$/);
-    if (legacyReport) {
-      url.pathname = `/runtimes/${legacyReport[1]}/`;
-      return Response.redirect(url.toString(), 301);
-    }
-
     return env.ASSETS.fetch(request);
   },
 };

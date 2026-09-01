@@ -1,0 +1,82 @@
+---
+import { applications, blockedApplications } from '../data/project';
+import candidateData from '../data/application-candidates.json';
+
+const records = [...applications, ...blockedApplications];
+const candidates = candidateData.candidates.filter((candidate) => candidate.audit?.state === 'viable');
+const categories = [...new Set(candidates.map((candidate) => candidate.category))].sort();
+---
+
+<section class="one-section shell" id="applications" aria-labelledby="applications-heading">
+  <header class="section-heading"><div><p class="eyebrow">Applications</p><h2 id="applications-heading">{applications.length} published.<br />{blockedApplications.length} held.</h2></div><p>Every application keeps its identity and private components while depending on the shared runtime it passed against. Open any row for the complete report.</p></header>
+  <form id="app-filters" class="filters" aria-label="Filter applications">
+    <label><span>Search</span><input type="search" name="q" autocomplete="off" placeholder="Name or purpose" /></label>
+    <label><span>Runtime</span><select name="runtime"><option value="">Any runtime</option><option value="electron-runtime-42">Electron 42</option><option value="electron-runtime-44">Electron 44</option></select></label>
+    <label><span>Status</span><select name="status"><option value="">Any status</option><option value="tested">Tested</option><option value="blocked">Held</option></select></label>
+    <button type="reset">Reset</button>
+  </form>
+  <p id="app-count" class="count" aria-live="polite">Showing all {records.length} applications</p>
+  <div class="application-list">
+    {records.map((app) => <details id={`applications-${app.slug}`} data-app data-name={`${app.name} ${app.purpose}`.toLowerCase()} data-runtime={app.runtime} data-status={app.state}>
+      <summary>{(app.interfaceScreenshot || app.screenshot) && <img class="thumbnail" src={(app.interfaceScreenshot || app.screenshot)!.src} alt="" loading="lazy" />}<div><strong>{app.name}</strong><span>{app.purpose}</span></div><small>Electron {app.electron}<br />{app.state === 'tested' ? 'Tested' : 'Held'}</small><b class="toggle" aria-hidden="true"></b></summary>
+      <div class="app-report">
+        <dl><div><dt>Package</dt><dd>{app.version}</dd></div><div><dt>Runtime</dt><dd>{app.runtime}</dd></div><div><dt>Archive</dt><dd>{app.archiveMiB} MiB</dd></div><div><dt>Installed</dt><dd>{app.installedMiB} MiB</dd></div></dl>
+        <article><h3>What was verified</h3><p>{app.test}</p><p>{app.proof}</p></article>
+        <article><h3>Application-owned boundary</h3><ul>{app.notes.map((note) => <li>{note}</li>)}</ul></article>
+        <article><h3>Publication</h3><p>{app.state === 'tested' ? 'Built, tested, and available from the signed repository.' : 'Held outside the public repository until the recorded blocker is resolved.'}</p></article>
+        {app.interfaceScreenshot && <figure><img src={app.interfaceScreenshot.src} alt={app.interfaceScreenshot.alt} loading="lazy" /><figcaption>Official upstream interface reference · <a href={app.interfaceScreenshot.source}>Source ↗</a></figcaption></figure>}
+        {app.screenshot && <figure><img src={app.screenshot.src} alt={app.screenshot.alt} loading="lazy" /><figcaption>{app.screenshot.caption}</figcaption></figure>}
+      </div>
+    </details>)}
+  </div>
+  <div id="app-empty" class="empty" hidden>No applications match those filters.</div>
+
+  <details class="candidate-section">
+    <summary><div><strong>Under consideration</strong><span>{candidates.length} viable candidates from the first source audit</span></div><b class="toggle" aria-hidden="true"></b></summary>
+    <div class="candidate-body">
+      <div class="candidate-filters"><label><span>Search candidates</span><input id="candidate-search" type="search" autocomplete="off" /></label><label><span>Category</span><select id="candidate-category"><option value="">All categories</option>{categories.map((category) => <option value={category}>{category}</option>)}</select></label></div>
+      <p id="candidate-count" class="count" aria-live="polite">Showing all {candidates.length} candidates</p>
+      <p class="candidate-note">Votes order investigations; they do not override licensing, security, compatibility, or testability review.</p>
+      <div class="candidate-table"><table><thead><tr><th>Project</th><th>Category</th><th>Source</th><th>Electron</th><th>Priority</th></tr></thead><tbody>{candidates.map((candidate) => <tr data-candidate data-name={`${candidate.name} ${candidate.description}`.toLowerCase()} data-category={candidate.category}><td><strong>{candidate.name}</strong><small>{candidate.description}</small></td><td>{candidate.category}</td><td><a href={candidate.github?.url ?? candidate.repository} rel="noreferrer">Repository ↗</a></td><td>{candidate.audit?.electronDeclaration ?? '—'}</td><td><button type="button" data-vote={candidate.slug}><span>Vote</span> <b data-vote-count>0</b></button></td></tr>)}</tbody></table></div>
+      <p id="candidate-empty" hidden>No candidates match.</p><p id="vote-status" aria-live="polite"></p>
+    </div>
+  </details>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#app-filters');
+  const apps = [...document.querySelectorAll<HTMLElement>('[data-app]')];
+  const appCount = document.querySelector<HTMLElement>('#app-count');
+  const appEmpty = document.querySelector<HTMLElement>('#app-empty');
+  function filterApps() {
+    if (!form) return;
+    const data = new FormData(form); const query = String(data.get('q') ?? '').trim().toLowerCase(); let visible = 0;
+    for (const app of apps) { app.hidden = Boolean((query && !(app.dataset.name ?? '').includes(query)) || (data.get('runtime') && app.dataset.runtime !== data.get('runtime')) || (data.get('status') && app.dataset.status !== data.get('status'))); if (!app.hidden) visible++; }
+    if (appCount) appCount.textContent = visible === apps.length ? `Showing all ${visible} applications` : `Showing ${visible} of ${apps.length} applications`;
+    if (appEmpty) appEmpty.hidden = visible !== 0;
+  }
+  form?.addEventListener('input', filterApps); form?.addEventListener('reset', () => requestAnimationFrame(filterApps));
+
+  const search = document.querySelector<HTMLInputElement>('#candidate-search'); const category = document.querySelector<HTMLSelectElement>('#candidate-category');
+  const candidates = [...document.querySelectorAll<HTMLElement>('[data-candidate]')]; const candidateCount = document.querySelector<HTMLElement>('#candidate-count'); const candidateEmpty = document.querySelector<HTMLElement>('#candidate-empty');
+  function filterCandidates() { const query = search?.value.trim().toLowerCase() ?? ''; const selected = category?.value ?? ''; let visible = 0; for (const row of candidates) { row.hidden = Boolean((query && !(row.dataset.name ?? '').includes(query)) || (selected && row.dataset.category !== selected)); if (!row.hidden) visible++; } if (candidateCount) candidateCount.textContent = visible === candidates.length ? `Showing all ${visible} candidates` : `Showing ${visible} of ${candidates.length} candidates`; if (candidateEmpty) candidateEmpty.hidden = visible !== 0; }
+  search?.addEventListener('input', filterCandidates); category?.addEventListener('change', filterCandidates);
+  const voteStatus = document.querySelector<HTMLElement>('#vote-status'); const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-vote]')]; const voted = new Set<string>(JSON.parse(localStorage.getItem('sharedpair-votes') ?? '[]'));
+  function counts(values: Record<string, number>) { for (const button of buttons) { const slug = button.dataset.vote ?? ''; const count = button.querySelector<HTMLElement>('[data-vote-count]'); if (count) count.textContent = String(values[slug] ?? 0); if (voted.has(slug)) { button.disabled = true; const label = button.querySelector('span'); if (label) label.textContent = 'Voted'; } } }
+  fetch('/api/votes', { headers: { Accept: 'application/json' } }).then((response) => response.ok ? response.json() : Promise.reject()).then((data) => counts(data.counts ?? {})).catch(() => { if (voteStatus) voteStatus.textContent = 'Vote totals are temporarily unavailable.'; });
+  for (const button of buttons) button.addEventListener('click', async () => { const slug = button.dataset.vote; if (!slug || voted.has(slug)) return; button.disabled = true; try { const response = await fetch(`/api/votes/${encodeURIComponent(slug)}`, { method: 'POST', headers: { Accept: 'application/json' } }); if (!response.ok) throw new Error(); const data = await response.json(); voted.add(slug); localStorage.setItem('sharedpair-votes', JSON.stringify([...voted])); const label = button.querySelector('span'); if (label) label.textContent = 'Voted'; const count = button.querySelector<HTMLElement>('[data-vote-count]'); if (count) count.textContent = String(data.count); if (voteStatus) voteStatus.textContent = 'Vote recorded. Thank you.'; } catch { button.disabled = false; if (voteStatus) voteStatus.textContent = 'The vote could not be recorded.'; } });
+</script>
+
+<style>
+  [hidden] { display: none !important; } .one-section { padding-block: 4rem; border-bottom: 1px solid var(--line); }
+  .section-heading { display: grid; grid-template-columns: 1fr minmax(260px,420px); gap: 3rem; align-items: end; } .section-heading h2 { margin: 0; } .section-heading > p { margin: 0; color: var(--muted); }
+  .filters, .candidate-filters { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: .7rem; align-items: end; margin-top: 2rem; }
+  label span { display: block; margin-bottom: .35rem; color: var(--faint); font: .6rem var(--mono); text-transform: uppercase; }
+  input, select, button { min-height: 42px; padding: 0 .7rem; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font: .7rem var(--mono); } button { cursor: pointer; text-transform: uppercase; }
+  .count { color: var(--faint); font: .64rem var(--mono); text-transform: uppercase; }
+  .application-list { border-top: 1px solid var(--line); } details { border-bottom: 1px solid var(--line); } summary { display: grid; grid-template-columns: 150px 1fr 170px auto; gap: 1rem; align-items: center; padding: 1rem .75rem; cursor: pointer; list-style: none; transition: background .15s,border-color .15s; } summary:not(:has(.thumbnail)) { grid-template-columns: 1fr 170px auto; } summary::-webkit-details-marker { display: none; } summary:hover, summary:focus-visible { background: var(--surface); } .thumbnail { display:block;width:150px;height:84px;object-fit:cover;object-position:center;border:1px solid var(--line-strong);background:var(--surface); } .toggle { display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--lime);border-radius:50%; } .toggle::before { content:'';width:10px;height:10px;border-right:2px solid var(--lime);border-bottom:2px solid var(--lime);transform:translateY(-2px) rotate(45deg);transition:transform .18s ease; } details[open] > summary .toggle::before { transform:translateY(2px) rotate(225deg); } details[open] > :not(summary) { animation: reveal-details .18s ease-out both; } @keyframes reveal-details { from { opacity:0; transform:translateY(-6px); } }
+  summary strong, summary span { display: block; } summary strong { font-size: 1.35rem; } summary span, summary small { color: var(--muted); }
+  .app-report { padding: 0 0 2rem 2rem; border-left: 1px solid var(--line-strong); } .app-report dl { display: grid; grid-template-columns: repeat(4,1fr); } .app-report dl div { padding: .8rem; border-bottom: 1px solid var(--line); } dt { color: var(--faint); font: .6rem var(--mono); text-transform: uppercase; } dd { margin: .3rem 0 0; font: .72rem var(--mono); } .app-report article { max-width: 820px; padding-top: 1.2rem; } .app-report article p, .app-report li { color: var(--muted); } figure { margin: 1.5rem 0 0; } figure img { display: block; width: min(100%,900px); max-height: 620px; object-fit: contain; background: #fff; } figcaption { margin-top: .5rem; color: var(--faint); font: .65rem var(--mono); }
+  .empty { padding: 2rem 0; color: var(--muted); } .candidate-section { margin-top: 3rem; border-top: 1px solid var(--line); } .candidate-body { padding-bottom: 2rem; } .candidate-filters { grid-template-columns: 1fr 260px; } .candidate-note { color: var(--muted); } .candidate-table { overflow-x: auto; border: 1px solid var(--line); } table { width: 100%; border-collapse: collapse; } th, td { padding: .8rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font: .66rem/1.5 var(--mono); } th { color: var(--faint); text-transform: uppercase; } td:first-child { min-width: 260px; } td strong, td small { display: block; } td small { max-width: 420px; color: var(--muted); font: .78rem/1.4 var(--sans); }
+  @media(max-width:760px) { .section-heading, .filters, .candidate-filters { grid-template-columns: 1fr; } summary, summary:not(:has(.thumbnail)) { grid-template-columns: 96px 1fr; } summary:not(:has(.thumbnail)) { grid-template-columns:1fr auto; } .thumbnail { width:96px;height:64px;grid-row:1 / span 2; } summary small { display:none; } .toggle { grid-column:2;justify-self:start; } summary:not(:has(.thumbnail)) .toggle { grid-column:2;grid-row:1;justify-self:end; } .app-report { padding-left: 1rem; } .app-report dl { grid-template-columns: 1fr 1fr; } }
+</style>

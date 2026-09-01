@@ -41,14 +41,15 @@ for (const [url, record] of Object.entries(provenance.images)) {
   if (record.kind === 'upstream-interface' && !record.source) failures.push(`provenance: missing upstream source ${url}`);
 }
 
-for (const packageName of [...registry.testedApplications, ...registry.blockedApplications]) {
-  const slug = packageName;
-  if (!statSafe(resolve(dist, 'applications', slug, 'index.html'))) failures.push(`${packageName}: missing application report route`);
-}
+const homeHtml = readFileSync(resolve(dist, 'index.html'), 'utf8');
+for (const id of ['install', 'applications', 'runtimes', 'security', 'status']) if (!homeHtml.includes(`id="${id}"`)) failures.push(`home: missing #${id} section`);
+for (const packageName of [...registry.testedApplications, ...registry.blockedApplications]) if (!homeHtml.includes(`id="applications-${packageName}"`)) failures.push(`${packageName}: missing inline application report`);
+for (const removedRoute of ['install', 'applications', 'runtimes', 'security', 'status']) if (statSafe(resolve(dist, removedRoute, 'index.html'))) failures.push(`${removedRoute}: obsolete route still rendered`);
+if (!statSafe(resolve(dist, 'about', 'index.html'))) failures.push('about: missing separate page');
 
 for (const path of sourceFiles) {
   const text = readFileSync(path, 'utf8');
-  if (/placeholder|lorem ipsum|nothing to install|no public packages/i.test(text)) failures.push(`${path}: contains stale placeholder language`);
+  if (/lorem ipsum|nothing to install|no public packages/i.test(text)) failures.push(`${path}: contains stale placeholder language`);
   for (const match of text.matchAll(/src:\s*['"](\/images\/[^'"]+)['"]/g)) {
     const image = resolve(root, 'public', match[1].slice(1));
     if (!statSafe(image) || statSync(image).size === 0) failures.push(`${path}: missing or empty image ${match[1]}`);
@@ -63,4 +64,4 @@ if (failures.length) {
   console.error(failures.join('\n'));
   process.exit(1);
 }
-console.log(`Verified ${htmlFiles.length} rendered pages, internal links, application reports, images, and local-path hygiene.`);
+console.log(`Verified ${htmlFiles.length} rendered pages, one-page sections, inline application reports, removed routes, images, and local-path hygiene.`);

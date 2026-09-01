@@ -23,34 +23,4 @@
   .logo-electron { fill: var(--ink); filter: drop-shadow(0 0 4px var(--ink)); transform-box: fill-box; transform-origin: center; }
   .logo-check, .logo-bracket { opacity: 0; stroke: var(--lime); stroke-width: 2; }
 
-  :global(html[data-motion-logo='L1']) .one { animation: logo-orbit-a 2.8s linear infinite; }
-  :global(html[data-motion-logo='L1']) .two { animation: logo-orbit-b 2.8s linear infinite; }
-  :global(html[data-motion-logo='L2']) .logo-loop { animation: logo-pulse 2.2s ease-in-out infinite; transform-origin: center; }
-  :global(html[data-motion-logo='L3']) .one { animation: exchange-a 2s ease-in-out infinite; }
-  :global(html[data-motion-logo='L3']) .two { animation: exchange-b 2s ease-in-out infinite; }
-  :global(html[data-motion-logo='L4']) .logo-electron { animation: spin-pair 1.8s steps(2, end) infinite; }
-  :global(html[data-motion-logo='L5']) .left { animation: snap-left 2.4s ease-in-out infinite; }
-  :global(html[data-motion-logo='L5']) .right { animation: snap-right 2.4s ease-in-out infinite; }
-  :global(html[data-motion-logo='L6']) .logo-bracket { opacity: 1; animation: handshake 2.2s ease-in-out infinite; }
-  :global(html[data-motion-logo='L7']) .one { animation: figure-eight-a 3s linear infinite; }
-  :global(html[data-motion-logo='L7']) .two { animation: figure-eight-b 3s linear infinite; }
-  :global(html[data-motion-logo='L8']) .logo-loop { animation: density 2.8s ease-in-out infinite; transform-origin: center; }
-  :global(html[data-motion-logo='L9']) .logo-axis { animation: version-tick 1.8s steps(3) infinite; }
-  :global(html[data-motion-logo='L10']) .logo-check { opacity: 1; stroke-dasharray: 20; animation: check-pass 2.5s ease-in-out infinite; }
-  :global(html[data-motion-logo='L10']) .logo-electron { opacity: .25; }
-
-  @keyframes logo-orbit-a { to { transform: rotate(360deg) translateX(6px) rotate(-360deg); } }
-  @keyframes logo-orbit-b { to { transform: rotate(-360deg) translateX(6px) rotate(360deg); } }
-  @keyframes logo-pulse { 50% { transform: scale(.72, 1.16); stroke: var(--ink); } }
-  @keyframes exchange-a { 50% { transform: translate(8px, 12px); } }
-  @keyframes exchange-b { 50% { transform: translate(-8px, -12px); } }
-  @keyframes spin-pair { 50% { transform: rotate(180deg); } }
-  @keyframes snap-left { 50% { transform: translateX(7px); } }
-  @keyframes snap-right { 50% { transform: translateX(-7px); } }
-  @keyframes handshake { 50% { transform: translateX(4px); } }
-  @keyframes figure-eight-a { 25% { transform: translate(8px, 6px); } 50% { transform: translate(0, 12px); } 75% { transform: translate(-8px, 6px); } }
-  @keyframes figure-eight-b { 25% { transform: translate(-8px, -6px); } 50% { transform: translate(0, -12px); } 75% { transform: translate(8px, -6px); } }
-  @keyframes density { 50% { transform: scale(1.08); opacity: .35; } }
-  @keyframes version-tick { to { stroke-dashoffset: -15; } }
-  @keyframes check-pass { 0%, 20% { stroke-dashoffset: 20; opacity: 0; } 45%, 80% { stroke-dashoffset: 0; opacity: 1; } 100% { opacity: 0; } }
 </style>

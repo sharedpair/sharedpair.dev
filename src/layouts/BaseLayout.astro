@@ -3,17 +3,15 @@ interface Props {
   title: string;
   description: string;
 }
-import MotionHero from '../components/MotionHero.astro';
 import MotionLogo from '../components/MotionLogo.astro';
-import MotionSettings from '../components/MotionSettings.astro';
-import { progress } from '../data/project';
 const { title, description } = Astro.props;
 const path = Astro.url.pathname;
 const links = ['install', 'applications', 'runtimes', 'security', 'status'];
+const home = path === '/';
 ---
 
 <!doctype html>
-<html lang="en" data-motion-enabled="true" data-motion-logo="L7" data-motion-hero="H6" data-motion-effects="F2 F7" data-motion-paused="false" data-motion-debug="false">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -31,20 +29,32 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
         <small>2c–2e</small>
       </a>
       <nav aria-label="Primary">
-        {links.map((link) => <a href={`/${link}/`} aria-current={path.startsWith(`/${link}/`) ? 'page' : undefined}>{link}</a>)}
+        {links.map((link) => <a href={`${home ? '' : '/'}#${link}`} data-section-link={link}>{link}</a>)}
       </nav>
-      <div class="top-actions"><a class="source" href="/about/">About →</a><button class="motion-control" type="button" data-motion-open aria-haspopup="dialog"><span aria-hidden="true">◉</span> Motion</button></div>
+      <a class="source" href="/about/">About →</a>
     </header>
-    <main id="content"><MotionHero /><slot /></main>
+    <main id="content"><slot /></main>
     <footer>
       <div>
         <a class="brand footer-brand" href="/"><MotionLogo /><span>SHARED PAIR</span></a>
         <p>Shared Electron runtimes for Linux.</p>
-        <MotionSettings />
       </div>
-      <div class="footer-links"><a href="/about/">About</a><a href="/runtimes/">Runtimes</a><a href="/security/">Security</a><a href="/status/">Status</a></div>
-      <div class="footer-tail"><a class="activity-ticker" href="/feed.xml"><span>{progress[0].state}</span>{progress[0].entry}</a><p class="legal">Packages are built and tested; APT publication is pending approval. Independent of Electron, OpenJS, Debian, and Ubuntu.</p></div>
+      <div class="footer-links"><a href="/about/">About</a><a href="/feed.xml">RSS</a><a href="https://apt.sharedpair.dev/">APT repository</a></div>
+      <div class="footer-tail"><p class="legal">Packages are built, tested, signed, and publicly available. Independent of Electron, OpenJS, Debian, and Ubuntu.</p></div>
     </footer>
+    {home && <script>
+      const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-section-link]')];
+      const sections = links.map((link) => document.getElementById(link.dataset.sectionLink ?? '')).filter((section): section is HTMLElement => Boolean(section));
+      const setCurrent = (id: string) => links.forEach((link) => id === link.dataset.sectionLink ? link.setAttribute('aria-current', 'location') : link.removeAttribute('aria-current'));
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setCurrent(visible.target.id);
+      }, { rootMargin: '-20% 0px -65%', threshold: [0, .2, .5] });
+      sections.forEach((section) => observer.observe(section));
+      const target = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+      if (target instanceof HTMLDetailsElement) target.open = true;
+      else target?.querySelector<HTMLDetailsElement>('details')?.setAttribute('open', '');
+    </script>}
   </body>
 </html>
 
@@ -80,11 +90,7 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
   nav { display: flex; gap: clamp(.8rem, 2vw, 1.7rem); }
   nav a, .source, .footer-links a { color: var(--muted); text-decoration: none; font: .68rem/1 var(--mono); text-transform: uppercase; letter-spacing: .1em; }
   nav a:hover, nav a[aria-current='page'], .source:hover, .footer-links a:hover { color: var(--ink); }
-  .top-actions { justify-self: end; display: flex; align-items: center; gap: 1rem; }
-  .motion-control { display: inline-flex; align-items: center; gap: .4rem; min-height: 34px; padding: 0 .65rem; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); cursor: pointer; font: .66rem var(--mono); text-transform: uppercase; letter-spacing: .08em; }
-  .motion-control span { color: var(--lime); animation: motion-control-pulse 2s ease-in-out infinite; }
-  .motion-control:hover { border-color: var(--lime); }
-  @keyframes motion-control-pulse { 50% { color: var(--violet); transform: scale(.8); } }
+  .topbar > .source { justify-self: end; }
   main { position: relative; z-index: 1; }
   .shell { width: min(1180px, calc(100% - 2.4rem)); margin-inline: auto; }
   .eyebrow { margin: 0 0 1rem; color: var(--lime); font: .69rem/1.4 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
@@ -105,28 +111,12 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
   .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; }
   .legal { justify-self: end; max-width: 340px; text-align: right; }
   .footer-tail { justify-self: end; max-width: 360px; }
-  .activity-ticker { display: none; padding: .7rem; border: 1px solid var(--line); color: var(--muted); text-decoration: none; font-size: .78rem; }
-  .activity-ticker span { display: block; margin-bottom: .25rem; color: var(--violet); font: .6rem var(--mono); text-transform: uppercase; }
-  html[data-motion-enabled='true'][data-motion-effects~='F1'] nav a[aria-current='page']::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: .45rem; border-radius: 50%; background: var(--lime); animation: nav-electron 1.8s ease-in-out infinite; }
-  html[data-motion-enabled='true'][data-motion-effects~='F2'] nav a { position: relative; }
-  html[data-motion-enabled='true'][data-motion-effects~='F2'] nav a[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.7rem; height: 1px; background: linear-gradient(90deg,var(--lime),var(--violet)); animation: bond-in .7s ease-out both; }
-  html[data-motion-enabled='true'][data-motion-effects~='F3'] .footer-brand :is(.logo-loop,.logo-electron) { animation-direction: reverse !important; }
-  html[data-motion-enabled='true'][data-motion-effects~='F4'] .topbar::after { content: '42 TESTED  ·  44 TESTED'; position: absolute; right: 1rem; bottom: 3px; color: var(--faint); font: .52rem var(--mono); }
-  html[data-motion-enabled='true'][data-motion-effects~='F5'] .topbar::before { content: ''; position: absolute; left: 0; bottom: 0; width: calc(var(--reading-progress, 0) * 100%); height: 2px; background: linear-gradient(90deg,var(--lime),var(--violet)); }
-  html[data-motion-enabled='true'][data-motion-effects~='F6'] footer::before { content: ''; position: absolute; left: 15%; right: 15%; top: -1px; height: 2px; background: linear-gradient(90deg,transparent,var(--lime),var(--violet),transparent); animation: recombine 3s ease-in-out infinite; }
-  html[data-motion-enabled='true'][data-motion-effects~='F7'] .activity-ticker { display: block; animation: ticker-in .6s ease-out both; }
-  html[data-motion-enabled='true'][data-motion-effects~='F8'] :is(nav,.footer-links) a { transition: transform .2s ease, color .2s ease; }
-  html[data-motion-enabled='true'][data-motion-effects~='F8'] :is(nav,.footer-links) a:hover { transform: translateY(-3px) scale(1.04); }
-  html[data-motion-enabled='true'][data-motion-effects~='F9'] .activity-ticker span::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: .4rem; border-radius: 50%; background: var(--lime); animation: heartbeat 1.5s ease-in-out infinite; }
-  html[data-motion-enabled='true'][data-motion-effects~='F10'] { view-transition-name: sharedpair-page; }
+  nav a { position: relative; }
+  nav a[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.7rem; height: 1px; background: linear-gradient(90deg,var(--lime),var(--violet)); animation: bond-in .7s ease-out both; }
+  nav a[aria-current='location']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.7rem; height: 1px; background: linear-gradient(90deg,var(--lime),var(--violet)); animation: bond-in .7s ease-out both; }
+  [id] { scroll-margin-top: 7rem; }
   footer { position: relative; }
-  @keyframes nav-electron { 50% { transform: translateY(-4px); box-shadow: 0 0 8px var(--lime); } }
   @keyframes bond-in { from { transform: scaleX(0); } }
-  @keyframes recombine { 50% { left: 45%; right: 45%; filter: drop-shadow(0 0 8px var(--lime)); } }
-  @keyframes ticker-in { from { opacity: 0; transform: translateY(8px); } }
-  @keyframes heartbeat { 50% { opacity: .35; transform: scale(.7); } }
-  @view-transition { navigation: auto; }
-  ::view-transition-old(sharedpair-page), ::view-transition-new(sharedpair-page) { animation-duration: .35s; }
   /* The site is documentation first: keep display type and section rhythm subordinate to the content. */
   main h1 { font-size: clamp(2.7rem, 5vw, 5rem) !important; }
   main h2 { font-size: clamp(1.9rem, 3.5vw, 3.5rem) !important; }
@@ -139,7 +129,7 @@ const links = ['install', 'applications', 'runtimes', 'security', 'status'];
     .topbar nav { grid-column: 1 / -1; width: 100%; overflow-x: auto; gap: 1.25rem; padding: .85rem 0; scrollbar-width: none; }
     .topbar nav::-webkit-scrollbar { display: none; }
     .topbar nav a { flex: 0 0 auto; }
-    .topbar .top-actions { grid-column: 2; grid-row: 1; }
+    .topbar > .source { grid-column: 2; grid-row: 1; }
     footer { grid-template-columns: 1fr; }
     .legal, .footer-tail { justify-self: start; text-align: left; }
   }
