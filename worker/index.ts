@@ -66,7 +66,8 @@ export default {
 
     if (url.hostname === APT_HOST) {
       if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed\n", { status: 405 });
-      const key = url.pathname === "/" ? "index.html" : decodeURIComponent(url.pathname.slice(1));
+      const path = decodeURIComponent(url.pathname.slice(1));
+      const key = url.pathname.endsWith("/") ? `${path}index.html` : path;
       const object = await env.APT_REPO.get(key);
       if (!object) return new Response("Not found\n", { status: 404 });
       const headers = new Headers();
