@@ -57,7 +57,7 @@ export interface AppRecord {
 }
 
 export const projectStatus = {
-  Status: 'Built · awaiting publication',
+  Status: 'Published · public install verified',
   Runtimes: `${generated.accounting.runtimeLines} tested runtime lines`,
   Applications: `${generated.accounting.testedApplications} packaged and tested`,
   Target: `Ubuntu 26.04 · ${generated.architecture}`,

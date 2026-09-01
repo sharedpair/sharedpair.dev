@@ -61,7 +61,7 @@ import { applications, progress, projectStatus, reports, sizeAccounting } from '
   </section>
 
   <section class="section shell progress">
-    <div><p class="eyebrow">Project feed</p><h2>Shipped and next.</h2><p>Follow runtime support, application enrollment, testing, and publication work.</p><a class="text-link" href="/feed.xml">Subscribe via Atom →</a></div>
+    <div><p class="eyebrow">Application feed</p><h2>Verified and published.</h2><p>Follow each application through verification, publication, updates, and holds without duplicate release items.</p><a class="text-link" href="/feed.xml">Subscribe via RSS →</a></div>
     <ol>{progress.map((item) => <li><div><time datetime={item.date}>{item.displayDate}</time><span class={item.state}>{item.state}</span></div><p>{item.entry}</p></li>)}</ol>
   </section>
 </BaseLayout>

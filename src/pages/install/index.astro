@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CopyCommand from '../../components/CopyCommand.astro';
 import { applications, registryStatus } from '../../data/project';
 
-const installPackages = applications.map((app) => app.slug).join(' ');
+const installPackages = applications.filter((app) => app.slug !== 'jupyterlab-desktop').map((app) => app.slug).join(' ');
 const installCommand = [
   'curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg',
   'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list',
@@ -14,12 +14,12 @@ const displayedInstallCommand = installCommand.replaceAll(' | ', ' |\n  ');
 ---
 
 <BaseLayout title="Install — Shared Pair" description="Final repository and package installation structure for Shared Pair.">
-  <header class="page-hero shell"><div><p class="eyebrow">Install</p><h1>Commands ready.<br /><em>Repository pending.</em></h1><p class="lede">These are the intended public commands and URLs. Do not run them yet: <code>apt.sharedpair.dev</code> has not been promoted and verified.</p></div><div class="state"><span>Availability</span><strong>Not active</strong><small>Publication pending approval</small></div></header>
+  <header class="page-hero shell"><div><p class="eyebrow">Install</p><h1>Repository live.<br /><em>Signed and tested.</em></h1><p class="lede">Add the Shared Pair signing key and Ubuntu 26.04 repository, then install any published application.</p></div><div class="state"><span>Availability</span><strong>Active</strong><small>Public installation verified 2026-09-01</small></div></header>
   <section class="commands shell" aria-label="Installation commands">
     <p class="eyebrow">APT setup · run in order</p>
     <CopyCommand command={installCommand} displayCommand={displayedInstallCommand} />
   </section>
-  <section class="identity shell"><p class="eyebrow">Signing identity</p><dl><div><dt>Fingerprint</dt><dd>{registryStatus.signingFingerprint}</dd></div><div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div><div><dt>Architecture</dt><dd>{registryStatus.architecture}</dd></div></dl><p>Verify the fingerprint independently before trusting repository metadata. These commands become active only after repository promotion and a fresh APT installation test.</p></section>
+  <section class="identity shell"><p class="eyebrow">Signing identity</p><dl><div><dt>Fingerprint</dt><dd>{registryStatus.signingFingerprint}</dd></div><div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div><div><dt>Architecture</dt><dd>{registryStatus.architecture}</dd></div></dl><p>Verify the fingerprint independently before trusting repository metadata. The public repository and a fresh installation from both runtime lines were verified on 2026-09-01.</p></section>
 </BaseLayout>
 
 <style>

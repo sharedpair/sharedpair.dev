@@ -16,10 +16,18 @@ class_name = "VoteCounter"
 tag = "v1"
 new_sqlite_classes = ["VoteCounter"]
 
+[[r2_buckets]]
+binding = "APT_REPO"
+bucket_name = "sharedpair-apt"
+
 [[routes]]
 pattern = "sharedpair.dev"
 custom_domain = true
 
 [[routes]]
 pattern = "www.sharedpair.dev"
+custom_domain = true
+
+[[routes]]
+pattern = "apt.sharedpair.dev"
 custom_domain = true

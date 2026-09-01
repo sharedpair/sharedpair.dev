@@ -9,12 +9,12 @@ const runtime44 = applications.filter((app) => app.runtime === 'electron-runtime
 
 <BaseLayout title="Status — Shared Pair" description="Build, test, and publication status for Shared Pair runtimes and applications.">
   <header class="page-hero shell">
-    <div><p class="eyebrow">Status</p><h1>Built and tested.<br /><em>Publication next.</em></h1><p class="lede">The split packages exist and their clean-container application tests pass. They have not yet been promoted into the public APT index.</p></div>
+    <div><p class="eyebrow">Status</p><h1>Built, signed,<br /><em>and published.</em></h1><p class="lede">The public APT repository serves both shared runtime lines and seven applications. A clean Ubuntu 26.04 installation passed.</p></div>
     <BondMark compact />
   </header>
 
   <section class="summary shell" aria-label="Current project status">
-    <div><span>Overall</span><strong>Pre-publication</strong><small>Pending approval</small></div>
+    <div><span>Overall</span><strong>Repository live</strong><small>Verified 2026-09-01</small></div>
     <div><span>Runtimes</span><strong>{runtimes.length} tested</strong><small>{runtimes.map((runtime) => `Electron ${runtime.major}`).join(' + ')}</small></div>
     <div><span>Applications</span><strong>{applications.length} tested</strong><small>{blockedApplications.length} held from publication</small></div>
     <div><span>Target</span><strong>Ubuntu 26.04</strong><small>{registryStatus.architecture}</small></div>
@@ -22,10 +22,10 @@ const runtime44 = applications.filter((app) => app.runtime === 'electron-runtime
   </section>
 
   <section class="status-section shell">
-    <div class="section-heading"><p class="eyebrow">Repository</p><h2>Public installation is not active yet.</h2></div>
+    <div class="section-heading"><p class="eyebrow">Repository</p><h2>Public installation is active.</h2></div>
     <div class="repository-state">
       <div class="signal" aria-hidden="true"></div>
-      <div><strong>APT promotion pending</strong><p>The complete split set must enter the signed repository together. Public installation commands will be enabled after an APT installation test against the promoted index.</p></div>
+      <div><strong>APT repository verified</strong><p>The signed repository contains both shared runtime lines and seven applications. A fresh Ubuntu 26.04 container installed LosslessCut and Netron from the public index.</p></div>
     </div>
     <dl class="identity">
       <div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div>
@@ -53,12 +53,11 @@ const runtime44 = applications.filter((app) => app.runtime === 'electron-runtime
   </section>
 
   <section class="status-section shell">
-    <div class="section-heading"><p class="eyebrow">Release path</p><h2>What remains before install.</h2></div>
+    <div class="section-heading"><p class="eyebrow">Release path</p><h2>What comes next.</h2></div>
     <ol class="release-path">
-      <li><span>01</span><div><strong>Approve the publication set</strong><p>Confirm the two runtimes and seven cleared applications as one repository change.</p></div></li>
-      <li><span>02</span><div><strong>Promote and sign</strong><p>Publish package files and regenerated repository metadata under the recorded signing identity.</p></div></li>
-      <li><span>03</span><div><strong>Install through APT</strong><p>Verify fresh installation, runtime co-installation, upgrades, and rollback from the public index.</p></div></li>
-      <li><span>04</span><div><strong>Publish installation commands</strong><p>Enable the final commands on the Install page once the repository path has passed verification.</p></div></li>
+      <li><span>01</span><div><strong>Add JupyterLab Desktop</strong><p>Upload its oversized binary and source archive through multipart CI, then sign the next generation.</p></div></li>
+      <li><span>02</span><div><strong>Exercise upgrades</strong><p>Verify the first repository-to-repository upgrade and rollback path.</p></div></li>
+      <li><span>03</span><div><strong>Expand the catalogue</strong><p>Move the next curated applications through the same audit, build, and clean-container gates.</p></div></li>
     </ol>
   </section>
 </BaseLayout>

@@ -8,8 +8,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "generate:data": "node scripts/generate-package-data.mjs",
-    "verify:data": "node scripts/generate-package-data.mjs --check",
+    "generate:data": "node scripts/sync-release-registry.mjs && node scripts/generate-package-data.mjs",
+    "verify:data": "node scripts/sync-release-registry.mjs --check && node scripts/generate-package-data.mjs --check",
     "build": "npm run verify:data && astro build",
     "deploy": "npm run build && wrangler deploy",
     "preview": "astro preview",

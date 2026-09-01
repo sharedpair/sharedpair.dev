@@ -18,13 +18,25 @@ interface VoteObjectNamespace {
   get(id: unknown): VoteObjectStub;
 }
 
+interface R2ObjectBody {
+  body: ReadableStream;
+  httpEtag: string;
+  writeHttpMetadata(headers: Headers): void;
+}
+
+interface R2Bucket {
+  get(key: string): Promise<R2ObjectBody | null>;
+}
+
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
   VOTE_COUNTER: VoteObjectNamespace;
+  APT_REPO: R2Bucket;
 }
 
 const APEX_HOST = "sharedpair.dev";
 const WWW_HOST = "www.sharedpair.dev";
+const APT_HOST = "apt.sharedpair.dev";
 const VOTE_KEY = "candidate-vote-counts-v1";
 const candidateSlugs = new Set(candidateData.candidates.filter((candidate) => candidate.audit?.state === "viable").map((candidate) => candidate.slug));
 
@@ -51,6 +63,18 @@ export class VoteCounter {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.hostname === APT_HOST) {
+      if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed\n", { status: 405 });
+      const key = url.pathname === "/" ? "index.html" : decodeURIComponent(url.pathname.slice(1));
+      const object = await env.APT_REPO.get(key);
+      if (!object) return new Response("Not found\n", { status: 404 });
+      const headers = new Headers();
+      object.writeHttpMetadata(headers);
+      headers.set("ETag", object.httpEtag);
+      headers.set("X-Content-Type-Options", "nosniff");
+      return new Response(request.method === "HEAD" ? null : object.body, { headers });
+    }
 
     if (url.hostname === WWW_HOST) {
       url.hostname = APEX_HOST;
