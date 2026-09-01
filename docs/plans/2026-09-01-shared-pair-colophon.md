@@ -107,18 +107,18 @@ On narrow screens the three links wrap into a vertical list with full-row click 
 
 ## Implementation plan
 
-- [ ] Add `src/pages/colophon/index.astro` using the existing `BaseLayout`.
-- [ ] Keep all claims derived from repository configuration and release scripts; avoid aspirational stack claims.
-- [ ] Use structured arrays for website and APT fact rows so content stays terse and scannable.
-- [ ] Include the official 512px logo in the page introduction at a restrained scale.
-- [ ] Add palette swatches for the existing lime, violet, background, surface, ink, and muted tokens.
-- [ ] Add direct source links for both repositories and direct links to Astro, Cloudflare Workers, R2, aptly, OpenPGP, and GitHub Actions.
-- [ ] Add `Colophon` to the sharedpair.dev footer only; do not add it to the already dense top navigation.
-- [ ] Extend the site verifier to require the route, both system sections, all local asset references, and the APT anchor.
-- [ ] Add an APT footer link to `https://sharedpair.dev/colophon/#apt-repository` in the tracked generator/template.
-- [ ] Extend APT publication verification to assert the generated footer link.
-- [ ] Build both properties and visually inspect desktop and 390px mobile renders.
-- [ ] Check link focus, wrapping, contrast, and `prefers-reduced-motion` behavior.
+- [x] Add `src/pages/colophon/index.astro` using the existing `BaseLayout`.
+- [x] Keep all claims derived from repository configuration and release scripts; avoid aspirational stack claims.
+- [x] Use structured arrays for website and APT fact rows so content stays terse and scannable.
+- [x] Include the official 512px logo in the page introduction at a restrained scale.
+- [x] Add palette swatches for the existing lime, violet, background, surface, ink, and muted tokens.
+- [x] Add direct source links for both repositories and direct links to Astro, Cloudflare Workers, R2, aptly, OpenPGP, and GitHub Actions.
+- [x] Add `Colophon` to the sharedpair.dev footer only; do not add it to the already dense top navigation.
+- [x] Extend the site verifier to require the route, both system sections, all local asset references, and the APT anchor.
+- [x] Add an APT footer link to `https://sharedpair.dev/colophon/#apt-repository` in the tracked generator/template.
+- [x] Extend APT publication verification to assert the generated footer link.
+- [x] Build both properties and visually inspect desktop and 390px mobile renders.
+- [x] Check link focus, wrapping, contrast, and `prefers-reduced-motion` behavior.
 - [ ] Commit website and APT changes separately.
 - [ ] Publish sharedpair.dev, then publish the APT change in a new immutable signed generation.
 - [ ] Verify both live URLs and record generation/version evidence below.
@@ -135,4 +135,4 @@ On narrow screens the three links wrap into a vertical list with full-row click 
 
 ## Publication evidence
 
-Pending implementation.
+Astro rendered three pages and the structural verifier passed. The colophon was checked at 1440×1000 and 390×844 against the approved mockup. The APT browser includes the deep-link and icon-only copy affordance; local signed generation `20260901T192531Z` verified 13 binaries, 13 sources, and 106 objects. Production version and generation remain to be recorded after publication.

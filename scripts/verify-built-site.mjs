@@ -46,6 +46,12 @@ for (const id of ['install', 'applications', 'runtimes', 'security', 'status']) 
 for (const packageName of [...registry.testedApplications, ...registry.blockedApplications]) if (!homeHtml.includes(`id="applications-${packageName}"`)) failures.push(`${packageName}: missing inline application report`);
 for (const removedRoute of ['install', 'applications', 'runtimes', 'security', 'status']) if (statSafe(resolve(dist, removedRoute, 'index.html'))) failures.push(`${removedRoute}: obsolete route still rendered`);
 if (!statSafe(resolve(dist, 'about', 'index.html'))) failures.push('about: missing separate page');
+const colophonPath = resolve(dist, 'colophon', 'index.html');
+if (!statSafe(colophonPath)) failures.push('colophon: missing canonical page');
+else {
+  const colophon = readFileSync(colophonPath, 'utf8');
+  for (const marker of ['id="website"', 'id="apt-repository"', 'sharedpair/sharedpair.dev', 'sharedpair/shared-electron']) if (!colophon.includes(marker)) failures.push(`colophon: missing ${marker}`);
+}
 
 for (const path of sourceFiles) {
   const text = readFileSync(path, 'utf8');

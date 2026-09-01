@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MotionLogo from '../../components/MotionLogo.astro';
+const website = [
+  ['Generator', 'Astro 7', 'Static HTML and CSS with small, targeted client scripts.', 'https://astro.build/'],
+  ['Delivery', 'Cloudflare Workers', 'Static Assets serve the site; one Worker also routes the APT domain to R2.', 'https://developers.cloudflare.com/workers/static-assets/'],
+  ['Type', 'System sans + mono', 'Native UI faces keep text fast and dependency-free.', null],
+  ['Motion', 'CSS + IntersectionObserver', 'Navigation state and purposeful disclosure move; reduced-motion is respected.', null],
+  ['Source', 'sharedpair.dev', 'The public guide, data model, verifier, and deployment configuration.', 'https://github.com/sharedpair/sharedpair.dev'],
+];
+const repository = [
+  ['Target', 'Ubuntu 26.04 · amd64', 'Suite resolute publishes binary and source indexes.', 'https://releases.ubuntu.com/26.04/'],
+  ['Metadata', 'aptly', 'Exact package sets become Debian repository metadata and browsable indexes.', 'https://www.aptly.info/'],
+  ['Trust', 'OpenPGP', 'InRelease and the generation manifest are signed and verified before promotion.', 'https://www.openpgp.org/'],
+  ['Storage', 'Cloudflare R2', 'Each release is immutable; an explicitly verified generation is promoted as active.', 'https://developers.cloudflare.com/r2/'],
+  ['Release', 'GitHub Actions', 'Build, sign, reverify, publish, and clean-client smoke tests run in order.', 'https://github.com/features/actions'],
+  ['Source', 'shared-electron', 'Packaging recipes, repository generator, verification, publishing, and rollback tools.', 'https://github.com/sharedpair/shared-electron'],
+];
+const palette = [['Lime','#b9ff66'],['Violet','#a58bff'],['Background','#0a0b0e'],['Surface','#111319'],['Ink','#eef1e7'],['Muted','#9da397']];
+---
+<BaseLayout title="Colophon — Shared Pair" description="How the Shared Pair website and signed APT repository are built.">
+  <header class="colophon-hero shell"><div><p class="eyebrow">Colophon</p><h1>How the pair<br />is made.</h1><p class="lede">Two public surfaces, one publishing system: the guide you read and the signed archive your package manager trusts.</p></div><MotionLogo size={512} eager /></header>
+  <section class="ledger shell" id="website">
+    <div class="section-title"><span>01</span><div><p class="eyebrow">Website</p><h2>Readable by default.</h2></div></div>
+    <div class="rows">{website.map(([label,name,detail,href]) => <article><span>{label}</span><div><h3>{href ? <a href={href}>{name} ↗</a> : name}</h3><p>{detail}</p></div></article>)}</div>
+    <div class="palette" aria-label="Website palette">{palette.map(([name,color]) => <div><i style={`background:${color}`}></i><span>{name}</span><code>{color}</code></div>)}</div>
+  </section>
+  <section class="ledger shell" id="apt-repository">
+    <div class="section-title"><span>02</span><div><p class="eyebrow">APT repository</p><h2>Signed, then promoted.</h2></div></div>
+    <div class="rows">{repository.map(([label,name,detail,href]) => <article><span>{label}</span><div><h3><a href={href}>{name} ↗</a></h3><p>{detail}</p></div></article>)}</div>
+    <p class="fingerprint"><span>Signing fingerprint</span><code>CB4B 214C 7E7D 250E 1F06 D319 DC95 7822 C3CA 4045</code></p>
+  </section>
+</BaseLayout>
+<style>
+  .colophon-hero{display:grid;grid-template-columns:1fr minmax(220px,360px);gap:clamp(2rem,8vw,8rem);align-items:center;padding-block:clamp(4rem,8vw,7rem)}.colophon-hero :global(.motion-logo){width:100%;height:auto;filter:drop-shadow(0 0 35px rgba(185,255,102,.13)) drop-shadow(0 0 45px rgba(165,139,255,.12))}
+  .ledger{padding-block:clamp(3.5rem,7vw,6rem)}.section-title{display:grid;grid-template-columns:4rem 1fr;gap:1.5rem;margin-bottom:2.5rem}.section-title>span{color:var(--faint);font:.7rem var(--mono)}.section-title h2{margin:0}.section-title .eyebrow{margin-bottom:.7rem}
+  .rows{margin-left:5.5rem}.rows article{display:grid;grid-template-columns:minmax(120px,180px) 1fr;gap:2rem;padding:1.2rem 0}.rows article>span{color:var(--lime);font:.72rem var(--mono);text-transform:uppercase;letter-spacing:.1em}.rows h3{margin:0;font-size:1rem}.rows h3 a{text-decoration-color:rgba(185,255,102,.4);text-underline-offset:.25em}.rows p{max-width:680px;margin:.35rem 0 0;color:var(--muted)}
+  .palette{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem;margin:2.5rem 0 0 5.5rem}.palette div{display:grid;gap:.35rem}.palette i{display:block;aspect-ratio:1}.palette span,.palette code,.fingerprint{font:.65rem var(--mono)}.palette code{color:var(--faint)}.fingerprint{display:flex;flex-wrap:wrap;gap:1rem 2rem;margin:2.5rem 0 0 5.5rem;color:var(--faint)}.fingerprint code{color:var(--ink);overflow-wrap:anywhere}
+  @media(max-width:760px){.colophon-hero{grid-template-columns:1fr}.colophon-hero :global(.motion-logo){grid-row:1;width:min(66vw,260px);margin:auto}.section-title{grid-template-columns:2rem 1fr;gap:.8rem}.rows,.palette,.fingerprint{margin-left:0}.rows article{grid-template-columns:1fr;gap:.3rem}.palette{grid-template-columns:repeat(3,1fr)}}
+</style>
