@@ -8,7 +8,7 @@
   "repositoryUrl": "https://apt.sharedpair.dev",
   "websiteUrl": "https://sharedpair.dev",
   "signingFingerprint": "CB4B214C7E7D250E1F06D319DC957822C3CA4045",
-  "excludedFromRelease": ["jupyterlab-desktop"],
+  "excludedFromRelease": [],
   "packages": [
     { "name": "electron-runtime-42", "version": "42.9.3-1sharedpair1", "kind": "runtime" },
     { "name": "electron-runtime-44", "version": "44.0.0-1sharedpair1", "kind": "runtime" },

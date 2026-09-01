@@ -9,7 +9,7 @@ const runtime44 = applications.filter((app) => app.runtime === 'electron-runtime
 
 <BaseLayout title="Status — Shared Pair" description="Build, test, and publication status for Shared Pair runtimes and applications.">
   <header class="page-hero shell">
-    <div><p class="eyebrow">Status</p><h1>Built, signed,<br /><em>and published.</em></h1><p class="lede">The public APT repository serves both shared runtime lines and seven applications. A clean Ubuntu 26.04 installation passed.</p></div>
+    <div><p class="eyebrow">Status</p><h1>Built, signed,<br /><em>and published.</em></h1><p class="lede">The public APT repository serves both shared runtime lines and {applications.length} applications. Clean Ubuntu 26.04 installations passed.</p></div>
     <BondMark compact />
   </header>
 
@@ -25,7 +25,7 @@ const runtime44 = applications.filter((app) => app.runtime === 'electron-runtime
     <div class="section-heading"><p class="eyebrow">Repository</p><h2>Public installation is active.</h2></div>
     <div class="repository-state">
       <div class="signal" aria-hidden="true"></div>
-      <div><strong>APT repository verified</strong><p>The signed repository contains both shared runtime lines and seven applications. A fresh Ubuntu 26.04 container installed LosslessCut and Netron from the public index.</p></div>
+      <div><strong>APT repository verified</strong><p>The signed repository contains both shared runtime lines and {applications.length} applications. Fresh Ubuntu 26.04 containers installed applications from both runtime lines, including JupyterLab Desktop's oversized package.</p></div>
     </div>
     <dl class="identity">
       <div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div>
@@ -48,15 +48,15 @@ const runtime44 = applications.filter((app) => app.runtime === 'electron-runtime
   </section>
 
   <section class="status-section shell">
-    <div class="section-heading"><p class="eyebrow">Publication hold</p><h2>One package stays out.</h2></div>
+    <div class="section-heading"><p class="eyebrow">Publication holds</p><h2>Held packages stay visible.</h2></div>
     {blockedApplications.map((app) => <a class="hold" href={`/applications/${app.slug}/`}><div><strong>{app.name} {app.version}</strong><p>{app.proof}</p></div><span>Read report →</span></a>)}
   </section>
 
   <section class="status-section shell">
     <div class="section-heading"><p class="eyebrow">Release path</p><h2>What comes next.</h2></div>
     <ol class="release-path">
-      <li><span>01</span><div><strong>Add JupyterLab Desktop</strong><p>Upload its oversized binary and source archive through multipart CI, then sign the next generation.</p></div></li>
-      <li><span>02</span><div><strong>Exercise upgrades</strong><p>Verify the first repository-to-repository upgrade and rollback path.</p></div></li>
+      <li><span>01</span><div><strong>Exercise upgrades</strong><p>Verify the first repository-to-repository upgrade and rollback path.</p></div></li>
+      <li><span>02</span><div><strong>Publish release evidence</strong><p>Attach SBOMs, provenance, hashes, and public test results to each release generation.</p></div></li>
       <li><span>03</span><div><strong>Expand the catalogue</strong><p>Move the next curated applications through the same audit, build, and clean-container gates.</p></div></li>
     </ol>
   </section>

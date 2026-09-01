@@ -11,7 +11,7 @@ import { applications, progress, projectStatus, reports, sizeAccounting } from '
       <h1>One runtime.<br /><em>More room.</em></h1>
       <p class="lede">Shared Pair separates compatible desktop applications from the versioned Electron runtime they have in common—and keeps the packages, tests, provenance, and security updates together.</p>
       <div class="actions"><a class="button primary" href="/install/">Installation status</a><a class="button" href="#architecture">See the bond</a></div>
-      <p class="disclaimer">Packages built and tested · APT publication pending approval</p>
+      <p class="disclaimer">Packages built, tested, signed, and publicly installable</p>
     </div>
     <div class="hero-art"><BondMark /></div>
   </section>
@@ -28,7 +28,7 @@ import { applications, progress, projectStatus, reports, sizeAccounting } from '
   </section>
 
   <section class="section shell savings">
-    <div class="section-head"><div><p class="eyebrow">Measured package set</p><h2>Save <em>{sizeAccounting.archiveSavedMiB} MiB.</em></h2></div><p>Seven tested applications use two runtime lines. Sharing one runtime per line reduces the modeled compressed package set by {sizeAccounting.archiveSavedPercent}%.</p></div>
+    <div class="section-head"><div><p class="eyebrow">Measured package set</p><h2>Save <em>{sizeAccounting.archiveSavedMiB} MiB.</em></h2></div><p>{applications.length} tested applications use two runtime lines. Sharing one runtime per line reduces the modeled compressed package set by {sizeAccounting.archiveSavedPercent}%.</p></div>
     <div class="bar-chart" aria-label="Compressed package-set comparison">
       <div class="bar-row"><span>Runtime per app</span><div class="bar bundled"><i style="width: 100%"></i></div><strong>{sizeAccounting.bundledModelArchiveMiB} MiB</strong></div>
       <div class="bar-row"><span>Shared Pair</span><div class="bar shared"><i style={`width: ${(sizeAccounting.sharedArchiveMiB / sizeAccounting.bundledModelArchiveMiB) * 100}%`}></i></div><strong>{sizeAccounting.sharedArchiveMiB} MiB</strong></div>

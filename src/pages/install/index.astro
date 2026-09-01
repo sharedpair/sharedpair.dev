@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CopyCommand from '../../components/CopyCommand.astro';
 import { applications, registryStatus } from '../../data/project';
 
-const installPackages = applications.filter((app) => app.slug !== 'jupyterlab-desktop').map((app) => app.slug).join(' ');
+const installPackages = applications.map((app) => app.slug).join(' ');
 const installCommand = [
   'curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg',
   'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list',

@@ -37,7 +37,7 @@ export interface AppRecord {
   electron: string;
   runtime: string;
   state: State;
-  category: 'media' | 'productivity' | 'communication' | 'data-science';
+  category: 'media' | 'productivity' | 'communication' | 'data-science' | 'books';
   releaseChannel: 'stable' | 'prerelease' | 'candidate';
   proof: string;
   test: string;
@@ -189,19 +189,42 @@ export const applications: AppRecord[] = [
   },
 ];
 
-export const blockedApplications: AppRecord[] = [{
-  slug: 'audex-player',
-  ...appFacts('audex-player'),
-  name: 'Audex Player',
-  purpose: 'Media player and downloader',
-  state: 'blocked',
-  category: 'media',
-  releaseChannel: 'stable',
-  proof: 'The package builds and its media/profile test passes, but it is not cleared for publication.',
-  test: 'Media helpers and persistent GUI profile passed on shared Electron 42.',
-  notes: ['Publication is blocked pending redistribution review.', 'The concern is its bundled Chrome/Widevine payload.', 'A successful build does not override redistribution requirements.'],
-  interfaceScreenshot: { src: '/images/applications/audex-player/upstream-interface.png', alt: 'Audex Player dark-theme music library interface.', source: 'https://github.com/MishaSok/audex-player/blob/main/docs/screenshots/library-dark.png' },
-}];
+export const blockedApplications: AppRecord[] = [
+  {
+    slug: 'audex-player',
+    ...appFacts('audex-player'),
+    name: 'Audex Player',
+    purpose: 'Media player and downloader',
+    state: 'blocked',
+    category: 'media',
+    releaseChannel: 'stable',
+    proof: 'The package builds and its media/profile test passes, but it is not cleared for publication.',
+    test: 'Media helpers and persistent GUI profile passed on shared Electron 42.',
+    notes: ['Publication is blocked pending redistribution review.', 'The concern is its bundled Chrome/Widevine payload.', 'A successful build does not override redistribution requirements.'],
+    interfaceScreenshot: { src: '/images/applications/audex-player/upstream-interface.png', alt: 'Audex Player dark-theme music library interface.', source: 'https://github.com/MishaSok/audex-player/blob/main/docs/screenshots/library-dark.png' },
+  },
+  {
+    slug: 'thorium-reader',
+    name: 'Thorium Reader',
+    purpose: 'Accessible EPUB, PDF, DAISY, and audiobook reader',
+    version: '3.4.0',
+    electron: '41.1.1 → 42.9.3 attempted',
+    runtime: 'electron-runtime-42',
+    state: 'blocked',
+    category: 'books',
+    releaseChannel: 'stable',
+    proof: 'The UI starts on Electron 42, but the externally injected LCP module is ABI 145 and the shared runtime requires ABI 146.',
+    test: 'Ubuntu 26.04 container startup passed; direct LCP module loading failed deterministically with NODE_MODULE_VERSION 145 versus 146.',
+    notes: [
+      'The exact v3.4.0 tag does not contain the LCP module source or a reproducible build recipe.',
+      'Publishing without the plugin would silently remove protected EPUB, PDF, and audiobook support.',
+      'Reconsider when upstream publishes a compatible or reproducibly rebuildable plugin.',
+      'Official amd64 Debian artifact SHA-256: 9920e2d1bd61ffb17f12b7002abf76208bca30caed683bc2dcde0d25329fa550.',
+    ],
+    archiveMiB: 104.5,
+    installedMiB: 368.7,
+  },
+];
 
 export const runtimes = ['electron-runtime-42', 'electron-runtime-44'].map((packageName) => {
   const fact = generated.packages[packageName];
