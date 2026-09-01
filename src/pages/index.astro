@@ -5,6 +5,7 @@ import InstallSection from '../components/InstallSection.astro';
 import RuntimesSection from '../components/RuntimesSection.astro';
 import SecuritySection from '../components/SecuritySection.astro';
 import StatusSection from '../components/StatusSection.astro';
+import MotionLogo from '../components/MotionLogo.astro';
 import { applications, projectStatus, sizeAccounting } from '../data/project';
 
 const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#runtimes', Applications: '#applications', Target: '#install', Updated: '#status' };
@@ -19,6 +20,7 @@ const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#run
       <div class="actions"><a class="button primary" href="#install">Install packages</a><a class="button" href="https://apt.sharedpair.dev/">Open APT repository ↗</a></div>
       <p class="disclaimer">Packages built, tested, signed, and publicly installable</p>
     </div>
+    <div class="hero-logo" aria-label="Shared Pair logo"><MotionLogo size={512} eager /></div>
   </section>
 
   <section class="trust" aria-label="Project status">
@@ -44,8 +46,10 @@ const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#run
 
 <style>
   em { color: var(--lime); font-style: normal; }
-  .hero { min-height: calc(100vh - 72px); display: flex; align-items: center; padding-block: 6rem; }
+  .hero { min-height: calc(100vh - 72px); display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .75fr); gap: clamp(2rem, 6vw, 6rem); align-items: center; padding-block: 6rem; }
   .hero-copy { max-width: 780px; }
+  .hero-logo { display: grid; place-items: center; }
+  .hero-logo :global(.motion-logo) { width: min(100%, 440px); height: auto; filter: drop-shadow(0 0 34px rgba(185,255,102,.16)) drop-shadow(0 0 48px rgba(165,139,255,.13)); }
   .hero h1 { margin-bottom: 2rem; }
   .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
   .disclaimer { margin-top: 1rem; color: var(--faint); font: .65rem var(--mono); text-transform: uppercase; letter-spacing: .08em; }
@@ -68,6 +72,8 @@ const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#run
   .chart-note { color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; text-align: right; }
   @media (max-width: 880px) {
     .hero { min-height: auto; grid-template-columns: 1fr; padding-block: 5rem 2rem; }
+    .hero-logo { grid-row: 1; }
+    .hero-logo :global(.motion-logo) { width: min(68vw, 320px); }
     .trust-grid { grid-template-columns: 1fr 1fr; }
     .trust-grid a { border-bottom: 1px solid var(--line); }
     .section-head { grid-template-columns: 1fr; }

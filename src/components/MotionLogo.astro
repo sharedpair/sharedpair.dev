@@ -1,26 +1,10 @@
-<span class="motion-logo" aria-hidden="true">
-  <svg viewBox="0 0 44 28">
-    <path class="logo-loop loop-a" d="M5 14C9 2 34 2 39 14S10 26 5 14Z" />
-    <path class="logo-loop loop-b" d="M5 14C10 26 34 26 39 14S9 2 5 14Z" />
-    <path class="logo-axis" d="M7 14H37" />
-    <circle class="logo-centre left" cx="8" cy="14" r="4" />
-    <circle class="logo-centre right" cx="36" cy="14" r="4" />
-    <circle class="logo-electron one" cx="18" cy="8" r="2.2" />
-    <circle class="logo-electron two" cx="26" cy="20" r="2.2" />
-    <path class="logo-check" d="M16 15l4 4 9-10" />
-    <path class="logo-bracket left-bracket" d="M13 6H9v16h4" />
-    <path class="logo-bracket right-bracket" d="M31 6h4v16h-4" />
-  </svg>
-</span>
+---
+interface Props { size?: number; eager?: boolean; }
+const { size = 64, eager = false } = Astro.props;
+const source = size > 192 ? '/images/brand/logo-512.png' : size > 64 ? '/images/brand/logo-192.png' : '/images/brand/logo-64.png';
+---
+<img class="motion-logo" src={source} width={size} height={size} alt="" aria-hidden="true" loading={eager ? 'eager' : 'lazy'} decoding="async" />
 
 <style>
-  .motion-logo { display: inline-grid; width: 38px; height: 26px; place-items: center; flex: 0 0 auto; }
-  svg { width: 100%; height: 100%; overflow: visible; }
-  path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-  .logo-loop { stroke: rgba(238,241,231,.32); stroke-width: 1; }
-  .logo-axis { stroke: rgba(238,241,231,.2); stroke-width: 1; stroke-dasharray: 2 3; }
-  .logo-centre.left { fill: var(--lime); } .logo-centre.right { fill: var(--violet); }
-  .logo-electron { fill: var(--ink); filter: drop-shadow(0 0 4px var(--ink)); transform-box: fill-box; transform-origin: center; }
-  .logo-check, .logo-bracket { opacity: 0; stroke: var(--lime); stroke-width: 2; }
-
+  .motion-logo { display: block; width: 38px; height: 38px; object-fit: contain; flex: 0 0 auto; }
 </style>

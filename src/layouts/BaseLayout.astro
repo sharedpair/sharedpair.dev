@@ -17,6 +17,9 @@ const home = path === '/';
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0a0b0e" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/brand/logo-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/brand/logo-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/brand/logo-180.png" />
     <link rel="alternate" type="application/rss+xml" title="Shared Pair application feed" href="/feed.xml" />
     <title>{title}</title>
   </head>
@@ -24,7 +27,7 @@ const home = path === '/';
     <a class="skip" href="#content">Skip to content</a>
     <header class="topbar">
       <a class="brand" href="/" aria-label="Shared Pair home">
-        <MotionLogo />
+        <MotionLogo eager />
         <span>SHARED PAIR</span>
         <small>2c–2e</small>
       </a>
