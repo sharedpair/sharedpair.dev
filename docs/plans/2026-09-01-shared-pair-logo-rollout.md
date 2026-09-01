@@ -23,7 +23,7 @@ Use `public/images/brand/github-avatar.png` as the single visual identity across
 - [x] Build and run structural verification for sharedpair.dev.
 - [x] Generate and verify a signed local APT candidate.
 - [x] Perform desktop and mobile browser checks.
-- [ ] Publish both sites through their normal release paths.
+- [x] Publish both sites through their normal release paths.
 
 ## Acceptance
 
@@ -35,4 +35,4 @@ Use `public/images/brand/github-avatar.png` as the single visual identity across
 
 ## Results
 
-Implementation passed the Astro build and structural verifier. Desktop (1440×1000) and mobile (390×844) home renders show the official mark without clipping or distortion. The generated APT browser was visually checked at 1440×1000. Local signed generation `20260901T191226Z` verified 13 binaries, 13 sources, and 106 manifest objects with signing fingerprint `CB4B214C7E7D250E1F06D319DC957822C3CA4045`. Production publication remains to be recorded after its release gates complete.
+Implementation passed the Astro build and structural verifier. Desktop (1440×1000) and mobile (390×844) home renders show the official mark without clipping or distortion. The generated APT browser was visually checked at 1440×1000. Production generation `20260901T193234Z` verified 13 binaries, 13 sources, 106 manifest objects, and all four signed raster logo sizes with fingerprint `CB4B214C7E7D250E1F06D319DC957822C3CA4045`.

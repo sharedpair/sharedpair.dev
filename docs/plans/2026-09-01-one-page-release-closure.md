@@ -32,63 +32,63 @@ one auditable release operation:
 
 ## Phase 1: Website correctness
 
-- [ ] Replace footer and report language that still says publication is pending.
-- [ ] Search rendered and source content for contradictory states such as
+- [x] Replace footer and report language that still says publication is pending.
+- [x] Search rendered and source content for contradictory states such as
   “pending approval,” “not yet public,” and “ready for promotion.”
-- [ ] Build and run the one-page verification gate.
-- [ ] Capture desktop (1440 px) and mobile (390 px) screenshots of `/` and
+- [x] Build and run the one-page verification gate.
+- [x] Capture desktop (1440 px) and mobile (390 px) screenshots of `/` and
   `/about/` from the production build or live deployment.
-- [ ] Inspect navigation, screenshots, disclosure affordances, command overflow,
+- [x] Inspect navigation, screenshots, disclosure affordances, command overflow,
   candidate table overflow, About logo, footer, and neon contrast.
-- [ ] Correct material visual defects and repeat the captures.
+- [x] Correct material visual defects and repeat the captures.
 
 ## Phase 2: Scoped commits
 
-- [ ] Review both worktree diffs and identify every file belonging to this run.
-- [ ] Commit the website one-page implementation, About page, verifier, plan,
+- [x] Review both worktree diffs and identify every file belonging to this run.
+- [x] Commit the website one-page implementation, About page, verifier, plan,
   and synchronized generated registry data in `sharedpair.dev`.
-- [ ] Commit only the APT browser favicon, stylesheet, and relevant tracked
+- [x] Commit only the APT browser favicon, stylesheet, and relevant tracked
   landing-page cleanup in `shared-electron`.
-- [ ] Do not stage `packages/poi/`, `__pycache__/`, or unrelated package work.
-- [ ] Record commit IDs in the results section.
+- [x] Do not stage `packages/poi/`, `__pycache__/`, or unrelated package work.
+- [x] Record commit IDs in the results section.
 
 ## Phase 3: Signed immutable APT generation
 
-- [ ] Record the currently active generation ID, signed `InRelease` hash,
+- [x] Record the currently active generation ID, signed `InRelease` hash,
   generation-manifest hash, and signing fingerprint as the rollback baseline.
-- [ ] Confirm all configured release-stage binary and source artifacts exist
+- [x] Confirm all configured release-stage binary and source artifacts exist
   before regenerating the repository.
-- [ ] Generate the complete local APT tree using the containerized publisher.
-- [ ] Confirm the new `favicon.svg` and neon `styles.css` are present in the
+- [x] Generate the complete local APT tree using the containerized publisher.
+- [x] Confirm the official logo assets and neon `styles.css` are present in the
   generated tree and its generation manifest.
-- [ ] Sign `Release`, `InRelease`, and the generation manifest with the configured
+- [x] Sign `Release`, `InRelease`, and the generation manifest with the configured
   Shared Pair key.
-- [ ] Run local signature, membership, size, hash, and browser-generation checks.
-- [ ] Dry-run the R2 publication delta.
-- [ ] Upload the immutable generation, verify it remotely, and promote signed
+- [x] Run local signature, membership, size, hash, and browser-generation checks.
+- [x] Dry-run the R2 publication delta.
+- [x] Upload the immutable generation, verify it remotely, and promote signed
   repository metadata last.
-- [ ] Run the public repository verifier and check representative HTML/CSS/icon
+- [x] Run the public repository verifier and check representative HTML/CSS/icon
   paths through `apt.sharedpair.dev`.
 
 ## Phase 4: Repository rollback drill
 
-- [ ] Record the successor generation ID and public metadata hashes.
-- [ ] Invoke the guarded rollback command with the exact baseline generation ID.
-- [ ] Verify the baseline generation signature, manifest, package membership,
+- [x] Record the successor generation ID and public metadata hashes.
+- [x] Invoke the guarded rollback command with the exact baseline generation ID.
+- [x] Verify the baseline generation signature, manifest, package membership,
   and public hostname after promotion.
-- [ ] Confirm a clean APT client can update against the restored baseline and
+- [x] Confirm a clean APT client can update against the restored baseline and
   resolve representative packages from both runtime lines.
-- [ ] Re-promote the exact successor generation with the same guarded command.
-- [ ] Repeat signature, membership, public metadata, and APT client checks.
-- [ ] Record timestamps, generation IDs, commands, hashes, and results below.
+- [x] Re-promote the exact successor generation with the same guarded command.
+- [x] Repeat signature, membership, public metadata, and APT client checks.
+- [x] Record timestamps, generation IDs, commands, hashes, and results below.
 
 ## Phase 5: Final deployment and verification
 
-- [ ] Deploy the final `sharedpair.dev` build after wording and QA corrections.
-- [ ] Verify `/`, all five canonical hashes, `/about/`, `/feed.xml`, `/api/votes`,
+- [x] Deploy the final `sharedpair.dev` build after wording and QA corrections.
+- [x] Verify `/`, all five canonical hashes, `/about/`, `/feed.xml`, `/api/votes`,
   and `apt.sharedpair.dev`.
-- [ ] Verify deleted human-facing content routes still return `404`.
-- [ ] Confirm both worktrees contain no uncommitted changes from this run. Any
+- [x] Verify deleted human-facing content routes still return `404`.
+- [x] Confirm both worktrees contain no uncommitted changes from this run. Any
   preserved unrelated changes must be listed explicitly.
 
 ## Acceptance criteria
@@ -110,11 +110,11 @@ To be completed during the run.
 
 | Item | Result |
 |---|---|
-| Website commit | Pending |
-| APT browser commit | Pending |
-| Baseline generation | Pending |
-| Successor generation | Pending |
-| Baseline rollback verification | Pending |
-| Successor restoration verification | Pending |
-| Desktop/mobile QA | Pending |
-| Final live verification | Pending |
+| Website commit | `2cc5bd7` one-page consolidation; subsequent logo, colophon, About, and candidate-table commits through `545db99` |
+| APT browser commit | `0e953ba`, followed by official-logo/colophon work through `83272c2` and rollback hardening through `8b69ae9` |
+| Baseline generation | `20260901T051518Z`; 98 objects, 1,891,462,645 bytes; manifest SHA-256 `082cff17e85e8490ba1593dd7741f1ecb136462ecb121d40c648eaf3bca83a1b` |
+| Successor generation | `20260901T193234Z`; 106 objects, 1,961,301,675 bytes; downloaded manifest SHA-256 `fcaf575c80de0f3194c244b50edc323b00cc28fc36c9dde289761f1564f80b3a` |
+| Baseline rollback verification | Workflow `33553982295` passed; signature/public verifier reported 12 binary/source packages; clean Ubuntu 26.04 client updated and resolved both runtime lines |
+| Successor restoration verification | Workflow `33554492011` passed; signature/public verifier reported 13 binary/source packages; prior publication smoke installed representative packages and both runtime lines |
+| Desktop/mobile QA | Home, About, colophon, and APT browser inspected at 1440×1000 and/or 390×844; material layout issues corrected |
+| Final live verification | Worker `36122bbe-9077-4899-86fb-f3dbd9f97617`; main, About, colophon, feed, votes API, and APT returned 200; five removed routes returned 404 |

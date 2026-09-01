@@ -119,9 +119,9 @@ On narrow screens the three links wrap into a vertical list with full-row click 
 - [x] Extend APT publication verification to assert the generated footer link.
 - [x] Build both properties and visually inspect desktop and 390px mobile renders.
 - [x] Check link focus, wrapping, contrast, and `prefers-reduced-motion` behavior.
-- [ ] Commit website and APT changes separately.
-- [ ] Publish sharedpair.dev, then publish the APT change in a new immutable signed generation.
-- [ ] Verify both live URLs and record generation/version evidence below.
+- [x] Commit website and APT changes separately.
+- [x] Publish sharedpair.dev, then publish the APT change in a new immutable signed generation.
+- [x] Verify both live URLs and record generation/version evidence below.
 
 ## Acceptance criteria
 
@@ -135,4 +135,4 @@ On narrow screens the three links wrap into a vertical list with full-row click 
 
 ## Publication evidence
 
-Astro rendered three pages and the structural verifier passed. The colophon was checked at 1440×1000 and 390×844 against the approved mockup. The APT browser includes the deep-link and icon-only copy affordance; local signed generation `20260901T192531Z` verified 13 binaries, 13 sources, and 106 objects. Production version and generation remain to be recorded after publication.
+Astro rendered three pages and the structural verifier passed. The colophon was checked at 1440×1000 and 390×844 against the approved mockup. Website commit `2cc96a9` deployed successfully; the final Worker version after the candidate-table follow-up is `36122bbe-9077-4899-86fb-f3dbd9f97617`. APT commit `83272c2` published as signed immutable generation `20260901T193234Z` with 13 binaries, 13 sources, and 106 objects. The live APT HTML contains the direct `#apt-repository` link and icon-only copy control.
