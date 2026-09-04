@@ -11,7 +11,14 @@ const categories = [...new Set(candidates.map((candidate) => candidate.category)
 ---
 
 <section class="one-section shell" id="applications" aria-labelledby="applications-heading">
-  <header class="section-heading"><div><p class="eyebrow">Applications</p><h2 id="applications-heading">{applications.length} published.<br />{blockedApplications.length} held.</h2></div><p>Every application keeps its identity and private components while depending on the shared runtime it passed against. Open any row for the complete report.</p></header>
+  <header class="section-heading"><div><p class="eyebrow">Applications</p><h2 id="applications-heading">{applications.length} tested.<br />{blockedApplications.length} held.</h2></div><p>Every application keeps its identity and private components while depending on the shared runtime it passed against. Open any row for the complete report.</p></header>
+  <form id="app-filters" class="filters" aria-label="Filter applications">
+    <label><span>Search</span><input type="search" name="q" autocomplete="off" placeholder="Name or purpose" /></label>
+    <label><span>Runtime</span><select name="runtime"><option value="">Any runtime</option><option value="electron-runtime-42">Electron 42</option><option value="electron-runtime-44">Electron 44</option></select></label>
+    <label><span>Status</span><select name="status"><option value="">Any status</option><option value="tested">Tested</option><option value="blocked">Held</option></select></label>
+    <button type="reset">Reset</button>
+  </form>
+  <p id="app-count" class="count" aria-live="polite">Showing all {records.length} applications</p>
   <div class="application-list">
     {records.map((app) => <details id={`applications-${app.slug}`} data-app data-name={`${app.name} ${app.purpose}`.toLowerCase()} data-runtime={app.runtime} data-status={app.state}>
       <summary>{(app.interfaceScreenshot || app.screenshot) && <img class="thumbnail" src={(app.interfaceScreenshot || app.screenshot)!.src} alt="" loading="lazy" />}<div><strong>{app.name}</strong><span>{app.purpose}</span></div><small>Electron {app.electron}<br />{app.state === 'tested' ? 'Tested' : 'Held'}</small><b class="toggle" aria-hidden="true"></b></summary>
@@ -25,6 +32,7 @@ const categories = [...new Set(candidates.map((candidate) => candidate.category)
       </div>
     </details>)}
   </div>
+  <div id="app-empty" class="empty" hidden>No applications match those filters.</div>
 
   <details class="candidate-section" id="under-consideration">
     <summary><div><strong>Under consideration</strong><span>{candidates.length} viable candidates from the first source audit</span></div><b class="toggle" aria-hidden="true"></b></summary>
@@ -39,6 +47,18 @@ const categories = [...new Set(candidates.map((candidate) => candidate.category)
 </section>
 
 <script>
+  const form = document.querySelector<HTMLFormElement>('#app-filters');
+  const apps = [...document.querySelectorAll<HTMLElement>('[data-app]')];
+  const appCount = document.querySelector<HTMLElement>('#app-count');
+  const appEmpty = document.querySelector<HTMLElement>('#app-empty');
+  function filterApps() {
+    if (!form) return;
+    const data = new FormData(form); const query = String(data.get('q') ?? '').trim().toLowerCase(); let visible = 0;
+    for (const app of apps) { app.hidden = Boolean((query && !(app.dataset.name ?? '').includes(query)) || (data.get('runtime') && app.dataset.runtime !== data.get('runtime')) || (data.get('status') && app.dataset.status !== data.get('status'))); if (!app.hidden) visible++; }
+    if (appCount) appCount.textContent = visible === apps.length ? `Showing all ${visible} applications` : `Showing ${visible} of ${apps.length} applications`;
+    if (appEmpty) appEmpty.hidden = visible !== 0;
+  }
+  form?.addEventListener('input', filterApps); form?.addEventListener('reset', () => requestAnimationFrame(filterApps));
 
   const search = document.querySelector<HTMLInputElement>('#candidate-search'); const category = document.querySelector<HTMLSelectElement>('#candidate-category');
   const candidates = [...document.querySelectorAll<HTMLElement>('[data-candidate]')]; const candidateCount = document.querySelector<HTMLElement>('#candidate-count'); const candidateEmpty = document.querySelector<HTMLElement>('#candidate-empty');
@@ -56,7 +76,7 @@ const categories = [...new Set(candidates.map((candidate) => candidate.category)
 <style>
   [hidden] { display: none !important; } .one-section { padding-block: 4rem; border-bottom: 1px solid var(--line); }
   .section-heading { display: grid; grid-template-columns: 1fr minmax(260px,420px); gap: 3rem; align-items: end; } .section-heading h2 { margin: 0; } .section-heading > p { margin: 0; color: var(--muted); }
-  .candidate-filters { display: grid; grid-template-columns: 1fr 260px; gap: .7rem; align-items: end; margin-top: 2rem; }
+  .filters, .candidate-filters { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: .7rem; align-items: end; margin-top: 2rem; }
   label span { display: block; margin-bottom: .35rem; color: var(--faint); font: .6rem var(--mono); text-transform: uppercase; }
   input, select, button { min-height: 42px; padding: 0 .7rem; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font: .7rem var(--mono); } button { cursor: pointer; text-transform: uppercase; }
   .count { color: var(--faint); font: .64rem var(--mono); text-transform: uppercase; }
@@ -64,5 +84,5 @@ const categories = [...new Set(candidates.map((candidate) => candidate.category)
   summary strong, summary span { display: block; } summary strong { font-size: 1.35rem; } summary span, summary small { color: var(--muted); }
   .app-report { padding: 0 0 2rem 2rem; border-left: 1px solid var(--line-strong); } .app-report dl { display: grid; grid-template-columns: repeat(4,1fr); } .app-report dl div { padding: .8rem; border-bottom: 1px solid var(--line); } dt { color: var(--faint); font: .6rem var(--mono); text-transform: uppercase; } dd { margin: .3rem 0 0; font: .72rem var(--mono); } .app-report article { max-width: 820px; padding-top: 1.2rem; } .app-report article p, .app-report li { color: var(--muted); } figure { margin: 1.5rem 0 0; } figure img { display: block; width: min(100%,900px); max-height: 620px; object-fit: contain; background: #fff; } figcaption { margin-top: .5rem; color: var(--faint); font: .65rem var(--mono); }
   .empty { padding: 2rem 0; color: var(--muted); } .candidate-section { margin-top: 4.5rem; border: 1px solid var(--line-strong); background: linear-gradient(135deg,rgba(185,255,102,.055),rgba(165,139,255,.055) 58%,transparent); } .candidate-section>summary{padding:1.6rem 1.4rem;background:linear-gradient(90deg,rgba(185,255,102,.08),rgba(165,139,255,.08));}.candidate-section>summary strong{font-size:clamp(1.55rem,3vw,2.15rem);letter-spacing:-.035em}.candidate-section>summary span{margin-top:.25rem;font:.7rem var(--mono);text-transform:uppercase;letter-spacing:.08em}.candidate-body { padding: 0 1.4rem 2rem; } .candidate-filters { grid-template-columns: 1fr 260px; } .candidate-note { color: var(--muted); } .candidate-table { border: 1px solid var(--line);background:rgba(10,11,14,.72) } table { width: 100%; border-collapse: collapse; } th, td { padding: .8rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font: .66rem/1.5 var(--mono); } th { position:sticky;top:72px;z-index:20;padding:0;color:var(--faint);text-transform:uppercase;background:#0a0b0e; }.sort-button{display:flex;width:100%;min-height:42px;align-items:center;gap:.5rem;padding:.8rem;border:0;background:transparent;color:inherit;text-align:left}.sort-button:hover,.sort-button:focus-visible{color:var(--ink);background:var(--surface-2)}.sort-button i::before{content:'↕';font-style:normal;color:var(--faint)}th[aria-sort='ascending'] .sort-button i::before{content:'↑';color:var(--lime)}th[aria-sort='descending'] .sort-button i::before{content:'↓';color:var(--lime)} td:first-child { min-width: 260px; } td strong, td small { display: block; } td small { max-width: 420px; color: var(--muted); font: .78rem/1.4 var(--sans); }
-  @media(max-width:760px) { .section-heading, .candidate-filters { grid-template-columns: 1fr; } summary, summary:not(:has(.thumbnail)) { grid-template-columns: 96px 1fr; } summary:not(:has(.thumbnail)) { grid-template-columns:1fr auto; } .thumbnail { width:96px;height:64px;grid-row:1 / span 2; } summary small { display:none; } .toggle { grid-column:2;justify-self:start; } summary:not(:has(.thumbnail)) .toggle { grid-column:2;grid-row:1;justify-self:end; } .app-report { padding-left: 1rem; } .app-report dl { grid-template-columns: 1fr 1fr; } .candidate-table { overflow-x:auto; } .candidate-table th { position:static; } }
+  @media(max-width:760px) { .section-heading, .filters, .candidate-filters { grid-template-columns: 1fr; } summary, summary:not(:has(.thumbnail)) { grid-template-columns: 96px 1fr; } summary:not(:has(.thumbnail)) { grid-template-columns:1fr auto; } .thumbnail { width:96px;height:64px;grid-row:1 / span 2; } summary small { display:none; } .toggle { grid-column:2;justify-self:start; } summary:not(:has(.thumbnail)) .toggle { grid-column:2;grid-row:1;justify-self:end; } .app-report { padding-left: 1rem; } .app-report dl { grid-template-columns: 1fr 1fr; } .candidate-table { overflow-x:auto; } .candidate-table th { position:static; } }
 </style>
