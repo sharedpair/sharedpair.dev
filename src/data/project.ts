@@ -92,7 +92,7 @@ export const applications: AppRecord[] = [
     screenshot: {
       src: '/images/applications/drawio-desktop/drawio-desktop-31.3.1-electron-42.9.3.png',
       alt: 'draw.io Desktop editor showing its menus, shape palette, diagram canvas, and style panel with a Shared Electron 42 sample document open.',
-      caption: 'draw.io Desktop 31.3.1-1foundry1 · electron-runtime-42 42.9.3 · Ubuntu 26.04 clean-container capture',
+      caption: 'draw.io Desktop 31.3.1-1sharedpair1 · electron-runtime-42 42.9.3 · Ubuntu 26.04 clean-container capture',
     },
   },
   {
@@ -110,7 +110,7 @@ export const applications: AppRecord[] = [
     screenshot: {
       src: '/images/applications/marktext/marktext-0.19.1-electron-42.9.3.png',
       alt: 'MarkText rendering a Shared Pair Markdown document with headings, emphasis, lists, and a block quotation.',
-      caption: 'MarkText 0.19.1-1foundry2 · electron-runtime-42 42.9.3 · Ubuntu 26.04 clean-container capture',
+      caption: 'MarkText 0.19.1-1sharedpair1 · electron-runtime-42 42.9.3 · Ubuntu 26.04 clean-container capture',
     },
   },
   {
@@ -140,7 +140,7 @@ export const applications: AppRecord[] = [
     screenshot: {
       src: '/images/applications/teams-for-linux/teams-for-linux-2.18.1-electron-42.9.3.png',
       alt: 'Teams for Linux 2.18.1 running with a fresh profile under Electron 42.9.3.',
-      caption: 'Teams for Linux 2.18.1-1foundry1 · electron-runtime-42 42.9.3 · Ubuntu 26.04 clean-container capture',
+      caption: 'Teams for Linux 2.18.1-1sharedpair1 · electron-runtime-42 42.9.3 · Ubuntu 26.04 clean-container capture',
     },
   },
   {
@@ -184,7 +184,7 @@ export const applications: AppRecord[] = [
     screenshot: {
       src: '/images/applications/trilium-notes/trilium-notes-0.105.0-electron-44.0.0.png',
       alt: 'Trilium Notes running with its demo knowledge base, showing the note hierarchy, Journal calendar, navigation, and side panel.',
-      caption: 'Trilium Notes 0.105.0~git20260831.d2df448d-1foundry1 · electron-runtime-44 44.0.0 · Ubuntu 26.04 clean-container capture',
+      caption: 'Trilium Notes 0.105.0~git20260831.d2df448d-1sharedpair1 · electron-runtime-44 44.0.0 · Ubuntu 26.04 clean-container capture',
     },
   },
 ];

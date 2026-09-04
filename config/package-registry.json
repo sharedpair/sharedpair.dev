@@ -18,6 +18,6 @@
     "jbrowse-desktop": "Present in status.json but not yet enrolled in the Shared Pair application test cohort."
   },
   "monolithicComparisons": {
-    "losslesscut": "3.69.0-1foundry1"
+    "losslesscut": "3.69.0-1sharedpair1"
   }
 }

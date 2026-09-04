@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-31T23:22:19.013Z",
+  "generatedAt": "2026-09-04T01:09:51.507Z",
   "suite": "resolute",
   "architecture": "amd64",
   "cohort": [
@@ -20,17 +20,17 @@
   "accounting": {
     "testedApplications": 8,
     "runtimeLines": 2,
-    "sharedArchiveBytes": 775710028,
-    "sharedArchiveMiB": 739.8,
-    "bundledModelArchiveBytes": 1337455074,
-    "bundledModelArchiveMiB": 1275.5,
-    "archiveSavedBytes": 561745046,
+    "sharedArchiveBytes": 775982012,
+    "sharedArchiveMiB": 740,
+    "bundledModelArchiveBytes": 1337726232,
+    "bundledModelArchiveMiB": 1275.8,
+    "archiveSavedBytes": 561744220,
     "archiveSavedMiB": 535.7,
     "archiveSavedPercent": 42,
-    "sharedInstalledKiB": 1990399,
-    "sharedInstalledMiB": 1943.7,
-    "bundledModelInstalledKiB": 3842233,
-    "bundledModelInstalledMiB": 3752.2,
+    "sharedInstalledKiB": 1992025,
+    "sharedInstalledMiB": 1945.3,
+    "bundledModelInstalledKiB": 3843859,
+    "bundledModelInstalledMiB": 3753.8,
     "installedSavedKiB": 1851834,
     "installedSavedMiB": 1808.4,
     "installedSavedPercent": 48.2,
@@ -38,72 +38,72 @@
   },
   "sources": {
     "losslesscut": {
-      "version": "3.69.0-1foundry2",
-      "archiveBytes": 74047438,
+      "version": "3.69.0-1sharedpair1",
+      "archiveBytes": 74047354,
       "installedKiB": 281483,
-      "sha256": "c3801526eaa4fabdb0260287b9dcf47a87dbc106a0faba821eb90a7464955f6c"
+      "sha256": "0105676487666bafb35b3117d25eee78e8dc7794fd6569797b795bd33f3c2775"
     },
     "drawio-desktop": {
-      "version": "31.3.1-1foundry1",
+      "version": "31.3.1-1sharedpair1",
       "archiveBytes": 32926342,
       "installedKiB": 142600,
-      "sha256": "98d70b6022eb4a2857fbfa1fdb58bad2f72fbb4a6a87ee4314b067906bc6949e"
+      "sha256": "b61eb3dce6cf29efab081f48bc7fa4e3839da14c251e7d9fce6e3055ef01dad5"
     },
     "marktext": {
-      "version": "0.19.1-1foundry2",
-      "archiveBytes": 16776686,
-      "installedKiB": 94014,
-      "sha256": "44a51e468ed73d8c49f67ea55d358cdcb852f880225a267e6b1e3dbbc7283b49"
+      "version": "0.19.1-1sharedpair1",
+      "archiveBytes": 17048394,
+      "installedKiB": 95640,
+      "sha256": "12680da78d3f5c0b8c5fcdd6b2c41ceeaadfcd33f61d1493ff579ff8e963ab51"
     },
     "joplin": {
-      "version": "3.7.14-1foundry1",
-      "archiveBytes": 59725426,
+      "version": "3.7.14-1sharedpair1",
+      "archiveBytes": 59725260,
       "installedKiB": 315322,
-      "sha256": "eb2d3c415c6d05a99dc5f28ebd9efe1003c93ec07050f359ac0a75e4470a2dd9"
+      "sha256": "c2d7dafb4abcc3a7fb04d05ab5d54be7421e7f4bcd105f67eca890dd55251149"
     },
     "teams-for-linux": {
-      "version": "2.18.1-1foundry1",
-      "archiveBytes": 15353252,
+      "version": "2.18.1-1sharedpair1",
+      "archiveBytes": 15353506,
       "installedKiB": 31563,
-      "sha256": "1c5d1b8ef344d303b9fc50f3ff81310f9f8410f8256d186885cbed3fddb0bc30"
+      "sha256": "c02f4232213b6ea04f5708f3cb3abf2733377037226dd0afeaeeec4b2c894524"
     },
     "jupyterlab-desktop": {
-      "version": "4.6.3-1foundry1",
-      "archiveBytes": 326401798,
+      "version": "4.6.3-1sharedpair1",
+      "archiveBytes": 326402014,
       "installedKiB": 334826,
-      "sha256": "6273c69172dd8f31748d41b821ca405a54fad9e2d0bf2387c75b1b59616a3bac"
+      "sha256": "5d1245f2cfd12432eae78808642e8b6a68e4b7a1339c4b2b2106aecf07981e84"
     },
     "netron": {
-      "version": "9.2.4-1foundry1",
-      "archiveBytes": 2642638,
+      "version": "9.2.4-1sharedpair1",
+      "archiveBytes": 2642822,
       "installedKiB": 27956,
-      "sha256": "b7f9796aadef8a0e16c7c820a010040fcb4ca8e552c25f334e45a8e81f35e254"
+      "sha256": "7a722010a6d5fe6f0279e36264b5cce0f04439babc64e8627100daa7a3d5c842"
     },
     "trilium-notes": {
-      "version": "0.105.0~git20260831.d2df448d-1foundry1",
-      "archiveBytes": 59416394,
+      "version": "0.105.0~git20260831.d2df448d-1sharedpair1",
+      "archiveBytes": 59416148,
       "installedKiB": 163293,
-      "sha256": "0fcff28524cbcc1d6d40485863d3ce4669a62629e87168926901c706224a3ba4"
+      "sha256": "cf3c4b953d60e4046a1ccb30197f1c872444116845e4763bcd34bf80f5da2dc4"
     },
     "electron-runtime-42": {
-      "version": "42.9.3-1foundry1",
-      "archiveBytes": 93331248,
+      "version": "42.9.3-1sharedpair1",
+      "archiveBytes": 93331012,
       "installedKiB": 313123,
-      "sha256": "7a3b2057d667eb3a5a347988bbc42661544c3ff5459a18826a8eace732329c57"
+      "sha256": "eb39ee51bdbb7711c59f18a26b500a8390ac6672182009dd89a7e50218765db5"
     },
     "electron-runtime-44": {
-      "version": "44.0.0-1foundry1",
-      "archiveBytes": 95088806,
+      "version": "44.0.0-1sharedpair1",
+      "archiveBytes": 95089160,
       "installedKiB": 286219,
-      "sha256": "bae52c9340b50fd8b69b2cae58aef37b578a88cd5921f00c20df0720170ebc34"
+      "sha256": "f5db6e562ba087bbd26e42a250022c98bb507e220a04263c7a54d35cbcf8b412"
     }
   },
   "monolithicComparisons": {
     "losslesscut": {
-      "version": "3.69.0-1foundry1",
-      "archiveBytes": 164323976,
-      "installedKiB": 587995,
-      "sha256": "24ae1dbf91fef11acc1a5fddc402ed60a7f21eb666d7eecd17d2ef8de33a4895"
+      "version": "3.69.0-1sharedpair1",
+      "archiveBytes": 74047354,
+      "installedKiB": 281483,
+      "sha256": "0105676487666bafb35b3117d25eee78e8dc7794fd6569797b795bd33f3c2775"
     }
   }
 }
