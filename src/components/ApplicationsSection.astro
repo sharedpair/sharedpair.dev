@@ -11,7 +11,7 @@ const categories = [...new Set(candidates.map((candidate) => candidate.category)
 ---
 
 <section class="one-section shell" id="applications" aria-labelledby="applications-heading">
-  <header class="section-heading"><div><p class="eyebrow">Applications</p><h2 id="applications-heading">{applications.length} tested.<br />{blockedApplications.length} held.</h2></div><p>Every application keeps its identity and private components while depending on the shared runtime it passed against. Open any row for the complete report.</p></header>
+  <header class="section-heading"><div><p class="eyebrow">Applications</p><h2 id="applications-heading">Published<br /><em>applications.</em></h2></div><p>Every application keeps its identity and private components while depending on the shared runtime it passed against. Open any row for the complete report.</p></header>
   <form id="app-filters" class="filters" aria-label="Filter applications">
     <label><span>Search</span><input type="search" name="q" autocomplete="off" placeholder="Name or purpose" /></label>
     <label><span>Runtime</span><select name="runtime"><option value="">Any runtime</option><option value="electron-runtime-42">Electron 42</option><option value="electron-runtime-44">Electron 44</option></select></label>
