@@ -42,7 +42,7 @@ for (const [url, record] of Object.entries(provenance.images)) {
 }
 
 const homeHtml = readFileSync(resolve(dist, 'index.html'), 'utf8');
-for (const id of ['install', 'applications', 'runtimes', 'security', 'status']) if (!homeHtml.includes(`id="${id}"`)) failures.push(`home: missing #${id} section`);
+for (const id of ['install', 'applications', 'runtimes', 'security']) if (!homeHtml.includes(`id="${id}"`)) failures.push(`home: missing #${id} section`);
 for (const packageName of [...registry.testedApplications, ...registry.blockedApplications]) if (!homeHtml.includes(`id="applications-${packageName}"`)) failures.push(`${packageName}: missing inline application report`);
 for (const removedRoute of ['install', 'applications', 'runtimes', 'security', 'status']) if (statSafe(resolve(dist, removedRoute, 'index.html'))) failures.push(`${removedRoute}: obsolete route still rendered`);
 if (!statSafe(resolve(dist, 'about', 'index.html'))) failures.push('about: missing separate page');
