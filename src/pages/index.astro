@@ -6,9 +6,6 @@ import RuntimesSection from '../components/RuntimesSection.astro';
 import SecuritySection from '../components/SecuritySection.astro';
 import StatusSection from '../components/StatusSection.astro';
 import MotionLogo from '../components/MotionLogo.astro';
-import { projectStatus } from '../data/project';
-
-const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#runtimes', Applications: '#applications', Target: '#install', Updated: '#status' };
 ---
 
 <BaseLayout title="Shared Pair — Electron, shared" description="Shared, versioned Electron runtimes and compatible desktop applications for Linux.">
@@ -21,12 +18,6 @@ const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#run
       <p class="disclaimer">Packages built, tested, signed, and publicly installable</p>
     </div>
     <div class="hero-logo" aria-label="Shared Pair logo"><MotionLogo size={512} eager /></div>
-  </section>
-
-  <section class="trust" aria-label="Project status">
-    <div class="shell trust-grid">
-      {Object.entries(projectStatus).map(([key, value]) => <a href={statusLinks[key]}><span>{key}</span><strong>{value}</strong></a>)}
-    </div>
   </section>
 
   <InstallSection />
