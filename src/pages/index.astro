@@ -6,7 +6,7 @@ import RuntimesSection from '../components/RuntimesSection.astro';
 import SecuritySection from '../components/SecuritySection.astro';
 import StatusSection from '../components/StatusSection.astro';
 import MotionLogo from '../components/MotionLogo.astro';
-import { applications, projectStatus, sizeAccounting } from '../data/project';
+import { projectStatus } from '../data/project';
 
 const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#runtimes', Applications: '#applications', Target: '#install', Updated: '#status' };
 ---
@@ -15,7 +15,7 @@ const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#run
   <section class="hero shell">
     <div class="hero-copy">
       <p class="eyebrow">Shared Electron runtimes for Linux</p>
-      <h1>One runtime.<br /><em>More room.</em></h1>
+      <h1>Your apps.<br /><em>One runtime.</em></h1>
       <p class="lede">Shared Pair separates compatible desktop applications from the versioned Electron runtime they have in common—and keeps the packages, tests, provenance, and security updates together.</p>
       <div class="actions"><a class="button primary" href="#install">Install packages</a><a class="button" href="https://apt.sharedpair.dev/">Open APT repository ↗</a></div>
       <p class="disclaimer">Packages built, tested, signed, and publicly installable</p>
@@ -29,14 +29,6 @@ const statusLinks: Record<string, string> = { Status: '#status', Runtimes: '#run
     </div>
   </section>
 
-  <section class="section shell savings">
-    <div class="section-head"><div><p class="eyebrow">Measured package set</p><h2>Save <em>{sizeAccounting.archiveSavedMiB} MiB.</em></h2></div><p>{applications.length} tested applications use two runtime lines. Sharing one runtime per line reduces the modeled compressed package set by {sizeAccounting.archiveSavedPercent}%.</p></div>
-    <div class="bar-chart" aria-label="Compressed package-set comparison">
-      <div class="bar-row"><span>Runtime per app</span><div class="bar bundled"><i style="width: 100%"></i></div><strong>{sizeAccounting.bundledModelArchiveMiB} MiB</strong></div>
-      <div class="bar-row"><span>Shared Pair</span><div class="bar shared"><i style={`width: ${(sizeAccounting.sharedArchiveMiB / sizeAccounting.bundledModelArchiveMiB) * 100}%`}></i></div><strong>{sizeAccounting.sharedArchiveMiB} MiB</strong></div>
-    </div>
-    <p class="chart-note">Package-set accounting from built `.deb` files · measured {sizeAccounting.measured} · the bundled case adds one actual runtime archive per app</p>
-  </section>
   <InstallSection />
   <ApplicationsSection />
   <RuntimesSection />

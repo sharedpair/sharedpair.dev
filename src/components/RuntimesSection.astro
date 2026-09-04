@@ -1,10 +1,8 @@
 ---
-import { applications, reports, runtimes, sizeAccounting } from '../data/project';
+import { reports } from '../data/project';
 ---
 <section class="one-section shell" id="runtimes" aria-labelledby="runtimes-heading">
   <header class="section-heading"><div><p class="eyebrow">Runtimes</p><h2 id="runtimes-heading">Two lines.<br /><em>Explicit bounds.</em></h2></div><p>Applications depend on the Electron major they passed against. Both runtime packages install side by side.</p></header>
-  {runtimes.map((runtime) => { const apps = applications.filter((app) => app.electron === runtime.version); return <article class="runtime"><header><h3>Electron {runtime.version}</h3><dl><div><dt>Package</dt><dd>{runtime.packageName}</dd></div><div><dt>Archive</dt><dd>{runtime.archiveMiB} MiB</dd></div><div><dt>Installed</dt><dd>{runtime.installedMiB} MiB</dd></div><div><dt>Bounds</dt><dd>≥ {runtime.lower} · &lt; {runtime.upper}</dd></div></dl></header><div class="matrix">{apps.map((app) => <a href={`#applications-${app.slug}`}><strong>{app.name}</strong><span>{app.version}</span><span>{app.archiveMiB} MiB</span><b>Passed</b></a>)}</div></article>; })}
-  <p class="accounting">The measured shared package set is {sizeAccounting.sharedArchiveMiB} MiB—{sizeAccounting.archiveSavedMiB} MiB below the modeled per-application runtime case.</p>
   <div class="notes"><p class="eyebrow">Runtime decisions and obligations</p>{reports.map((report) => <details id={`runtime-${report.slug}`}><summary><span>{report.index}</span><div><small>{report.state}</small><h3>{report.title}</h3><p>{report.conclusion}</p></div><b class="toggle" aria-hidden="true"></b></summary><div class="note-body">{report.sections.map((section) => <section><h4>{section.title}</h4>{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}{section.points && <ul>{section.points.map((point) => <li>{point}</li>)}</ul>}</section>)}</div></details>)}</div>
 </section>
 <style>
