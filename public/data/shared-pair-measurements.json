@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-04T02:40:58.084Z",
+  "generatedAt": "2026-09-05T10:33:55.481Z",
   "suite": "resolute",
   "architecture": "amd64",
   "cohort": [
@@ -14,29 +14,49 @@
     "trilium-notes",
     "penpot-desktop",
     "effetune",
-    "element-desktop"
+    "element-desktop",
+    "poi",
+    "tuta-desktop",
+    "jbrowse-desktop",
+    "nerimity-desktop",
+    "opencomic",
+    "min-browser",
+    "leafview",
+    "ebtcalc",
+    "fluent-reader",
+    "github-desktop-linux",
+    "electorrent",
+    "weltenschaft",
+    "git-it",
+    "mattermost-desktop",
+    "blockbench",
+    "balena-etcher",
+    "exifcleaner",
+    "zulip-desktop",
+    "recode-converter"
   ],
   "runtimeLines": [
     "electron-runtime-42",
-    "electron-runtime-44"
+    "electron-runtime-44",
+    "electron-runtime-43"
   ],
   "accounting": {
-    "testedApplications": 11,
-    "runtimeLines": 2,
-    "sharedArchiveBytes": 819434044,
-    "sharedArchiveMiB": 781.5,
-    "bundledModelArchiveBytes": 1666445744,
-    "bundledModelArchiveMiB": 1589.2,
-    "archiveSavedBytes": 847011700,
-    "archiveSavedMiB": 807.8,
-    "archiveSavedPercent": 50.8,
-    "sharedInstalledKiB": 2239941,
-    "sharedInstalledMiB": 2187.4,
-    "bundledModelInstalledKiB": 4950432,
-    "bundledModelInstalledMiB": 4834.4,
-    "installedSavedKiB": 2710491,
-    "installedSavedMiB": 2647,
-    "installedSavedPercent": 54.8,
+    "testedApplications": 30,
+    "runtimeLines": 3,
+    "sharedArchiveBytes": 1254964434,
+    "sharedArchiveMiB": 1196.8,
+    "bundledModelArchiveBytes": 3805254230,
+    "bundledModelArchiveMiB": 3629,
+    "archiveSavedBytes": 2550289796,
+    "archiveSavedMiB": 2432.1,
+    "archiveSavedPercent": 67,
+    "sharedInstalledKiB": 4220628,
+    "sharedInstalledMiB": 4121.7,
+    "bundledModelInstalledKiB": 12214361,
+    "bundledModelInstalledMiB": 11928.1,
+    "installedSavedKiB": 7993733,
+    "installedSavedMiB": 7806.4,
+    "installedSavedPercent": 65.4,
     "methodology": "Actual split application archives plus one actual runtime archive per application versus one actual runtime archive per represented runtime line."
   },
   "sources": {
@@ -106,6 +126,120 @@
       "installedKiB": 189128,
       "sha256": "f64b07b004ff8a7e5b5ecdc8602a70cee40f1bc728d895a4524f531774341cf0"
     },
+    "poi": {
+      "version": "12.0.1~candidate1-1sharedpair1",
+      "archiveBytes": 25035986,
+      "installedKiB": 292071,
+      "sha256": "1144be13b61dd015ad5cc3f63f0d390cfe1285854d7d6f11c44b2e70e6ef76cb"
+    },
+    "tuta-desktop": {
+      "version": "357.260827.0~git20260827.3cf1e5b6-1sharedpair1",
+      "archiveBytes": 21352058,
+      "installedKiB": 122916,
+      "sha256": "4cc2d0ccf2db4f1fdb4aa9cfd93bd9f5c20e7b9bec4efdc3014a4d19c934abc1"
+    },
+    "jbrowse-desktop": {
+      "version": "5.0.0~beta.1+git20260831.6444f72b-1sharedpair1",
+      "archiveBytes": 11029744,
+      "installedKiB": 60270,
+      "sha256": "19bc3c27e2792b4db24ae33be2d285b3817ed844e6c973e463d9ea82c6c3b97e"
+    },
+    "nerimity-desktop": {
+      "version": "2.3.2-1sharedpair1",
+      "archiveBytes": 7709098,
+      "installedKiB": 45169,
+      "sha256": "b2a58797b20eb48c29f14e70b7803d3209d784c74242882a66a74c74d0a1592a"
+    },
+    "opencomic": {
+      "version": "1.6.6~git20260831.275d5c40-1sharedpair1",
+      "archiveBytes": 127470158,
+      "installedKiB": 489071,
+      "sha256": "0e0a047140382196233761440dd1ef1f47fd2d412c6075fd19f4110abd89f655"
+    },
+    "min-browser": {
+      "version": "1.35.7-1sharedpair1",
+      "archiveBytes": 5860576,
+      "installedKiB": 25651,
+      "sha256": "2cb51e699fc5c3b31f6f683172ee2e247d8e1a1d66549d3dbbe897066e0bed6f"
+    },
+    "leafview": {
+      "version": "4.4.2-1sharedpair1",
+      "archiveBytes": 1642422,
+      "installedKiB": 16272,
+      "sha256": "5615c171cba6a3996092ec6a4afa812024861ace7f5016dd629cf571d234bf45"
+    },
+    "ebtcalc": {
+      "version": "1.0.27+git20260830.fb5fd842-1sharedpair1",
+      "archiveBytes": 4064186,
+      "installedKiB": 39573,
+      "sha256": "80c06a821aee640ae2768b3daebaa3cf627905fd7b4e6682d07f3643edaccb25"
+    },
+    "fluent-reader": {
+      "version": "1.2.2-1sharedpair1",
+      "archiveBytes": 2843918,
+      "installedKiB": 16321,
+      "sha256": "125a6b9d5d27aa7d099e4ac7195f841291cef8fda7067a200759ebc6f3372811"
+    },
+    "github-desktop-linux": {
+      "version": "3.4.13~linux1-1sharedpair1",
+      "archiveBytes": 55227588,
+      "installedKiB": 181778,
+      "sha256": "707ae615e9e6904c5847afe6d4f61dcc2268324323adba388f8d4771a76b0705"
+    },
+    "electorrent": {
+      "version": "2.16.0-1sharedpair1",
+      "archiveBytes": 10275480,
+      "installedKiB": 49305,
+      "sha256": "f11863b52182833f5e706ab462072139cee256b22411de66e2c0748ac37c1695"
+    },
+    "weltenschaft": {
+      "version": "0.4.3+git20260421.49264527-1sharedpair1",
+      "archiveBytes": 828986,
+      "installedKiB": 2233,
+      "sha256": "463da0ea052879c5e4dc761233ecd2b9d17cf98667d40ed0243b9d4ccce79518"
+    },
+    "git-it": {
+      "version": "6.0.1-1sharedpair1",
+      "archiveBytes": 2357706,
+      "installedKiB": 7797,
+      "sha256": "301d484624f35f92e048bdd22b8ab44cc071abe1d1685dbabe9ca09063b05bde"
+    },
+    "mattermost-desktop": {
+      "version": "6.3.0-1sharedpair1",
+      "archiveBytes": 4153618,
+      "installedKiB": 13338,
+      "sha256": "0565ba7c215a356249ffd645457b4a164f56dc8586f93b3b6771064ce2cad247"
+    },
+    "blockbench": {
+      "version": "5.1.6-1sharedpair1",
+      "archiveBytes": 6929742,
+      "installedKiB": 29991,
+      "sha256": "f26a50b266b9563abdf9fd18ee80e41d227e011df9d34d972248e1ee215dcd3d"
+    },
+    "balena-etcher": {
+      "version": "2.1.6-1sharedpair1",
+      "archiveBytes": 35083614,
+      "installedKiB": 128097,
+      "sha256": "034c31f874c802a13484e60e959be5336e25292b5129d06ba767503651a8dca0"
+    },
+    "exifcleaner": {
+      "version": "4.2.1-1sharedpair1",
+      "archiveBytes": 14603962,
+      "installedKiB": 69655,
+      "sha256": "211ae2831ea51ef37d8100fa878c7064fb7b03564ae23dfebd75c2f173687dd2"
+    },
+    "zulip-desktop": {
+      "version": "5.12.4-1sharedpair1",
+      "archiveBytes": 1738586,
+      "installedKiB": 10392,
+      "sha256": "1019bab4f8b4232d31f722af45bbbc291f4fdbe376d2c7608e649586a3cea954"
+    },
+    "recode-converter": {
+      "version": "2.1.1-1sharedpair1",
+      "archiveBytes": 3759972,
+      "installedKiB": 69274,
+      "sha256": "2d9abe953db6b0fa5a05a18b2ea92af91c83bed58bfc9d43ad46d58fb51e05bf"
+    },
     "electron-runtime-42": {
       "version": "42.9.3-1sharedpair1",
       "archiveBytes": 93331012,
@@ -117,6 +251,12 @@
       "archiveBytes": 95089160,
       "installedKiB": 286219,
       "sha256": "f5db6e562ba087bbd26e42a250022c98bb507e220a04263c7a54d35cbcf8b412"
+    },
+    "electron-runtime-43": {
+      "version": "43.4.1-1sharedpair1",
+      "archiveBytes": 93562990,
+      "installedKiB": 311513,
+      "sha256": "b84d2db7b3e28baf109833d18be1ef6a3c2fe04a59dda50216bfd752d69d87fa"
     }
   },
   "monolithicComparisons": {

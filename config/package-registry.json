@@ -10,15 +10,32 @@
     "trilium-notes",
     "penpot-desktop",
     "effetune",
-    "element-desktop"
+    "element-desktop",
+    "poi",
+    "tuta-desktop",
+    "jbrowse-desktop",
+    "nerimity-desktop",
+    "opencomic",
+    "min-browser",
+    "leafview",
+    "ebtcalc",
+    "fluent-reader",
+    "github-desktop-linux",
+    "electorrent",
+    "weltenschaft",
+    "git-it",
+    "mattermost-desktop",
+    "blockbench",
+    "balena-etcher",
+    "exifcleaner",
+    "zulip-desktop",
+    "recode-converter"
   ],
   "blockedApplications": [
-    "audex-player"
+    "audex-player",
+    "quba-viewer"
   ],
-  "discoveredNotEnrolled": {
-    "opencomic": "Present in status.json but not yet enrolled in the Shared Pair application test cohort.",
-    "jbrowse-desktop": "Present in status.json but not yet enrolled in the Shared Pair application test cohort."
-  },
+  "discoveredNotEnrolled": {},
   "monolithicComparisons": {
     "losslesscut": "3.69.0-1sharedpair1"
   }

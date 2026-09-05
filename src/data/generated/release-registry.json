@@ -172,14 +172,14 @@
     },
     {
       "name": "min-browser",
-      "version": "1.35.6-1sharedpair1",
+      "version": "1.35.7-1sharedpair1",
       "kind": "application",
       "state": "verified",
       "slug": "min-browser",
       "description": "Provides a focused web browser with tracker blocking, reader view, tasks, and full-text history search.",
-      "runtime": "electron-runtime-42",
-      "verifiedAt": "2026-09-02T00:45:00Z",
-      "updatedAt": "2026-09-02T00:45:00Z"
+      "runtime": "electron-runtime-43",
+      "verifiedAt": "2026-09-05T10:18:31Z",
+      "updatedAt": "2026-09-05T10:18:31Z"
     },
     {
       "name": "leafview",
@@ -290,6 +290,39 @@
       "runtime": "electron-runtime-44",
       "verifiedAt": "2026-09-04T02:40:09Z",
       "updatedAt": "2026-09-04T02:40:09Z"
+    },
+    {
+      "name": "exifcleaner",
+      "version": "4.2.1-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "exifcleaner",
+      "description": "Removes EXIF and other metadata from images, media files, and PDF documents.",
+      "runtime": "electron-runtime-43",
+      "verifiedAt": "2026-09-05T10:33:45Z",
+      "updatedAt": "2026-09-05T10:33:45Z"
+    },
+    {
+      "name": "zulip-desktop",
+      "version": "5.12.4-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "zulip-desktop",
+      "description": "Desktop client for the Zulip team-chat service.",
+      "runtime": "electron-runtime-42",
+      "verifiedAt": "2026-09-05T10:33:45Z",
+      "updatedAt": "2026-09-05T10:33:45Z"
+    },
+    {
+      "name": "recode-converter",
+      "version": "2.1.1-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "recode-converter",
+      "description": "Changes audio codecs in video containers without re-encoding video.",
+      "runtime": "electron-runtime-42",
+      "verifiedAt": "2026-09-05T10:33:45Z",
+      "updatedAt": "2026-09-05T10:33:45Z"
     }
   ]
 }

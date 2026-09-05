@@ -14,7 +14,7 @@ const categories = [...new Set(candidates.map((candidate) => candidate.category)
   <header class="section-heading"><div><p class="eyebrow">Applications</p><h2 id="applications-heading">Published<br /><em>applications.</em></h2></div><p>Every application keeps its identity and private components while depending on the shared runtime it passed against. Open any row for the complete report.</p></header>
   <form id="app-filters" class="filters" aria-label="Filter applications">
     <label><span>Search</span><input type="search" name="q" autocomplete="off" placeholder="Name or purpose" /></label>
-    <label><span>Runtime</span><select name="runtime"><option value="">Any runtime</option><option value="electron-runtime-42">Electron 42</option><option value="electron-runtime-44">Electron 44</option></select></label>
+    <label><span>Runtime</span><select name="runtime"><option value="">Any runtime</option><option value="electron-runtime-42">Electron 42</option><option value="electron-runtime-43">Electron 43</option><option value="electron-runtime-44">Electron 44</option></select></label>
     <label><span>Status</span><select name="status"><option value="">Any status</option><option value="tested">Tested</option><option value="blocked">Held</option></select></label>
     <button type="reset">Reset</button>
   </form>
@@ -23,7 +23,7 @@ const categories = [...new Set(candidates.map((candidate) => candidate.category)
     {records.map((app) => <details id={`applications-${app.slug}`} data-app data-name={`${app.name} ${app.purpose}`.toLowerCase()} data-runtime={app.runtime} data-status={app.state}>
       <summary>{(app.interfaceScreenshot || app.screenshot) && <img class="thumbnail" src={(app.interfaceScreenshot || app.screenshot)!.src} alt="" loading="lazy" />}<div><strong>{app.name}</strong><span>{app.purpose}</span></div><small>Electron {app.electron}<br />{app.state === 'tested' ? 'Tested' : 'Held'}</small><b class="toggle" aria-hidden="true"></b></summary>
       <div class="app-report">
-        <dl><div><dt>Package</dt><dd>{app.version}</dd></div><div><dt>Runtime</dt><dd>{app.runtime}</dd></div><div><dt>Archive</dt><dd>{app.archiveMiB} MiB</dd></div><div><dt>Installed</dt><dd>{app.installedMiB} MiB</dd></div></dl>
+        <dl><div><dt>Package</dt><dd>{app.version}</dd></div><div><dt>Runtime</dt><dd>{app.runtime}</dd></div><div><dt>Archive</dt><dd>{app.archiveMiB === undefined ? 'Not packaged' : `${app.archiveMiB} MiB`}</dd></div><div><dt>Installed</dt><dd>{app.installedMiB === undefined ? 'Not packaged' : `${app.installedMiB} MiB`}</dd></div></dl>
         <article><h3>What was verified</h3><p>{app.test}</p><p>{app.proof}</p></article>
         <article><h3>Application-owned boundary</h3><ul>{app.notes.map((note) => <li>{note}</li>)}</ul></article>
         <article><h3>Publication</h3><p>{app.state === 'tested' ? 'Built, tested, and available from the signed repository.' : 'Held outside the public repository until the recorded blocker is resolved.'}</p></article>
