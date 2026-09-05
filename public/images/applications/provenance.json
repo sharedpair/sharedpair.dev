@@ -3,7 +3,9 @@
   "images": {
     "/images/applications/losslesscut/upstream-interface.jpg": {
       "kind": "upstream-interface",
-      "source": "https://github.com/mifi/lossless-cut/blob/master/main_screenshot.jpg"
+      "source": "https://github.com/mifi/lossless-cut/blob/master/main_screenshot.jpg",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
     },
     "/images/applications/drawio-desktop/shared-electron-export.png": {
       "kind": "captured-evidence",
@@ -11,7 +13,8 @@
       "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
       "platform": "Ubuntu 26.04 amd64 clean container",
       "method": "draw.io CLI PNG export at 4x scale",
-      "captured": "2026-08-31"
+      "captured": "2026-08-31",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container"
     },
     "/images/applications/drawio-desktop/drawio-desktop-31.3.1-electron-42.9.3.png": {
       "kind": "captured-evidence",
@@ -19,11 +22,14 @@
       "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
       "platform": "Ubuntu 26.04 amd64 clean container",
       "method": "Fresh isolated profile opened the Shared Pair sample diagram under Xvfb and Openbox; the maximized application window was captured after the editor rendered",
-      "captured": "2026-08-31"
+      "captured": "2026-08-31",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container"
     },
     "/images/applications/marktext/upstream-interface.png": {
       "kind": "upstream-interface",
-      "source": "https://github.com/marktext/marktext/blob/develop/docs/assets/marktext.png"
+      "source": "https://github.com/marktext/marktext/blob/develop/docs/assets/marktext.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "done"
     },
     "/images/applications/marktext/marktext-0.19.1-electron-42.9.3.png": {
       "kind": "captured-evidence",
@@ -31,23 +37,42 @@
       "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
       "platform": "Ubuntu 26.04 amd64 clean container",
       "method": "Fresh isolated profile opened a local Shared Pair Markdown fixture; the maximized editor window was captured after headings, lists, and a block quotation rendered",
-      "captured": "2026-08-31"
+      "captured": "2026-08-31",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container"
     },
     "/images/applications/joplin/upstream-interface.png": {
       "kind": "upstream-interface",
-      "source": "https://github.com/laurent22/joplin/blob/dev/Assets/WebsiteAssets/images/home-top-img.png"
+      "source": "https://github.com/laurent22/joplin/blob/dev/Assets/WebsiteAssets/images/home-top-img.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "done"
+    },
+    "/images/applications/joplin/joplin-3.7.14-electron-42.9.3.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "joplin_3.7.14-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Fresh isolated profile launched under Xvfb and Openbox via scripts/capture-joplin-evidence.sh; the maximized application window was captured after the note editor rendered",
+      "captured": "2026-08-31",
+      "note": "On disk but not yet referenced from an AppRecord screenshot field in src/data/project.ts"
     },
     "/images/applications/jupyterlab-desktop/upstream-interface.png": {
       "kind": "upstream-interface",
-      "source": "https://github.com/jupyterlab/jupyterlab-desktop/blob/master/media/jupyterlab-desktop.png"
+      "source": "https://github.com/jupyterlab/jupyterlab-desktop/blob/master/media/jupyterlab-desktop.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
     },
     "/images/applications/netron/upstream-interface.png": {
       "kind": "upstream-interface",
-      "source": "https://github.com/lutzroeder/netron/blob/main/.github/screenshot.png"
+      "source": "https://github.com/lutzroeder/netron/blob/main/.github/screenshot.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
     },
     "/images/applications/trilium-notes/upstream-interface.png": {
       "kind": "upstream-interface",
-      "source": "https://github.com/TriliumNext/Trilium/blob/main/docs/app.png"
+      "source": "https://github.com/TriliumNext/Trilium/blob/main/docs/app.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "done"
     },
     "/images/applications/trilium-notes/trilium-notes-0.105.0-electron-44.0.0.png": {
       "kind": "captured-evidence",
@@ -55,11 +80,14 @@
       "runtime": "electron-runtime-44_44.0.0-1foundry1_amd64.deb",
       "platform": "Ubuntu 26.04 amd64 clean container",
       "method": "Fresh isolated profile completed local onboarding with upstream demo content under Xvfb and Openbox; the maximized notes workspace was captured after database initialization",
-      "captured": "2026-08-31"
+      "captured": "2026-08-31",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container"
     },
     "/images/applications/audex-player/upstream-interface.png": {
       "kind": "upstream-interface",
-      "source": "https://github.com/MishaSok/audex-player/blob/main/docs/screenshots/library-dark.png"
+      "source": "https://github.com/MishaSok/audex-player/blob/main/docs/screenshots/library-dark.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
     },
     "/images/applications/teams-for-linux/teams-for-linux-2.18.1-electron-42.9.3.png": {
       "kind": "captured-evidence",
@@ -67,7 +95,201 @@
       "runtime": "electron-runtime-42_42.9.3-1foundry1_amd64.deb",
       "platform": "Ubuntu 26.04 amd64 clean container",
       "method": "Fresh isolated profile opened to the unauthenticated Microsoft sign-in screen under Xvfb and Openbox",
-      "captured": "2026-08-31"
+      "captured": "2026-08-31",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container"
+    },
+    "/images/applications/penpot-desktop/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/author-more/penpot-desktop/blob/main/build/flatpak/screenshots/penpot-1.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/effetune/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/Frieve-A/effetune/blob/main/images/screenshot.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/element-desktop/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/element-hq/element-desktop/blob/develop/playwright/snapshots/launch/launch.spec.ts/App-launch-should-launch-and-render-the-welcome-view-successfully-1-linux.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/poi/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://user-images.githubusercontent.com/3816900/58731579-ae9fb480-8421-11e9-8a28-f7002f84c0ae.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/tuta-desktop/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/tutao/tutanota/blob/master/app-android/app/src/main/play/listings/en-US/graphics/phone-screenshots/1.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/jbrowse-desktop/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://jbrowse.org/jb2/img/desktop-landing.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/opencomic/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/ollm/OpenComic/blob/master/images/screenshots/main.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/min-browser/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://minbrowser.org/tour/img/searchbar_duckduckgo_answers.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/leafview/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/sprout2000/leafview/assets/52094761/138f527e-14f8-45f3-b310-2c0c82b5dada",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/ebtcalc/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://www.ericbt.com/uploaded_images/ebtcalc_github.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/fluent-reader/upstream-interface.jpg": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/yang991178/fluent-reader/blob/master/docs/imgs/screenshot.jpg",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/github-desktop-linux/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://user-images.githubusercontent.com/634063/202742985-bb3b3b94-8aca-404a-8d8a-fd6a6f030672.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/electorrent/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/tympanix/Electorrent/blob/master/assets/screen0-win.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/weltenschaft/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/HoubkneghteS/Weltenschaft/blob/master/assets/Screenshots/Screenshot1.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/git-it/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/Git-it-App/git-it-electron/blob/master/assets/screenshots/app.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/mattermost-desktop/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://user-images.githubusercontent.com/52460000/146078917-e1ba8c1f-24e5-4613-8b4b-f3507422f4f2.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/blockbench/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/JannisX11/blockbench/blob/master/content/front_page_app.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/balena-etcher/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/balena-io/etcher/blob/v1.0.0/screenshot.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/exifcleaner/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/szTheory/exifcleaner/blob/master/static/screenshot.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/zulip-desktop/upstream-interface.webp": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/zulip/zulip-desktop/blob/main/docs/images/zulip-desktop-screenshot-light.webp",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/recode-converter/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/murgatt/recode-converter/blob/main/public/app-dark.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/thorium-reader/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/edrlab/thorium-reader/blob/master/img/reader.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/quba-viewer/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/ZUGFeRD/quba-viewer/blob/master/000resources/screenshots/Screenshot%202022-08-01%20173610.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/tabby-terminal/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/Eugeny/tabby/blob/master/docs/readme-terminal.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/colorpicker/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/Toinane/colorpicker/blob/master/.github/screenshots/colorpicker.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
+    },
+    "/images/applications/nerimity-desktop/upstream-interface.png": {
+      "kind": "upstream-interface",
+      "source": "https://github.com/Nerimity/nerimity-web/blob/main/readme-assets/Server.png",
+      "origin": "Downloaded from the upstream project, not produced by our build",
+      "localCaptureStatus": "pending"
     }
-  }
+  },
+  "legend": {
+    "upstream-interface": "Third-party image fetched by scripts/fetch-upstream-screenshots.sh from the recorded source; shown as a reference only and must eventually be replaced or paired with our own capture",
+    "captured-evidence": "Screenshot we produced from our published .deb on a clean container; this is the proof we own",
+    "localCaptureStatus": "pending = app still has no captured-evidence image from our local build and needs one"
+  },
+  "pendingLocalCapture": [
+    "audex-player",
+    "balena-etcher",
+    "blockbench",
+    "colorpicker",
+    "ebtcalc",
+    "effetune",
+    "electorrent",
+    "element-desktop",
+    "exifcleaner",
+    "fluent-reader",
+    "git-it",
+    "github-desktop-linux",
+    "jbrowse-desktop",
+    "jupyterlab-desktop",
+    "leafview",
+    "losslesscut",
+    "mattermost-desktop",
+    "min-browser",
+    "nerimity-desktop",
+    "netron",
+    "opencomic",
+    "penpot-desktop",
+    "poi",
+    "quba-viewer",
+    "recode-converter",
+    "tabby-terminal",
+    "thorium-reader",
+    "tuta-desktop",
+    "weltenschaft",
+    "zulip-desktop"
+  ]
 }

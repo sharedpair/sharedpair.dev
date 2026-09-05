@@ -303,6 +303,7 @@ export const applications: AppRecord[] = [
     state: 'tested',
     category: 'communication',
     releaseChannel: 'stable',
+    interfaceScreenshot: { src: '/images/applications/nerimity-desktop/upstream-interface.png', alt: 'Nerimity chat client showing a server view with channel list, message thread, and member sidebar, from the official Nerimity web client README.', source: 'https://github.com/Nerimity/nerimity-web/blob/main/readme-assets/Server.png' },
     proof: 'Repacked from the checksum-verified official v2.3.2 Debian artifact; the upstream Electron executable and every Chromium file are discarded and the packaged updater window is patched out.',
     test: 'A fresh Ubuntu 26.04 container verified dependency bounds, native-module presence, and updater removal, then started Nerimity unprivileged on Electron 44 and required a live Electron process and created configuration.',
     notes: [
