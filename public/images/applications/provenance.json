@@ -180,25 +180,25 @@
       "kind": "upstream-interface",
       "source": "https://github.com/HoubkneghteS/Weltenschaft/blob/master/assets/Screenshots/Screenshot1.png",
       "origin": "Downloaded from the upstream project, not produced by our build",
-      "localCaptureStatus": "pending"
+      "localCaptureStatus": "done"
     },
     "/images/applications/git-it/upstream-interface.png": {
       "kind": "upstream-interface",
       "source": "https://github.com/Git-it-App/git-it-electron/blob/master/assets/screenshots/app.png",
       "origin": "Downloaded from the upstream project, not produced by our build",
-      "localCaptureStatus": "pending"
+      "localCaptureStatus": "done"
     },
     "/images/applications/mattermost-desktop/upstream-interface.png": {
       "kind": "upstream-interface",
       "source": "https://user-images.githubusercontent.com/52460000/146078917-e1ba8c1f-24e5-4613-8b4b-f3507422f4f2.png",
       "origin": "Downloaded from the upstream project, not produced by our build",
-      "localCaptureStatus": "pending"
+      "localCaptureStatus": "done"
     },
     "/images/applications/blockbench/upstream-interface.png": {
       "kind": "upstream-interface",
       "source": "https://github.com/JannisX11/blockbench/blob/master/content/front_page_app.png",
       "origin": "Downloaded from the upstream project, not produced by our build",
-      "localCaptureStatus": "pending"
+      "localCaptureStatus": "done"
     },
     "/images/applications/balena-etcher/upstream-interface.png": {
       "kind": "upstream-interface",
@@ -253,6 +253,46 @@
       "source": "https://github.com/Nerimity/nerimity-web/blob/main/readme-assets/Server.png",
       "origin": "Downloaded from the upstream project, not produced by our build",
       "localCaptureStatus": "pending"
+    },
+    "/images/applications/blockbench/5.1.6-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "blockbench_5.1.6-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-44_44.0.0-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured at 1080×720 through Chromium's debugging protocol from the installed amd64 Debian package (SHA-256 f26a50b266b9563abdf9fd18ee80e41d227e011df9d34d972248e1ee215dcd3d) during its passing fresh Ubuntu 26.04 functional test, with every Blockbench service host resolved to the loopback address. The frame shows the generic-format project reloaded from the .bbmodel the run had just exported: cube 'base' from [0,0,0] to [8,4,8] and cube 'tower' from [2,4,2] to [6,12,6]. Model geometry and the OBJ export are deterministic; the capture itself is not byte-reproducible, because Blockbench assigns each new element a random marker colour and the status bar carries a live software-rendering frame rate (SHA-256 f8e3359e93782b9f5be919adb7e5fa012b9786ba5b974dc7c9b9fd770d93e56f for this frame).",
+      "captured": "2026-09-03",
+      "source": "shared-electron/shared-electron/screenshots/blockbench/5.1.6-1sharedpair1.png"
+    },
+    "/images/applications/git-it/6.0.1-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "git-it_6.0.1-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-44_44.0.0-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured through Chromium's debugging protocol from the installed amd64 Debian package (SHA-256 301d484624f35f92e048bdd22b8ab44cc071abe1d1685dbabe9ca09063b05bde) during its passing fresh Ubuntu 26.04 functional test, immediately after the real Verify! button returned a passing result for the third local challenge. The capture is deterministic and reproduced byte-identically (SHA-256 cbe75a675cc2b66035a28b7881ce5c6d5ed8429a4ff8718c0023c47b1e95a5f9) across repeated runs; the .deb itself rebuilds byte-identically from the pinned source.",
+      "captured": "2026-09-02",
+      "source": "shared-electron/shared-electron/screenshots/git-it/6.0.1-1sharedpair1.png"
+    },
+    "/images/applications/mattermost-desktop/6.3.0-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "mattermost-desktop_6.3.0-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-43_43.4.1-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured from the composed application window on the Xvfb display of the installed amd64 Debian package during its fresh Ubuntu 26.04 configuration-persistence test, after dark mode was enabled through the application's own configuration API. No server or account was configured.",
+      "captured": "2026-09-02",
+      "source": "shared-electron/shared-electron/screenshots/mattermost-desktop/6.3.0-1sharedpair1.png"
+    },
+    "/images/applications/weltenschaft/0.4.3+git20260421.49264527-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "weltenschaft_0.4.3+git20260421.49264527-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-44_44.0.0-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured through Chromium's debugging protocol from the installed amd64 Debian package (SHA-256 463da0ea052879c5e4dc761233ecd2b9d17cf98667d40ed0243b9d4ccce79518) during its passing fresh Ubuntu 26.04 functional test; seed 0.4242, 64×64 resolution, structures disabled. The capture is deterministic and reproduced byte-identically (SHA-256 619ca9015c37951cec2c845d8d3358bc93fdaa114168fadda3919bb88664439f) across repeated runs.",
+      "captured": "2026-09-02",
+      "source": "shared-electron/shared-electron/screenshots/weltenschaft/0.4.3+git20260421.49264527-1sharedpair1.png"
     }
   },
   "legend": {
@@ -263,7 +303,6 @@
   "pendingLocalCapture": [
     "audex-player",
     "balena-etcher",
-    "blockbench",
     "colorpicker",
     "ebtcalc",
     "effetune",
@@ -271,13 +310,11 @@
     "element-desktop",
     "exifcleaner",
     "fluent-reader",
-    "git-it",
     "github-desktop-linux",
     "jbrowse-desktop",
     "jupyterlab-desktop",
     "leafview",
     "losslesscut",
-    "mattermost-desktop",
     "min-browser",
     "nerimity-desktop",
     "netron",
@@ -289,7 +326,6 @@
     "tabby-terminal",
     "thorium-reader",
     "tuta-desktop",
-    "weltenschaft",
     "zulip-desktop"
   ]
 }

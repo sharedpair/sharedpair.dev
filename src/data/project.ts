@@ -455,6 +455,7 @@ export const applications: AppRecord[] = [
       'Both halves of the preferences patch are asserted at build time after an earlier partial application went undetected.',
       'There is no updater, crash reporter, account, or required service.',
     ],
+    screenshot: { src: '/images/applications/weltenschaft/0.4.3+git20260421.49264527-1sharedpair1.png', alt: 'Weltenschaft showing a generated terrain map — brown highlands with grey snow peaks on the left, green and olive biomes through the middle, wide orange desert, and blue water to the right — above a row of Generate, Draw Modes, Save World, Open World, and Settings buttons.', caption: 'A fixed-seed 64×64 world generated and rendered by the packaged Weltenschaft build on shared Electron 44.' },
     interfaceScreenshot: { src: '/images/applications/weltenschaft/upstream-interface.png', alt: "Screenshot of Weltenschaft's terrain generator UI showing a rendered biome-colored world map alongside generation controls.", source: 'https://github.com/HoubkneghteS/Weltenschaft/blob/master/assets/Screenshots/Screenshot1.png' },
   },
   {
@@ -473,6 +474,7 @@ export const applications: AppRecord[] = [
       'Two challenges depend on reporobot.jlord.us, which returned HTTP 500 on 2026-09-02; that is an upstream tutorial property.',
       'A packaging adaptation anchors the translation bundles to the installed tree; the test proves it by switching the UI to German.',
     ],
+    screenshot: { src: '/images/applications/git-it/6.0.1-1sharedpair1.png', alt: 'Git-it on the Commit To It challenge. The left sidebar lists the eleven challenges with Get Git, Repository, and Commit To It marked complete by filled dots and Commit To It highlighted. The main pane shows a blue verification panel headed "Let\'s see if we can find your commit!" with a Change Directory and Verify button, the selected directory /home/electron-test/hello-world, a green-ticked result reading "Changes have been committed!", and a Clear status button, above a Tip box listing git status, git diff, and git add commands.', caption: 'The packaged Git-it build verifying the Commit to it challenge against a throwaway local repository on shared Electron 44, with no credentials and no GitHub account.' },
     interfaceScreenshot: { src: '/images/applications/git-it/upstream-interface.png', alt: 'Screenshot of the Git-it Electron app showing its lesson list and instructions panel for learning Git/GitHub.', source: 'https://github.com/Git-it-App/git-it-electron/blob/master/assets/screenshots/app.png' },
   },
   {
@@ -491,6 +493,7 @@ export const applications: AppRecord[] = [
       'enableSentry and enableMetrics are upstream defaults and are documented rather than silently patched out; the test demonstrates the user control.',
       'Server connection, messaging, and notification delivery are deliberately not exercised.',
     ],
+    screenshot: { src: '/images/applications/mattermost-desktop/6.3.0-1sharedpair1.png', alt: 'Mattermost Desktop\'s welcome screen in a dark window, showing the Mattermost wordmark, a Welcome heading, an introductory line about the platform, a four-step carousel indicator, and a blue Get started button.', caption: 'The packaged Mattermost Desktop build on shared Electron 43, showing its account-free first-run welcome screen in the dark theme enabled during the configuration test.' },
     interfaceScreenshot: { src: '/images/applications/mattermost-desktop/upstream-interface.png', alt: "Screenshot of the Mattermost Desktop client showing the channel sidebar and a message thread, embedded directly in the repo's README.", source: 'https://user-images.githubusercontent.com/52460000/146078917-e1ba8c1f-24e5-4613-8b4b-f3507422f4f2.png' },
   },
   {
@@ -509,6 +512,7 @@ export const applications: AppRecord[] = [
       'Third-party notices are harvested mechanically from esbuild’s metafile; the build fails if fewer than 30 packages are found.',
       'Upstream’s plugin store and anonymised install counters remain available and are documented rather than patched out.',
     ],
+    screenshot: { src: '/images/applications/blockbench/5.1.6-1sharedpair1.png', alt: 'Blockbench\'s dark interface: a wide 8×4×8 base cube with a narrower 4×8×4 tower stacked on top of it, centred on the grid of the 3D viewport with the axis gizmo in the corner; the outliner on the right lists the two elements, base and tower; the UV and texture panels sit on the left and two project tabs run across the top.', caption: 'A two-cube model exported and then parsed back by the packaged Blockbench build on shared Electron 44.' },
     interfaceScreenshot: { src: '/images/applications/blockbench/upstream-interface.png', alt: "Screenshot of Blockbench's model editor showing the 3D viewport, outliner, and texture/UV panels.", source: 'https://github.com/JannisX11/blockbench/blob/master/content/front_page_app.png' },
   },
   {
