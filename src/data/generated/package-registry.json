@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-04T01:09:51.507Z",
+  "generatedAt": "2026-09-04T02:40:58.084Z",
   "suite": "resolute",
   "architecture": "amd64",
   "signingFingerprint": "CB4B 214C 7E7D 250E 1F06 D319 DC95 7822 C3CA 4045",
@@ -12,13 +12,15 @@
     "teams-for-linux",
     "jupyterlab-desktop",
     "netron",
-    "trilium-notes"
+    "trilium-notes",
+    "penpot-desktop",
+    "effetune",
+    "element-desktop"
   ],
   "blockedApplications": [
     "audex-player"
   ],
   "discoveredNotEnrolled": {
-    "effetune": "Package definition is in progress; no verified artifact has been enrolled in the Shared Pair application test cohort.",
     "opencomic": "Present in status.json but not yet enrolled in the Shared Pair application test cohort.",
     "jbrowse-desktop": "Present in status.json but not yet enrolled in the Shared Pair application test cohort."
   },
@@ -517,6 +519,23 @@
       "runtimeLower": "44.0.0",
       "runtimeUpper": "45"
     },
+    "balena-etcher": {
+      "packageName": "balena-etcher",
+      "version": "2.1.6-1sharedpair1",
+      "architecture": "amd64",
+      "archiveBytes": 35083614,
+      "archiveMiB": 33.5,
+      "installedKiB": 128097,
+      "installedMiB": 125.1,
+      "sha256": "034c31f874c802a13484e60e959be5336e25292b5129d06ba767503651a8dca0",
+      "sourceArtifact": "balena-etcher_2.1.6-1sharedpair1_amd64.deb",
+      "artifactModifiedAt": "2026-09-03T21:59:00.399Z",
+      "depends": "libc6 (>= 2.34), libgcc-s1 (>= 3.4), libstdc++6 (>= 4.8), electron-runtime-44 (>= 44.0.0), electron-runtime-44 (<< 45), pkexec | policykit-1",
+      "runtime": "electron-runtime-44",
+      "runtimeMajor": 44,
+      "runtimeLower": "44.0.0",
+      "runtimeUpper": "45"
+    },
     "audex-player": {
       "packageName": "audex-player",
       "version": "1.2.1-1sharedpair1",
@@ -536,22 +555,22 @@
     }
   },
   "accounting": {
-    "testedApplications": 8,
+    "testedApplications": 11,
     "runtimeLines": 2,
-    "sharedArchiveBytes": 775982012,
-    "sharedArchiveMiB": 740,
-    "bundledModelArchiveBytes": 1337726232,
-    "bundledModelArchiveMiB": 1275.8,
-    "archiveSavedBytes": 561744220,
-    "archiveSavedMiB": 535.7,
-    "archiveSavedPercent": 42,
-    "sharedInstalledKiB": 1992025,
-    "sharedInstalledMiB": 1945.3,
-    "bundledModelInstalledKiB": 3843859,
-    "bundledModelInstalledMiB": 3753.8,
-    "installedSavedKiB": 1851834,
-    "installedSavedMiB": 1808.4,
-    "installedSavedPercent": 48.2,
+    "sharedArchiveBytes": 819434044,
+    "sharedArchiveMiB": 781.5,
+    "bundledModelArchiveBytes": 1666445744,
+    "bundledModelArchiveMiB": 1589.2,
+    "archiveSavedBytes": 847011700,
+    "archiveSavedMiB": 807.8,
+    "archiveSavedPercent": 50.8,
+    "sharedInstalledKiB": 2239941,
+    "sharedInstalledMiB": 2187.4,
+    "bundledModelInstalledKiB": 4950432,
+    "bundledModelInstalledMiB": 4834.4,
+    "installedSavedKiB": 2710491,
+    "installedSavedMiB": 2647,
+    "installedSavedPercent": 54.8,
     "methodology": "Actual split application archives plus one actual runtime archive per application versus one actual runtime archive per represented runtime line."
   },
   "monolithicComparisons": {

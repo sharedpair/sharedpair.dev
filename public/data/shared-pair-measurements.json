@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-04T01:09:51.507Z",
+  "generatedAt": "2026-09-04T02:40:58.084Z",
   "suite": "resolute",
   "architecture": "amd64",
   "cohort": [
@@ -11,29 +11,32 @@
     "teams-for-linux",
     "jupyterlab-desktop",
     "netron",
-    "trilium-notes"
+    "trilium-notes",
+    "penpot-desktop",
+    "effetune",
+    "element-desktop"
   ],
   "runtimeLines": [
     "electron-runtime-42",
     "electron-runtime-44"
   ],
   "accounting": {
-    "testedApplications": 8,
+    "testedApplications": 11,
     "runtimeLines": 2,
-    "sharedArchiveBytes": 775982012,
-    "sharedArchiveMiB": 740,
-    "bundledModelArchiveBytes": 1337726232,
-    "bundledModelArchiveMiB": 1275.8,
-    "archiveSavedBytes": 561744220,
-    "archiveSavedMiB": 535.7,
-    "archiveSavedPercent": 42,
-    "sharedInstalledKiB": 1992025,
-    "sharedInstalledMiB": 1945.3,
-    "bundledModelInstalledKiB": 3843859,
-    "bundledModelInstalledMiB": 3753.8,
-    "installedSavedKiB": 1851834,
-    "installedSavedMiB": 1808.4,
-    "installedSavedPercent": 48.2,
+    "sharedArchiveBytes": 819434044,
+    "sharedArchiveMiB": 781.5,
+    "bundledModelArchiveBytes": 1666445744,
+    "bundledModelArchiveMiB": 1589.2,
+    "archiveSavedBytes": 847011700,
+    "archiveSavedMiB": 807.8,
+    "archiveSavedPercent": 50.8,
+    "sharedInstalledKiB": 2239941,
+    "sharedInstalledMiB": 2187.4,
+    "bundledModelInstalledKiB": 4950432,
+    "bundledModelInstalledMiB": 4834.4,
+    "installedSavedKiB": 2710491,
+    "installedSavedMiB": 2647,
+    "installedSavedPercent": 54.8,
     "methodology": "Actual split application archives plus one actual runtime archive per application versus one actual runtime archive per represented runtime line."
   },
   "sources": {
@@ -84,6 +87,24 @@
       "archiveBytes": 59416148,
       "installedKiB": 163293,
       "sha256": "cf3c4b953d60e4046a1ccb30197f1c872444116845e4763bcd34bf80f5da2dc4"
+    },
+    "penpot-desktop": {
+      "version": "0.24.0-1sharedpair1",
+      "archiveBytes": 2853438,
+      "installedKiB": 29178,
+      "sha256": "60067a36639044fd1f47f54b77dd366f8c618f255485628d24c1a4df2c250b9c"
+    },
+    "effetune": {
+      "version": "2.7.0~git20260831.bedc6c66-1sharedpair1",
+      "archiveBytes": 8945250,
+      "installedKiB": 29610,
+      "sha256": "1235720c2b736e1a3f6e473d9b231f9a4a34fa1101ea00e085e18521fb587a09"
+    },
+    "element-desktop": {
+      "version": "1.12.26~git20260831.4dacb8b4-1sharedpair1",
+      "archiveBytes": 31653344,
+      "installedKiB": 189128,
+      "sha256": "f64b07b004ff8a7e5b5ecdc8602a70cee40f1bc728d895a4524f531774341cf0"
     },
     "electron-runtime-42": {
       "version": "42.9.3-1sharedpair1",

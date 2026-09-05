@@ -2,7 +2,7 @@
 import { reports } from '../data/project';
 ---
 <section class="one-section shell" id="runtimes" aria-labelledby="runtimes-heading">
-  <header class="section-heading"><div><p class="eyebrow">Runtimes</p><h2 id="runtimes-heading">Two lines.<br /><em>Explicit bounds.</em></h2></div><p>Applications depend on the Electron major they passed against. Both runtime packages install side by side.</p></header>
+  <header class="section-heading"><div><p class="eyebrow">Runtimes</p><h2 id="runtimes-heading">Paired, not floating.<br /><em>Two runtimes, side by side.</em></h2></div><p>Each application pairs with the exact Electron major it was built and tested against. Both runtime packages coexist on the same system without conflict.</p></header>
   <div class="notes"><p class="eyebrow">Runtime decisions and obligations</p>{reports.map((report) => <details id={`runtime-${report.slug}`}><summary><span>{report.index}</span><div><small>{report.state}</small><h3>{report.title}</h3><p>{report.conclusion}</p></div><b class="toggle" aria-hidden="true"></b></summary><div class="note-body">{report.sections.map((section) => <section><h4>{section.title}</h4>{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}{section.points && <ul>{section.points.map((point) => <li>{point}</li>)}</ul>}</section>)}</div></details>)}</div>
 </section>
 <style>
