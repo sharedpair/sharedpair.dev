@@ -323,6 +323,28 @@
       "runtime": "electron-runtime-42",
       "verifiedAt": "2026-09-05T10:33:45Z",
       "updatedAt": "2026-09-05T10:33:45Z"
+    },
+    {
+      "name": "super-productivity",
+      "version": "18.21.2-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "super-productivity",
+      "description": "Plans work into projects, tags, and boards and tracks the time each task takes, entirely on the local machine.",
+      "runtime": "electron-runtime-43",
+      "verifiedAt": "2026-09-05T23:41:42Z",
+      "updatedAt": "2026-09-05T23:41:42Z"
+    },
+    {
+      "name": "zettlr",
+      "version": "4.7.0-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "zettlr",
+      "description": "Markdown publication workbench with a Zettelkasten link graph, citations, and Pandoc export.",
+      "runtime": "electron-runtime-43",
+      "verifiedAt": "2026-09-06T00:17:58Z",
+      "updatedAt": "2026-09-06T00:17:58Z"
     }
   ]
 }

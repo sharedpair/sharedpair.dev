@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-05T10:33:55.481Z",
+  "generatedAt": "2026-09-06T00:21:15.933Z",
   "suite": "resolute",
   "architecture": "amd64",
   "signingFingerprint": "CB4B 214C 7E7D 250E 1F06 D319 DC95 7822 C3CA 4045",
@@ -603,6 +603,40 @@
       "runtimeMajor": 42,
       "runtimeLower": "42.9.3",
       "runtimeUpper": "43"
+    },
+    "super-productivity": {
+      "packageName": "super-productivity",
+      "version": "18.21.2-1sharedpair1",
+      "architecture": "amd64",
+      "archiveBytes": 11992852,
+      "archiveMiB": 11.4,
+      "installedKiB": 48717,
+      "installedMiB": 47.6,
+      "sha256": "2d3698021e80a5e64a892bba6cda643d44182dfd9c0d2ea628be9e23c16fd9cb",
+      "sourceArtifact": "super-productivity_18.21.2-1sharedpair1_amd64.deb",
+      "artifactModifiedAt": "2026-09-05T23:37:55.246Z",
+      "depends": "libc6 (>= 2.34), libgcc-s1 (>= 4.2), electron-runtime-43 (>= 43.4.1), electron-runtime-43 (<< 44)",
+      "runtime": "electron-runtime-43",
+      "runtimeMajor": 43,
+      "runtimeLower": "43.4.1",
+      "runtimeUpper": "44"
+    },
+    "zettlr": {
+      "packageName": "zettlr",
+      "version": "4.7.0-1sharedpair1",
+      "architecture": "amd64",
+      "archiveBytes": 13481592,
+      "archiveMiB": 12.9,
+      "installedKiB": 74376,
+      "installedMiB": 72.6,
+      "sha256": "f56cf66664ba75e75453a48fe7107b4250832202a570c01a15bcabca4b2566f7",
+      "sourceArtifact": "zettlr_4.7.0-1sharedpair1_amd64.deb",
+      "artifactModifiedAt": "2026-09-05T23:32:59.373Z",
+      "depends": "libc6 (>= 2.16), electron-runtime-43 (>= 43.4.1), electron-runtime-43 (<< 44), pandoc, libglib2.0-bin | kde-cli-tools | trash-cli",
+      "runtime": "electron-runtime-43",
+      "runtimeMajor": 43,
+      "runtimeLower": "43.4.1",
+      "runtimeUpper": "44"
     },
     "audex-player": {
       "packageName": "audex-player",

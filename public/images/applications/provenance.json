@@ -260,7 +260,7 @@
       "package": "blockbench_5.1.6-1sharedpair1_amd64.deb",
       "runtime": "electron-runtime-44_44.0.0-1sharedpair1_amd64.deb",
       "platform": "Ubuntu 26.04 amd64 clean container",
-      "method": "Captured at 1080×720 through Chromium's debugging protocol from the installed amd64 Debian package (SHA-256 f26a50b266b9563abdf9fd18ee80e41d227e011df9d34d972248e1ee215dcd3d) during its passing fresh Ubuntu 26.04 functional test, with every Blockbench service host resolved to the loopback address. The frame shows the generic-format project reloaded from the .bbmodel the run had just exported: cube 'base' from [0,0,0] to [8,4,8] and cube 'tower' from [2,4,2] to [6,12,6]. Model geometry and the OBJ export are deterministic; the capture itself is not byte-reproducible, because Blockbench assigns each new element a random marker colour and the status bar carries a live software-rendering frame rate (SHA-256 f8e3359e93782b9f5be919adb7e5fa012b9786ba5b974dc7c9b9fd770d93e56f for this frame).",
+      "method": "Captured at 1080\u00d7720 through Chromium's debugging protocol from the installed amd64 Debian package (SHA-256 f26a50b266b9563abdf9fd18ee80e41d227e011df9d34d972248e1ee215dcd3d) during its passing fresh Ubuntu 26.04 functional test, with every Blockbench service host resolved to the loopback address. The frame shows the generic-format project reloaded from the .bbmodel the run had just exported: cube 'base' from [0,0,0] to [8,4,8] and cube 'tower' from [2,4,2] to [6,12,6]. Model geometry and the OBJ export are deterministic; the capture itself is not byte-reproducible, because Blockbench assigns each new element a random marker colour and the status bar carries a live software-rendering frame rate (SHA-256 f8e3359e93782b9f5be919adb7e5fa012b9786ba5b974dc7c9b9fd770d93e56f for this frame).",
       "captured": "2026-09-03",
       "source": "shared-electron/shared-electron/screenshots/blockbench/5.1.6-1sharedpair1.png"
     },
@@ -290,9 +290,29 @@
       "package": "weltenschaft_0.4.3+git20260421.49264527-1sharedpair1_amd64.deb",
       "runtime": "electron-runtime-44_44.0.0-1sharedpair1_amd64.deb",
       "platform": "Ubuntu 26.04 amd64 clean container",
-      "method": "Captured through Chromium's debugging protocol from the installed amd64 Debian package (SHA-256 463da0ea052879c5e4dc761233ecd2b9d17cf98667d40ed0243b9d4ccce79518) during its passing fresh Ubuntu 26.04 functional test; seed 0.4242, 64×64 resolution, structures disabled. The capture is deterministic and reproduced byte-identically (SHA-256 619ca9015c37951cec2c845d8d3358bc93fdaa114168fadda3919bb88664439f) across repeated runs.",
+      "method": "Captured through Chromium's debugging protocol from the installed amd64 Debian package (SHA-256 463da0ea052879c5e4dc761233ecd2b9d17cf98667d40ed0243b9d4ccce79518) during its passing fresh Ubuntu 26.04 functional test; seed 0.4242, 64\u00d764 resolution, structures disabled. The capture is deterministic and reproduced byte-identically (SHA-256 619ca9015c37951cec2c845d8d3358bc93fdaa114168fadda3919bb88664439f) across repeated runs.",
       "captured": "2026-09-02",
       "source": "shared-electron/shared-electron/screenshots/weltenschaft/0.4.3+git20260421.49264527-1sharedpair1.png"
+    },
+    "/images/applications/super-productivity/18.21.2-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "super-productivity_18.21.2-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-43_43.4.1-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured with ImageMagick from the composed, maximised application window on the Xvfb display of the installed amd64 Debian package (SHA-256 2d3698021e80a5e64a892bba6cda643d44182dfd9c0d2ea628be9e23c16fd9cb) during its passing fresh Ubuntu 26.04 project-and-task persistence test, run as an unprivileged user under openbox. The frame shows state that run created: the project Shared Pair Runtime Port, added through the application's own create-project dialog opened with the Shift+P shortcut, and the task Verify persistence on shared Electron 43, delivered into the running window by a second launch carrying a superproductivity://create-task URL. No account, server, or synchronisation target was configured. The workflow is deterministic; the capture is not byte-reproducible, because the application assigns each new project a random theme colour, which tints the selected sidebar entry and the workspace background (SHA-256 29d5ea79ee0c496ba6ff53abb7e81faeda1135d0df615782bec248eef6f4481b for this frame).",
+      "captured": "2026-09-05",
+      "source": "shared-electron/shared-electron/screenshots/super-productivity/18.21.2-1sharedpair1.png"
+    },
+    "/images/applications/zettlr/4.7.0-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "zettlr_4.7.0-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-43_43.4.1-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured from the composed application window on the Xvfb display of the installed amd64 Debian package during its fresh Ubuntu 26.04 edit-and-export test, after the fixture workspace was added as a root, the bundled en-US dictionary was loaded through the application's own dictionary provider, and the document was exported to HTML through Ubuntu's pandoc. No network service was contacted.",
+      "captured": "2026-09-06",
+      "source": "shared-electron/shared-electron/screenshots/zettlr/4.7.0-1sharedpair1.png"
     }
   },
   "legend": {
