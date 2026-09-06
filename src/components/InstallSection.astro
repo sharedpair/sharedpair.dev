@@ -3,19 +3,23 @@ import CopyCommand from './CopyCommand.astro';
 import { applications, registryStatus } from '../data/project';
 
 const installPackages = applications.map((app) => app.slug).join(' ');
-const installCommand = [
+const setupCommand = [
   'curl -fsSL https://apt.sharedpair.dev/key.gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/sharedpair.gpg',
   'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/sharedpair.gpg] https://apt.sharedpair.dev resolute main" | sudo tee /etc/apt/sources.list.d/sharedpair.list',
   'sudo apt update',
-  `sudo apt install ${installPackages}`,
 ].join('\n');
+const exampleApp = applications[0].slug;
+const exampleCommand = `sudo apt install ${exampleApp}`;
+const everythingCommand = `sudo apt install ${installPackages}`;
 ---
 
 <section class="one-section shell" id="install" aria-labelledby="install-heading">
   <header class="section-heading"><div><p class="eyebrow">Install</p><h2 id="install-heading">Repository live.<br /><em>Signed and tested.</em></h2></div><div class="state"><span>Availability</span><strong>Active</strong><small>Ubuntu 26.04 · amd64</small></div></header>
   <p class="lede">Add the Shared Pair signing key and repository, then install any published application.</p>
   <div class="repo-link"><span>APT repository</span><a href="https://apt.sharedpair.dev/">apt.sharedpair.dev ↗</a></div>
-  <div class="commands"><p class="eyebrow">Run in order</p><CopyCommand command={installCommand} displayCommand={installCommand.replaceAll(' | ', ' |\n  ')} /></div>
+  <div class="commands"><p class="eyebrow">1 · Add the repository, run in order</p><CopyCommand command={setupCommand} displayCommand={setupCommand.replaceAll(' | ', ' |\n  ')} /></div>
+  <div class="commands"><p class="eyebrow">2 · Install the applications you want, for example</p><CopyCommand command={exampleCommand} /><p class="hint">Any package name from the <a href="#applications">applications list</a> works. Applications on the same runtime line share one Electron install.</p></div>
+  <details class="everything"><summary>Install every published application ({applications.length} packages)</summary><CopyCommand command={everythingCommand} displayCommand={everythingCommand.replaceAll(' ', ' \\\n  ').replace('sudo \\\n  apt \\\n  install', 'sudo apt install')} /></details>
   <dl class="identity"><div><dt>Fingerprint</dt><dd>{registryStatus.signingFingerprint}</dd></div><div><dt>Suite</dt><dd>{registryStatus.suite}</dd></div><div><dt>Architecture</dt><dd>{registryStatus.architecture}</dd></div></dl>
   <p class="trust-note">Verify the fingerprint independently before trusting repository metadata. The public repository and clean installations from both runtime lines were verified on 2026-09-01.</p>
 </section>
@@ -32,6 +36,12 @@ const installCommand = [
   .repo-link span { color: var(--faint); }
   .repo-link a { color: var(--lime); }
   .commands { margin-top: 2rem; }
+  .hint { max-width: 780px; margin: .75rem 0 0; color: var(--muted); font-size: .9rem; }
+  .hint a { color: var(--lime); }
+  .everything { max-width: 760px; margin-top: 1.5rem; }
+  .everything summary { cursor: pointer; color: var(--faint); font: .72rem var(--mono); text-transform: uppercase; }
+  .everything summary:hover { color: var(--lime); }
+  .everything > :global(.copy-command) { margin-top: .75rem; }
   .identity { display: grid; grid-template-columns: 2fr 1fr 1fr; margin: 2rem 0 0; }
   .identity div { padding: 1rem 0; border-bottom: 1px solid var(--line); }
   dt { color: var(--faint); font: .62rem var(--mono); text-transform: uppercase; }
