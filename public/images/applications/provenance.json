@@ -343,6 +343,16 @@
       "method": "Captured from the composed application window on the Xvfb display of the installed amd64 Debian package during its fresh Ubuntu 26.04 playlist-persistence test, after a local fixture M3U was opened from the command line. No account, no IPTV service, and no stream were used; the fixture's stream URLs point at a closed local port.",
       "captured": "2026-09-07",
       "source": "shared-electron/shared-electron/screenshots/iptvnator/0.23.0-1sharedpair1.png"
+    },
+    "/images/applications/ueli/9.29.0-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "ueli_9.29.0-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-44_44.0.0-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured with import -window root from the composed application window on the Xvfb display of the installed amd64 Debian package, during its fresh Ubuntu 26.04 test run as the unprivileged electron-test user. The Calculator extension was enabled through the application's own preload settings API and the query entered through Chromium's input pipeline; no account, no network extension, and no upstream imagery.",
+      "captured": "2026-09-07",
+      "source": "shared-electron/shared-electron/screenshots/ueli/9.29.0-1sharedpair1.png"
     }
   },
   "legend": {

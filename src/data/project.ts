@@ -682,6 +682,24 @@ export const applications: AppRecord[] = [
     ],
     screenshot: { src: '/images/applications/iptvnator/0.23.0-1sharedpair1.png', alt: 'IPTVnator\'s window after opening a local fixture playlist. The header names the playlist shared-pair-fixture and reports 3 channels; the All channels list shows Shared Pair News, Shared Pair Documentary, and Shared Pair Music, each with a favourite star; the empty player pane on the right reads Please select a channel to start playback.', caption: 'The packaged IPTVnator build on shared Electron 43, showing a local fixture M3U playlist parsed into its channel list during the account-free persistence test.' },
   },
+  {
+    slug: 'ueli',
+    ...appFacts('ueli'),
+    name: 'ueli',
+    purpose: 'Keyboard-driven application launcher and search',
+    state: 'tested',
+    category: 'productivity',
+    releaseChannel: 'stable',
+    proof: 'Repacked from the checksum-pinned official v9.29.0 Debian asset; upstream builds against Electron 41, so the only ABI-bound native addon (better-sqlite3) is rebuilt at 12.11.1 against Electron 44 headers, since no matching runtime line exists for the declared major.',
+    test: 'A fresh Ubuntu 26.04 container registered the launcher, opened it through its own toggle entry point, answered a calculator query through the built-in extension, and confirmed the enabled extension and settings survived a restart.',
+    notes: [
+      'The shipped better-sqlite3 binding is V8-ABI at NODE_MODULE_VERSION 145 (Electron 41) and does not load under 42, 43, or 44; it is rebuilt at 12.11.1, inside upstream\'s own declared range, against Electron 44 headers.',
+      'sharp is Node-API and repacks untouched, but its bundled libvips statically links all 28 of its image and text codec libraries and carries a soname Ubuntu does not ship, so no substitution is possible.',
+      'Upstream\'s release tag declares Electron ^41.0.3, not the newer range visible on its main branch; no matching runtime line exists, so the runtime choice was free and lands on the newest available.',
+      'No updater and no telemetry; only application search and Ueli\'s own commands run by default, with the calculator, web-search, terminal, and workflow extensions opt-in.',
+    ],
+    screenshot: { src: '/images/applications/ueli/9.29.0-1sharedpair1.png', alt: 'The Ueli launcher window centred on an empty desktop: a search box containing the query 2+2, a Search Results heading, and one result row showing the answer 4 with a Calculation Result label on the right, above a footer offering to copy the result to the clipboard.', caption: 'The packaged Ueli build on shared Electron 44, answering 2+2 through the Calculator extension that the container test enabled and then confirmed still enabled after a restart.' },
+  },
 ];
 
 export const blockedApplications: AppRecord[] = [

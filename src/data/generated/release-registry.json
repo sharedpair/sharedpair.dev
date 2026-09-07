@@ -378,6 +378,17 @@
       "runtime": "electron-runtime-44",
       "verifiedAt": "2026-09-07T15:31:00Z",
       "updatedAt": "2026-09-07T15:31:00Z"
+    },
+    {
+      "name": "ueli",
+      "version": "9.29.0-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "ueli",
+      "description": "Opens a search box with a global hotkey to launch installed applications, with opt-in calculator, conversion, and search extensions.",
+      "runtime": "electron-runtime-44",
+      "verifiedAt": "2026-09-07T19:29:00Z",
+      "updatedAt": "2026-09-07T19:29:00Z"
     }
   ]
 }
