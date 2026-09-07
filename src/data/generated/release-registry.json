@@ -345,6 +345,39 @@
       "runtime": "electron-runtime-43",
       "verifiedAt": "2026-09-06T00:17:58Z",
       "updatedAt": "2026-09-06T00:17:58Z"
+    },
+    {
+      "name": "heroic",
+      "version": "2.22.1-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "heroic",
+      "description": "Manages Epic Games Store, GOG, and Amazon Games libraries and the Wine or Proton version each Windows title runs under.",
+      "runtime": "electron-runtime-43",
+      "verifiedAt": "2026-09-07T14:55:48Z",
+      "updatedAt": "2026-09-07T14:55:48Z"
+    },
+    {
+      "name": "iptvnator",
+      "version": "0.23.0-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "iptvnator",
+      "description": "Plays IPTV playlists you supply \u2014 M3U files or URLs, Xtream Codes and Stalker portals \u2014 with favourites, an EPG, and a local SQLite library.",
+      "runtime": "electron-runtime-43",
+      "verifiedAt": "2026-09-07T14:52:39Z",
+      "updatedAt": "2026-09-07T14:52:39Z"
+    },
+    {
+      "name": "mailspring",
+      "version": "1.23.0-1sharedpair1",
+      "kind": "application",
+      "state": "verified",
+      "slug": "mailspring",
+      "description": "Email client for IMAP and SMTP accounts with unified search, templates, signatures, and a local mail database kept by its own native sync engine.",
+      "runtime": "electron-runtime-44",
+      "verifiedAt": "2026-09-07T15:31:00Z",
+      "updatedAt": "2026-09-07T15:31:00Z"
     }
   ]
 }

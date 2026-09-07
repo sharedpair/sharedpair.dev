@@ -313,6 +313,36 @@
       "method": "Captured from the composed application window on the Xvfb display of the installed amd64 Debian package during its fresh Ubuntu 26.04 edit-and-export test, after the fixture workspace was added as a root, the bundled en-US dictionary was loaded through the application's own dictionary provider, and the document was exported to HTML through Ubuntu's pandoc. No network service was contacted.",
       "captured": "2026-09-06",
       "source": "shared-electron/shared-electron/screenshots/zettlr/4.7.0-1sharedpair1.png"
+    },
+    "/images/applications/mailspring/1.23.0-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "mailspring_1.23.0-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-44_44.0.0-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured from the composed application window on the Xvfb display of the installed amd64 Debian package during its fresh Ubuntu 26.04 first-run and persistence test, after the native sync engine had created and migrated the local mail database and the rebuilt better-sqlite3 addon had read its schema back. Mailspring's onboarding window is fixed at 900x600 and not resizable, so it is shown at its own size on the 1440x900 display. No mail account and no Mailspring ID were configured.",
+      "captured": "2026-09-07",
+      "source": "shared-electron/shared-electron/screenshots/mailspring/1.23.0-1sharedpair1.png"
+    },
+    "/images/applications/heroic/2.22.1-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "heroic_2.22.1-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-43_43.4.1-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured with ImageMagick's import from the composed application window on the Xvfb display of the installed amd64 Debian package, running unprivileged under openbox during its fresh Ubuntu 26.04 restart-persistence test. No store account was signed in, no analytics choice was made, and neither Wine nor Proton was installed.",
+      "captured": "2026-09-07",
+      "source": "shared-electron/shared-electron/screenshots/heroic/2.22.1-1sharedpair1.png"
+    },
+    "/images/applications/iptvnator/0.23.0-1sharedpair1.png": {
+      "kind": "captured-evidence",
+      "origin": "Captured from our own package on a clean Ubuntu 26.04 container",
+      "package": "iptvnator_0.23.0-1sharedpair1_amd64.deb",
+      "runtime": "electron-runtime-43_43.4.1-1sharedpair1_amd64.deb",
+      "platform": "Ubuntu 26.04 amd64 clean container",
+      "method": "Captured from the composed application window on the Xvfb display of the installed amd64 Debian package during its fresh Ubuntu 26.04 playlist-persistence test, after a local fixture M3U was opened from the command line. No account, no IPTV service, and no stream were used; the fixture's stream URLs point at a closed local port.",
+      "captured": "2026-09-07",
+      "source": "shared-electron/shared-electron/screenshots/iptvnator/0.23.0-1sharedpair1.png"
     }
   },
   "legend": {
