@@ -97,7 +97,7 @@ tasks:
     cmds:
       - |
         set -euo pipefail
-        for d in {{.CF_DIR}}/bootstrap {{.CF_DIR}}/iam-self {{.CF_DIR}}/global; do
+        for d in {{.CF_DIR}}/bootstrap {{.CF_DIR}}/iam-self {{.CF_DIR}}/global infrastructure/aws/iam-self; do
           echo "── $d"
           terraform -chdir="$d" init -backend=false -input=false >/dev/null
           terraform -chdir="$d" validate
@@ -117,6 +117,14 @@ tasks:
           | aws ssm put-parameter --profile {{.PROFILE}} --region {{.REGION}} \
               --name /{{.PROJECT}}/cloudflare/api_token --type SecureString --overwrite --value file:///dev/stdin >/dev/null
         echo "✓ sharedpair-cf-token stored in SSM /{{.PROJECT}}/cloudflare/api_token"
+
+  tf-apply-aws-iam:
+    desc: "Apply infrastructure/aws/iam-self: attach the sharedpair-terraform-scoped policy (Admin/ReadOnly are detached separately, after simulation)."
+    cmds:
+      - |
+        set -euo pipefail
+        {{.TF_SAFE}} infrastructure/aws/iam-self init
+        {{.TF_SAFE}} infrastructure/aws/iam-self apply
 
   tf-plan:
     desc: "Plan infrastructure/cloudflare/global with the narrow token read from SSM (never written to disk)."
