@@ -1,0 +1,90 @@
+version: "3"
+
+vars:
+  PROJECT: sharedpair
+  PROFILE: sharedpair-terraform
+  REGION: us-west-2
+  TF_SAFE: ../python-tui-lib/scripts/tf-safe-apply.sh
+  CF_DIR: infrastructure/cloudflare
+
+tasks:
+  aws-bootstrap:
+    desc: "One-time: store the sharedpair-terraform AWS key and a Cloudflare bootstrap token, then create the S3/DynamoDB state backend."
+    cmds:
+      - |
+        set -euo pipefail
+
+        # Portable masked read. go-task runs cmds with mvdan/sh, whose `read`
+        # lacks -n, so star-masking with `read -s -n1` breaks mid-entry.
+        read_masked() {
+          printf "%s" "$1" >/dev/tty
+          stty -echo </dev/tty
+          IFS= read -r REPLY </dev/tty
+          stty echo </dev/tty
+          printf "\n" >/dev/tty
+          printf "%s" "$REPLY"
+        }
+
+        PROFILE="{{.PROFILE}}"
+        CREDS=~/.aws/credentials
+        CONFIG=~/.aws/config
+
+        if aws sts get-caller-identity --profile "$PROFILE" &>/dev/null; then
+          echo "✓ AWS profile ${PROFILE} already configured — skipping key entry."
+        else
+          echo ""
+          echo "━━━ AWS: create the IAM user (manual, ~3 min) ━━━"
+          echo "1. https://us-east-1.console.aws.amazon.com/iam/home#/users/create"
+          echo "   Name: ${PROFILE}  |  No console access"
+          echo "2. Attach policies directly → filter 'AWS managed - job function' →"
+          echo "   check AdministratorAccess and ReadOnlyAccess → create."
+          echo "3. Security credentials → Create access key → CLI → Description: ${PROFILE}-$(hostname)"
+          echo ""
+          printf "Paste Access Key ID:     " >/dev/tty
+          read -r KEY_ID </dev/tty
+          KEY_SECRET=$(read_masked "Paste Secret Access Key: ")
+
+          # Rewrite-or-create the section so a failed earlier entry is repaired.
+          python3 -c "import configparser,sys; p,s,k,sec=sys.argv[1:5]; cp=configparser.ConfigParser(); cp.read(p); cp.has_section(s) or cp.add_section(s); cp.set(s,'aws_access_key_id',k); cp.set(s,'aws_secret_access_key',sec); f=open(p,'w'); cp.write(f); f.close()" "$CREDS" "$PROFILE" "$KEY_ID" "$KEY_SECRET"
+          grep -q "^\[profile ${PROFILE}\]" "$CONFIG" 2>/dev/null \
+            || printf "\n[profile %s]\nregion = {{.REGION}}\noutput = json\n" "$PROFILE" >> "$CONFIG"
+          echo "✓ Profile written."
+        fi
+
+        echo "Verifying profile…"
+        ACCOUNT=$(aws sts get-caller-identity --profile "$PROFILE" --query Account --output text)
+        echo "✓ AWS account ${ACCOUNT}"
+
+        PARAM=/{{.PROJECT}}/cloudflare/bootstrap_token
+        if aws ssm get-parameter --profile "$PROFILE" --region {{.REGION}} --name "$PARAM" &>/dev/null; then
+          echo "✓ ${PARAM} already in SSM — skipping."
+        else
+          echo ""
+          echo "━━━ Cloudflare: mint a one-shot bootstrap token (manual, ~2 min) ━━━"
+          echo "https://dash.cloudflare.com/profile/api-tokens → Create Token → Custom token"
+          echo "  Name: sharedpair-bootstrap   |   TTL: end date 7 days out"
+          echo "  Permissions:"
+          echo "    User    → API Tokens          → Edit"
+          echo "    Account → Account API Tokens  → Edit"
+          echo "  Account Resources: Include → Wbnorris@gmail.com's Account"
+          echo ""
+          CF_TOKEN=$(read_masked "Paste Cloudflare bootstrap token: ")
+          printf "%s" "$CF_TOKEN" | aws ssm put-parameter --profile "$PROFILE" --region {{.REGION}} \
+            --name "$PARAM" --type SecureString --overwrite --value file:///dev/stdin >/dev/null
+          echo "✓ Stored in SSM as ${PARAM}."
+        fi
+
+        if aws s3api head-bucket --bucket "{{.PROJECT}}-terraform-state-${ACCOUNT}" --profile "$PROFILE" &>/dev/null; then
+          echo "✓ State backend already exists — skipping bootstrap Terraform."
+        else
+          echo ""
+          echo "━━━ Bootstrap Terraform state backend ━━━"
+          {{.TF_SAFE}} {{.CF_DIR}}/bootstrap init
+          {{.TF_SAFE}} {{.CF_DIR}}/bootstrap apply -auto-approve
+          echo "✓ State bucket and lock table created."
+        fi
+
+        echo ""
+        echo "━━━ Bootstrap complete. ━━━"
+        echo "Activate cost allocation tags once a tagged resource exists:"
+        echo "  https://us-east-1.console.aws.amazon.com/billing/home#/tags → Project, ManagedBy, Environment"
