@@ -53,7 +53,7 @@ data "aws_caller_identity" "current" {}
 
 locals {
   account_id  = data.aws_caller_identity.current.account_id
-  bucket_name = "${var.project}-terraform-state-${local.account_id}"
+  bucket_name = "${var.project}-terraform-state"
   lock_table  = "${var.project}-terraform-locks"
 }
 
@@ -105,6 +105,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "terraform_state" {
   rule {
     id     = "expire-old-state"
     status = "Enabled"
+
+    filter {}
 
     noncurrent_version_expiration {
       noncurrent_days = 90
