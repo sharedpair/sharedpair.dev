@@ -36,9 +36,12 @@ tasks:
           echo "━━━ AWS: create the IAM user (manual, ~3 min) ━━━"
           echo "1. https://us-east-1.console.aws.amazon.com/iam/home#/users/create"
           echo "   Name: ${PROFILE}  |  No console access"
-          echo "2. Attach policies directly → filter 'AWS managed - job function' →"
-          echo "   check AdministratorAccess and ReadOnlyAccess → create."
-          echo "3. Security credentials → Create access key → CLI → Description: ${PROFILE}-$(hostname)"
+          echo "2. Set permissions → Attach policies directly → tick AdministratorAccess and"
+          echo "   ReadOnlyAccess (clear the type filter if search hides one) → Next → Create user."
+          echo "   Do NOT click 'Create policy' — that builds a custom policy you don't need."
+          echo "3. Users list → click ${PROFILE} → Security credentials tab → Create access key"
+          echo "   → Command Line Interface (CLI) → tick confirm → Next"
+          echo "   → Description: ${PROFILE}-$(hostname) → Create access key."
           echo ""
           printf "Paste Access Key ID:     " >/dev/tty
           read -r KEY_ID </dev/tty
