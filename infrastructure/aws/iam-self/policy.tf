@@ -51,10 +51,22 @@ resource "aws_iam_policy" "scoped" {
         }
       },
       {
+        # Attach only this project's own policies. Without the condition the
+        # user could re-attach AdministratorAccess to itself and undo the
+        # narrowing.
+        Sid      = "IAMSelfAttachProjectPoliciesOnly"
+        Effect   = "Allow"
+        Action   = ["iam:AttachUserPolicy"]
+        Resource = "arn:aws:iam::${local.account_id}:user/sharedpair-terraform"
+        Condition = {
+          ArnLike = { "iam:PolicyARN" = "arn:aws:iam::${local.account_id}:policy/sharedpair-*" }
+        }
+      },
+      {
         Sid    = "IAMSelfManagement"
         Effect = "Allow"
         Action = [
-          "iam:AttachUserPolicy", "iam:DetachUserPolicy", "iam:ListAttachedUserPolicies",
+          "iam:DetachUserPolicy", "iam:ListAttachedUserPolicies",
           "iam:CreatePolicyVersion", "iam:DeletePolicyVersion", "iam:ListPolicyVersions",
           "iam:GetPolicy", "iam:GetPolicyVersion", "iam:CreatePolicy", "iam:DeletePolicy",
           "iam:GetUser", "iam:TagUser", "iam:UntagUser", "iam:TagPolicy", "iam:UntagPolicy",
