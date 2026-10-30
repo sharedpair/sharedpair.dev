@@ -128,6 +128,13 @@ tasks:
         B=$(read_masked "Paste the bootstrap token: ")
         STATUS=$(curl -sS -H "Authorization: Bearer $B" https://api.cloudflare.com/client/v4/user/tokens/verify | python3 -c 'import json,sys; r=json.load(sys.stdin); print((r.get("result") or {}).get("status","invalid"))')
         [ "$STATUS" = active ] || { echo "✗ token is not active ($STATUS) — nothing changed." >&2; exit 1; }
+        # Active isn't enough: a token missing both permissions still verifies
+        # (hit 2026-10-30). Prove each permission with a harmless list call.
+        can() { curl -sS -H "Authorization: Bearer $B" "$1" | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("success") else 1)'; }
+        can "https://api.cloudflare.com/client/v4/user/tokens?per_page=1" \
+          || { echo "✗ token lacks User → API Tokens: Edit — edit it in the dashboard and re-run." >&2; exit 1; }
+        can "https://api.cloudflare.com/client/v4/accounts/f7e1e6cd8b3414a6d2226152533c21f2/tokens?per_page=1" \
+          || { echo "✗ token lacks Account → Account API Tokens: Edit (on Wbnorris@gmail.com's Account) — edit it and re-run." >&2; exit 1; }
         printf "%s" "$B" | aws ssm put-parameter --profile {{.PROFILE}} --region {{.REGION}} \
           --name "$PARAM" --type SecureString --overwrite --value file:///dev/stdin >/dev/null
         echo "✓ bootstrap token verified and parked in SSM ${PARAM}"
