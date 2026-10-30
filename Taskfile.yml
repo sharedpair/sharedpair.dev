@@ -103,6 +103,45 @@ tasks:
           terraform -chdir="$d" validate
         done
 
+  cf-token-rotate:
+    desc: "Widen/rotate sharedpair-cf-token: prompt (hidden) for a one-shot bootstrap token, apply iam-self, store the narrow token, then revoke the bootstrap token and delete it from SSM."
+    cmds:
+      - |
+        set -euo pipefail
+        read_masked() {
+          printf "%s" "$1" >/dev/tty
+          stty -echo </dev/tty
+          IFS= read -r REPLY </dev/tty
+          stty echo </dev/tty
+          printf "\n" >/dev/tty
+          printf "%s" "$REPLY"
+        }
+        PARAM=/{{.PROJECT}}/cloudflare/bootstrap_token
+        echo "━━━ Cloudflare: mint a one-shot bootstrap token (~2 min) ━━━"
+        echo "https://dash.cloudflare.com/profile/api-tokens → Create Token → Custom token"
+        echo "  Name: sharedpair-bootstrap"
+        echo "  Permissions:  User → API Tokens → Edit"
+        echo "                Account → Account API Tokens → Edit"
+        echo "  Account Resources: Include → Wbnorris@gmail.com's Account"
+        echo "  TTL: end date tomorrow (this task revokes it anyway)"
+        echo ""
+        B=$(read_masked "Paste the bootstrap token: ")
+        STATUS=$(curl -sS -H "Authorization: Bearer $B" https://api.cloudflare.com/client/v4/user/tokens/verify | python3 -c 'import json,sys; r=json.load(sys.stdin); print((r.get("result") or {}).get("status","invalid"))')
+        [ "$STATUS" = active ] || { echo "✗ token is not active ($STATUS) — nothing changed." >&2; exit 1; }
+        printf "%s" "$B" | aws ssm put-parameter --profile {{.PROFILE}} --region {{.REGION}} \
+          --name "$PARAM" --type SecureString --overwrite --value file:///dev/stdin >/dev/null
+        echo "✓ bootstrap token verified and parked in SSM ${PARAM}"
+      - task: tf-apply-iam
+      - |
+        set -euo pipefail
+        PARAM=/{{.PROJECT}}/cloudflare/bootstrap_token
+        B=$(aws ssm get-parameter --profile {{.PROFILE}} --region {{.REGION}} --name "$PARAM" --with-decryption --query Parameter.Value --output text)
+        ID=$(curl -sS -H "Authorization: Bearer $B" https://api.cloudflare.com/client/v4/user/tokens/verify | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["id"])')
+        curl -sS -X DELETE -H "Authorization: Bearer $B" "https://api.cloudflare.com/client/v4/user/tokens/$ID" \
+          | python3 -c 'import json,sys; r=json.load(sys.stdin); sys.exit(0 if r.get("success") else 1)'
+        aws ssm delete-parameter --profile {{.PROFILE}} --region {{.REGION}} --name "$PARAM"
+        echo "✓ bootstrap token revoked and removed from SSM"
+
   tf-apply-iam:
     desc: "Mint/update the narrow sharedpair-cf-token with the SSM bootstrap token, then store it in SSM /sharedpair/cloudflare/api_token."
     cmds:

@@ -32,10 +32,13 @@ Every apply prints the plan and waits for `yes`.
 
 ## Token rotation
 
-1. Mint a bootstrap token at [API Tokens](https://dash.cloudflare.com/profile/api-tokens): User → API Tokens: Edit, Account → Account API Tokens: Edit, with an expiry.
-2. Store it: `aws ssm put-parameter --profile sharedpair-terraform --region us-west-2 --name /sharedpair/cloudflare/bootstrap_token --type SecureString --overwrite --value file:///dev/stdin` (paste, then Ctrl-D).
-3. `task tf-apply-iam` (add `-replace` in the task if the value itself must change).
-4. Revoke the bootstrap token and delete the SSM parameter.
+To widen the token's permissions (edit `iam-self/token.tf` first) or to rotate it:
+
+```
+task cf-token-rotate
+```
+
+It prints what to mint at [API Tokens](https://dash.cloudflare.com/profile/api-tokens), reads the bootstrap token with a hidden prompt, verifies it, applies `iam-self` (you confirm the plan), stores the narrow token in SSM, then revokes the bootstrap token and deletes it from SSM. Nothing secret is printed or pasted anywhere. To force a new token *value* rather than updating the existing one in place, add `-replace=cloudflare_account_token.sharedpair_cf_token` to the apply in `tf-apply-iam`.
 
 ## Emergency access
 

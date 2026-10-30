@@ -7,6 +7,7 @@
 #     - Workers Scripts Write    — workers/domains API behind cloudflare_workers_custom_domain
 #
 #   Zone (sharedpair.dev only):
+#     - Zone Transform Rules Write — apt directory-index URL rewrite
 #     - Workers Routes Write     — apex + www Worker custom domains
 #     - Zone Settings Write      — always_use_https (planned)
 #     - DNS Write                — records the custom-domain bindings create
@@ -37,6 +38,7 @@ locals {
     workers_r2_storage_write = "bf7481a1826f439697cb59a20b22293e"
     workers_scripts_write    = "e086da7e2179491d91ee5f35b3ca210a"
     # Zone scope
+    zone_transform_rules_write = "0ac90a90249747bca6b047d97f0803e9"
     workers_routes_write = "28f4b596e7d643029c524985477ae49a"
     zone_settings_write  = "3030687196b94b638145a3953da2b699"
     dns_write            = "4755a26eedb94da69e1066d98aa820be"
@@ -72,6 +74,7 @@ resource "cloudflare_account_token" "sharedpair_cf_token" {
         "com.cloudflare.api.account.zone.${var.zone_id}" = "*"
       })
       permission_groups = [
+        { id = local.permission_groups.zone_transform_rules_write }, # 0ac9…
         { id = local.permission_groups.workers_routes_write }, # 28f4…
         { id = local.permission_groups.zone_settings_write },  # 3030…
         { id = local.permission_groups.dns_write },            # 4755…
