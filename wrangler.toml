@@ -16,10 +16,6 @@ class_name = "VoteCounter"
 tag = "v1"
 new_sqlite_classes = ["VoteCounter"]
 
-[[routes]]
-pattern = "sharedpair.dev"
-custom_domain = true
-
-[[routes]]
-pattern = "www.sharedpair.dev"
-custom_domain = true
+# No [[routes]]: sharedpair.dev and www are cloudflare_workers_custom_domain
+# resources in infrastructure/cloudflare/global/workers.tf, so wrangler and
+# Terraform never fight over the hostnames.
