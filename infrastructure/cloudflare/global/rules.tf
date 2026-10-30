@@ -33,11 +33,10 @@ resource "cloudflare_ruleset" "cache" {
       description = "cache-apt-repo"
       expression  = "(http.host eq \"apt.${var.domain}\")"
       action      = "set_cache_settings"
+      # Edge TTL defaults to the origin's Cache-Control, so nothing else is set
+      # (matches the rule as created in the dashboard).
       action_parameters = {
         cache = true
-        edge_ttl = {
-          mode = "respect_origin"
-        }
       }
       enabled = true
     },
