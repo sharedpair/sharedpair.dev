@@ -1,9 +1,15 @@
 | Date | Change |
 |------|--------|
+| [2026-10-31](https://github.com/sharedpair/sharedpair.dev/commit/0141a36) | cf-token-rotate: keep the bootstrap token in memory, never in SSM |
 | [2026-10-30](https://github.com/sharedpair/sharedpair.dev/commit/b353674) | Restore apt directory indexes; add task cf-token-rotate |
 | [2026-10-30](https://github.com/sharedpair/sharedpair.dev/commit/360037e) | Hand apex/www custom domains to Terraform; document the infrastructure |
 
 <!--history-meta v1
+0141a36	author	Will Norris
+0141a36	added	3
+0141a36	deleted	3
+0141a36	files	1
+0141a36	body	The bootstrap token was parked in SSM /sharedpair/cloudflare/bootstrap_token\nbetween steps. A failed run left a dead value there, and aws-bootstrap and\ntf-apply-iam would pick it up again without checking it.\n\n- cf-token-rotate is now one script: hidden prompt, cfut_ prefix check\n  (rejects account-owned cfat_ tokens), active + list-permission checks,\n  iam-self apply with the token in the environment only, narrow token to\n  SSM, and an EXIT trap that revokes the bootstrap token however the run ends.\n- tf-apply-iam is folded into it; aws-bootstrap no longer asks for a\n  Cloudflare token.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqNkFPpiTzcu2Ec7m34
 b353674	author	Will Norris
 b353674	added	7
 b353674	deleted	4

@@ -101,8 +101,8 @@ tasks:
         echo "━━━ Cloudflare: mint a one-shot bootstrap token (~2 min) ━━━"
         echo "https://dash.cloudflare.com/profile/api-tokens → Create Token"
         echo "  → template \"Create additional tokens\", NOT Custom token. Cloudflare's docs say"
-        echo "    User → API Tokens → Edit is only available from that template; two custom-built"
-        echo "    tokens with it were refused (9109) on 2026-10-30/31."
+        echo "    User → API Tokens → Edit is only available from that template. Unresolved: on"
+        echo "    2026-10-30/31 three new tokens, template-made included, were refused (9109)."
         echo "    https://developers.cloudflare.com/fundamentals/api/how-to/create-via-api/"
         echo "  Name: sharedpair-bootstrap   |   add nothing else (as in the cloudflare-domain-setup skill)"
         echo "  TTL: end date tomorrow (this task revokes it anyway)"
@@ -120,7 +120,7 @@ tasks:
         # (hit 2026-10-30). Prove each permission with a harmless list call.
         can() { curl -sS -H "Authorization: Bearer $B" "$1" | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("success") else 1)'; }
         can "$CF/user/tokens?per_page=1" \
-          || { echo "✗ token can't list user tokens — create it from the \"Create additional tokens\" template, not Custom token. Nothing changed." >&2; exit 1; }
+          || { echo "✗ token can't list user tokens — nothing changed. Unresolved 9109 problem: see infrastructure/cloudflare/README.md." >&2; exit 1; }
         can "$CF/accounts/f7e1e6cd8b3414a6d2226152533c21f2/tokens?per_page=1" \
           || { echo "✗ token can't list the account's tokens — nothing changed. (Template-only has not been tested against account-owned tokens; report this.)" >&2; exit 1; }
         echo "✓ bootstrap token verified"

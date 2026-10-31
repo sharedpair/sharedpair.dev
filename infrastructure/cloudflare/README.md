@@ -40,6 +40,10 @@ task cf-token-rotate
 
 It prints what to mint at [API Tokens](https://dash.cloudflare.com/profile/api-tokens) (your profile page, so the value starts `cfut_`; an account-owned `cfat_` token is rejected). It reads the bootstrap token with a hidden prompt, checks it is active and can list both user and account tokens, applies `iam-self` (you confirm the plan) and stores the narrow token in SSM. An `EXIT` trap then revokes the bootstrap token however the run ends, including a declined or failed apply. The bootstrap token lives only in that process's environment and is never written to SSM or disk. Until 2026‑10‑31 it was parked in SSM between steps, and a dead value outlived a failed run. To force a new token *value* rather than updating the existing one in place, add `-replace=cloudflare_account_token.sharedpair_cf_token` to the `iam-self` apply in `cf-token-rotate`.
 
+### Open problem: bootstrap tokens refused with 9109 (2026‑10‑30/31)
+
+Three new user tokens with **User → API Tokens → Edit** each verified as `active` on `/user/tokens/verify`, then got `9109 Invalid access token` on `GET /user/tokens`. Two were custom-built and one came from the **Create Additional Tokens** template. The morning bootstrap token on 2026‑10‑30 worked from the same machine. The narrow account-owned token still works (`task tf-plan` refreshes cleanly), so the account itself isn't locked. Cause unknown. Until it's resolved, a permission that `iam-self/token.tf` already lists can be added to `sharedpair-cf-token` by hand at Manage account → Account API tokens, which brings the live token in line with the code.
+
 ## Emergency access
 
 `sharedpair-terraform` can attach only `sharedpair-*` policies to itself, so it can't regain Admin on its own. The account root (or another admin) can always re-attach `AdministratorAccess` in the IAM console.
