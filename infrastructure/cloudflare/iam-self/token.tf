@@ -87,7 +87,7 @@ resource "cloudflare_account_token" "sharedpair_cf_token" {
 }
 
 output "token_value" {
-  description = "Narrow token value. task tf-apply-iam pushes it to SSM /sharedpair/cloudflare/api_token."
+  description = "Narrow token value. task cf-token-rotate pushes it to SSM /sharedpair/cloudflare/api_token."
   value       = cloudflare_account_token.sharedpair_cf_token.value
   sensitive   = true
 }

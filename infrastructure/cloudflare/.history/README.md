@@ -1,8 +1,14 @@
 | Date | Change |
 |------|--------|
+| [2026-10-30](https://github.com/sharedpair/sharedpair.dev/commit/b353674) | Restore apt directory indexes; add task cf-token-rotate |
 | [2026-10-30](https://github.com/sharedpair/sharedpair.dev/commit/360037e) | Hand apex/www custom domains to Terraform; document the infrastructure |
 
 <!--history-meta v1
+b353674	author	Will Norris
+b353674	added	7
+b353674	deleted	4
+b353674	files	1
+b353674	body	transform.tf rewrites a trailing "/" on the apt host to index.html, the\nbehaviour the Worker used to provide (verification step 6: "/" has\n404'd since the R2 cut-over). The narrow token gains Zone Transform\nRules Write on sharedpair.dev only.\n\ntask cf-token-rotate does the whole bootstrap-token cycle in one\ncommand: hidden prompt, verify, iam-self apply, store the narrow token,\nrevoke and delete the bootstrap token. Run it before task tf-apply.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqNkFPpiTzcu2Ec7m34
 360037e	author	Will Norris
 360037e	added	46
 360037e	deleted	0

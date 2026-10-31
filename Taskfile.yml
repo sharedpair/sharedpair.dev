@@ -9,7 +9,7 @@ vars:
 
 tasks:
   aws-bootstrap:
-    desc: "One-time: store the sharedpair-terraform AWS key and a Cloudflare bootstrap token, then create the S3/DynamoDB state backend."
+    desc: "One-time: store the sharedpair-terraform AWS key, then create the S3 state backend. Mint the Cloudflare token afterwards with task cf-token-rotate."
     cmds:
       - |
         set -euo pipefail
@@ -58,25 +58,6 @@ tasks:
         ACCOUNT=$(aws sts get-caller-identity --profile "$PROFILE" --query Account --output text)
         echo "✓ AWS account ${ACCOUNT}"
 
-        PARAM=/{{.PROJECT}}/cloudflare/bootstrap_token
-        if aws ssm get-parameter --profile "$PROFILE" --region {{.REGION}} --name "$PARAM" &>/dev/null; then
-          echo "✓ ${PARAM} already in SSM — skipping."
-        else
-          echo ""
-          echo "━━━ Cloudflare: mint a one-shot bootstrap token (manual, ~2 min) ━━━"
-          echo "https://dash.cloudflare.com/profile/api-tokens → Create Token → Custom token"
-          echo "  Name: sharedpair-bootstrap   |   TTL: end date 7 days out"
-          echo "  Permissions:"
-          echo "    User    → API Tokens          → Edit"
-          echo "    Account → Account API Tokens  → Edit"
-          echo "  Account Resources: Include → Wbnorris@gmail.com's Account"
-          echo ""
-          CF_TOKEN=$(read_masked "Paste Cloudflare bootstrap token: ")
-          printf "%s" "$CF_TOKEN" | aws ssm put-parameter --profile "$PROFILE" --region {{.REGION}} \
-            --name "$PARAM" --type SecureString --overwrite --value file:///dev/stdin >/dev/null
-          echo "✓ Stored in SSM as ${PARAM}."
-        fi
-
         if aws s3api head-bucket --bucket "{{.PROJECT}}-terraform-state" --profile "$PROFILE" &>/dev/null; then
           echo "✓ State backend already exists — skipping bootstrap Terraform."
         else
@@ -88,7 +69,7 @@ tasks:
         fi
 
         echo ""
-        echo "━━━ Bootstrap complete. ━━━"
+        echo "━━━ Bootstrap complete. Next: task cf-token-rotate ━━━"
         echo "Activate cost allocation tags once a tagged resource exists:"
         echo "  https://us-east-1.console.aws.amazon.com/billing/home#/tags → Project, ManagedBy, Environment"
 
@@ -104,7 +85,7 @@ tasks:
         done
 
   cf-token-rotate:
-    desc: "Widen/rotate sharedpair-cf-token: prompt (hidden) for a one-shot bootstrap token, apply iam-self, store the narrow token, then revoke the bootstrap token and delete it from SSM."
+    desc: "Mint, widen or rotate sharedpair-cf-token: prompt (hidden) for a one-shot bootstrap token, apply iam-self with it, store the narrow token in SSM, then revoke the bootstrap token. The bootstrap token is never written anywhere."
     cmds:
       - |
         set -euo pipefail
@@ -116,9 +97,10 @@ tasks:
           printf "\n" >/dev/tty
           printf "%s" "$REPLY"
         }
-        PARAM=/{{.PROJECT}}/cloudflare/bootstrap_token
+        CF=https://api.cloudflare.com/client/v4
         echo "━━━ Cloudflare: mint a one-shot bootstrap token (~2 min) ━━━"
         echo "https://dash.cloudflare.com/profile/api-tokens → Create Token → Custom token"
+        echo "  (your profile page, not the account's API Tokens page: the value starts cfut_)"
         echo "  Name: sharedpair-bootstrap"
         echo "  Permissions:  User → API Tokens → Edit"
         echo "                Account → Account API Tokens → Edit"
@@ -126,37 +108,36 @@ tasks:
         echo "  TTL: end date tomorrow (this task revokes it anyway)"
         echo ""
         B=$(read_masked "Paste the bootstrap token: ")
-        STATUS=$(curl -sS -H "Authorization: Bearer $B" https://api.cloudflare.com/client/v4/user/tokens/verify | python3 -c 'import json,sys; r=json.load(sys.stdin); print((r.get("result") or {}).get("status","invalid"))')
+        # Prefixes per https://developers.cloudflare.com/fundamentals/api/get-started/token-formats/
+        case "$B" in
+          cfut_*) ;;
+          cfat_*) echo "✗ that's an account-owned token (cfat_); create it from your profile page instead — nothing changed." >&2; exit 1 ;;
+          *) echo "✗ not a Cloudflare user token (expected cfut_…, got ${#B} chars) — nothing changed." >&2; exit 1 ;;
+        esac
+        STATUS=$(curl -sS -H "Authorization: Bearer $B" "$CF/user/tokens/verify" | python3 -c 'import json,sys; r=json.load(sys.stdin); print((r.get("result") or {}).get("status","invalid"))')
         [ "$STATUS" = active ] || { echo "✗ token is not active ($STATUS) — nothing changed." >&2; exit 1; }
         # Active isn't enough: a token missing both permissions still verifies
         # (hit 2026-10-30). Prove each permission with a harmless list call.
         can() { curl -sS -H "Authorization: Bearer $B" "$1" | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("success") else 1)'; }
-        can "https://api.cloudflare.com/client/v4/user/tokens?per_page=1" \
-          || { echo "✗ token lacks User → API Tokens: Edit — edit it in the dashboard and re-run." >&2; exit 1; }
-        can "https://api.cloudflare.com/client/v4/accounts/f7e1e6cd8b3414a6d2226152533c21f2/tokens?per_page=1" \
-          || { echo "✗ token lacks Account → Account API Tokens: Edit (on Wbnorris@gmail.com's Account) — edit it and re-run." >&2; exit 1; }
-        printf "%s" "$B" | aws ssm put-parameter --profile {{.PROFILE}} --region {{.REGION}} \
-          --name "$PARAM" --type SecureString --overwrite --value file:///dev/stdin >/dev/null
-        echo "✓ bootstrap token verified and parked in SSM ${PARAM}"
-      - task: tf-apply-iam
-      - |
-        set -euo pipefail
-        PARAM=/{{.PROJECT}}/cloudflare/bootstrap_token
-        B=$(aws ssm get-parameter --profile {{.PROFILE}} --region {{.REGION}} --name "$PARAM" --with-decryption --query Parameter.Value --output text)
-        ID=$(curl -sS -H "Authorization: Bearer $B" https://api.cloudflare.com/client/v4/user/tokens/verify | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["id"])')
-        curl -sS -X DELETE -H "Authorization: Bearer $B" "https://api.cloudflare.com/client/v4/user/tokens/$ID" \
-          | python3 -c 'import json,sys; r=json.load(sys.stdin); sys.exit(0 if r.get("success") else 1)'
-        aws ssm delete-parameter --profile {{.PROFILE}} --region {{.REGION}} --name "$PARAM"
-        echo "✓ bootstrap token revoked and removed from SSM"
-
-  tf-apply-iam:
-    desc: "Mint/update the narrow sharedpair-cf-token with the SSM bootstrap token, then store it in SSM /sharedpair/cloudflare/api_token."
-    cmds:
-      - |
-        set -euo pipefail
-        CLOUDFLARE_API_TOKEN=$(aws ssm get-parameter --profile {{.PROFILE}} --region {{.REGION}} \
-          --name /{{.PROJECT}}/cloudflare/bootstrap_token --with-decryption --query Parameter.Value --output text)
-        export CLOUDFLARE_API_TOKEN
+        can "$CF/user/tokens?per_page=1" \
+          || { echo "✗ token can't list user tokens (needs User → API Tokens: Edit) — nothing changed." >&2; exit 1; }
+        can "$CF/accounts/f7e1e6cd8b3414a6d2226152533c21f2/tokens?per_page=1" \
+          || { echo "✗ token can't list account tokens (needs Account → Account API Tokens: Edit) — nothing changed." >&2; exit 1; }
+        echo "✓ bootstrap token verified"
+        # One-shot from here on, and held only in this process: it used to be
+        # parked in SSM between steps, where a dead value outlived a failed run
+        # and was picked up again (2026-10-30). Revoke it however the run ends.
+        ID=$(curl -sS -H "Authorization: Bearer $B" "$CF/user/tokens/verify" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["id"])')
+        revoke() {
+          if curl -sS -X DELETE -H "Authorization: Bearer $B" "$CF/user/tokens/$ID" \
+              | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("success") else 1)'; then
+            echo "✓ bootstrap token revoked"
+          else
+            echo "✗ couldn't revoke the bootstrap token — delete sharedpair-bootstrap at https://dash.cloudflare.com/profile/api-tokens" >&2
+          fi
+        }
+        trap revoke EXIT
+        export CLOUDFLARE_API_TOKEN="$B"
         {{.TF_SAFE}} {{.CF_DIR}}/iam-self init
         {{.TF_SAFE}} {{.CF_DIR}}/iam-self apply
         terraform -chdir={{.CF_DIR}}/iam-self output -raw token_value \

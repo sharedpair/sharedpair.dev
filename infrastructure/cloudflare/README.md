@@ -17,10 +17,10 @@ Locking is S3-native (`use_lockfile = true`).
 
 | Task | What it does |
 |---|---|
-| `task aws-bootstrap` | First run on a new machine/account: AWS key into `~/.aws`, bootstrap token into SSM, state backend |
+| `task aws-bootstrap` | First run on a new machine/account: AWS key into `~/.aws`, state backend |
+| `task cf-token-rotate` | Mint, widen or rotate `sharedpair-cf-token` with a one-shot bootstrap token (see below) |
 | `task tf-validate` | Offline check of all four dirs |
 | `task tf-plan` / `task tf-apply` | `global/`, token read from SSM `/sharedpair/cloudflare/api_token` at run time |
-| `task tf-apply-iam` | Mint/rotate `sharedpair-cf-token` (needs a fresh bootstrap token in SSM) |
 | `task tf-apply-aws-iam` | Update the scoped IAM policy |
 
 Every apply prints the plan and waits for `yes`.
@@ -38,7 +38,7 @@ To widen the token's permissions (edit `iam-self/token.tf` first) or to rotate i
 task cf-token-rotate
 ```
 
-It prints what to mint at [API Tokens](https://dash.cloudflare.com/profile/api-tokens), reads the bootstrap token with a hidden prompt, verifies it, applies `iam-self` (you confirm the plan), stores the narrow token in SSM, then revokes the bootstrap token and deletes it from SSM. Nothing secret is printed or pasted anywhere. To force a new token *value* rather than updating the existing one in place, add `-replace=cloudflare_account_token.sharedpair_cf_token` to the apply in `tf-apply-iam`.
+It prints what to mint at [API Tokens](https://dash.cloudflare.com/profile/api-tokens) (your profile page, so the value starts `cfut_`; an account-owned `cfat_` token is rejected). It reads the bootstrap token with a hidden prompt, checks it is active and can list both user and account tokens, applies `iam-self` (you confirm the plan) and stores the narrow token in SSM. An `EXIT` trap then revokes the bootstrap token however the run ends, including a declined or failed apply. The bootstrap token lives only in that process's environment and is never written to SSM or disk. Until 2026‑10‑31 it was parked in SSM between steps, and a dead value outlived a failed run. To force a new token *value* rather than updating the existing one in place, add `-replace=cloudflare_account_token.sharedpair_cf_token` to the `iam-self` apply in `cf-token-rotate`.
 
 ## Emergency access
 
