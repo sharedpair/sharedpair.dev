@@ -1,11 +1,17 @@
 | Date | Change |
 |------|--------|
+| [2026-10-31](https://github.com/sharedpair/sharedpair.dev/commit/dad39d9) | cf-token-rotate: gate on the account token API only |
 | [2026-10-31](https://github.com/sharedpair/sharedpair.dev/commit/091b939) | cf-token-rotate: record the unresolved 9109 bootstrap-token problem |
 | [2026-10-31](https://github.com/sharedpair/sharedpair.dev/commit/0141a36) | cf-token-rotate: keep the bootstrap token in memory, never in SSM |
 | [2026-10-30](https://github.com/sharedpair/sharedpair.dev/commit/b353674) | Restore apt directory indexes; add task cf-token-rotate |
 | [2026-10-30](https://github.com/sharedpair/sharedpair.dev/commit/360037e) | Hand apex/www custom domains to Terraform; document the infrastructure |
 
 <!--history-meta v1
+dad39d9	author	Will Norris
+dad39d9	added	3
+dad39d9	deleted	3
+dad39d9	files	1
+dad39d9	body	The gate also required GET /user/tokens. Three correctly-built bootstrap\ntokens got 9109 there and were stopped before the account check or the\niam-self apply ran. No other project's flow makes that call; iam-self\nonly needs the account's token API. Also drops the cfut_ prefix check\nand the nonexistent 'Create additional tokens' template instructions.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqNkFPpiTzcu2Ec7m34
 091b939	author	Will Norris
 091b939	added	4
 091b939	deleted	0

@@ -98,44 +98,37 @@ tasks:
           printf "%s" "$REPLY"
         }
         CF=https://api.cloudflare.com/client/v4
+        ACCT=f7e1e6cd8b3414a6d2226152533c21f2
         echo "━━━ Cloudflare: mint a one-shot bootstrap token (~2 min) ━━━"
-        echo "https://dash.cloudflare.com/profile/api-tokens → Create Token → Custom token"
+        echo "https://dash.cloudflare.com/$ACCT/api-tokens → Create Token → Custom token"
+        echo "  (account-owned, so this task can revoke it at the end; a profile-page token also works but must be deleted by hand)"
         echo "  Name: sharedpair-bootstrap"
-        echo "  Permissions:  Account → API Tokens → Edit"
-        echo "                User    → API Tokens → Edit   (only used to revoke this token at the end)"
-        echo "  Account Resources: Include → Wbnorris@gmail.com's Account"
-        echo "  TTL: end date tomorrow (this task revokes it anyway)"
+        echo "  Permissions:  Account → Account API Tokens → Edit"
+        echo "  TTL: end date tomorrow"
         echo ""
         B=$(read_masked "Paste the bootstrap token: ")
-        STATUS=$(curl -sS -H "Authorization: Bearer $B" "$CF/user/tokens/verify" | python3 -c 'import json,sys; r=json.load(sys.stdin); print((r.get("result") or {}).get("status","invalid"))')
-        [ "$STATUS" = active ] || { echo "✗ token is not active ($STATUS) — nothing changed." >&2; exit 1; }
-        # Active isn't enough: a token missing the permission still verifies
-        # (hit 2026-10-30). Check exactly what iam-self needs: the account's
-        # token API. An earlier gate also required GET /user/tokens, which
-        # refused three correctly-built tokens (9109) on 2026-10-30/31 and
-        # stopped them before this check or Terraform ever ran.
-        # Print Cloudflare's own errors on failure: the bare "can't read" message
-        # hid the cause through four failed runs (2026-10-30/31).
-        RESP=$(curl -sS -H "Authorization: Bearer $B" "$CF/accounts/f7e1e6cd8b3414a6d2226152533c21f2/tokens?per_page=1")
-        if ! printf "%s" "$RESP" | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("success") else 1)'; then
-          echo "✗ token can't read account f7e1e6cd8b3414a6d2226152533c21f2's API tokens (Account → Account API Tokens: Edit) — nothing changed." >&2
-          printf "%s" "$RESP" | python3 -c 'import json,sys; [print("  Cloudflare", e.get("code"), "-", e.get("message"), file=sys.stderr) for e in json.load(sys.stdin).get("errors") or []]' || true
-          curl -sS -H "Authorization: Bearer $B" "$CF/accounts?per_page=50" \
-            | python3 -c 'import json,sys; r=json.load(sys.stdin); print("  accounts this token can see:", ", ".join(a["name"] + " (" + a["id"] + ")" for a in r.get("result") or []) or "none", file=sys.stderr)' || true
-          echo "  Revoke it at https://dash.cloudflare.com/profile/api-tokens before minting another." >&2
-          exit 1
-        fi
-        echo "✓ bootstrap token verified"
+        # Account-owned tokens verify only at the account endpoint, profile tokens
+        # only at /user. Like the other projects' flows, there is no further
+        # pre-flight: two permission gates refused correctly-built tokens
+        # (2026-10-30/31). Terraform's plan is the real check, and nothing
+        # changes until it is approved.
+        ID=""; KIND=""
+        for K in "accounts/$ACCT" user; do
+          ID=$(curl -sS -H "Authorization: Bearer $B" "$CF/$K/tokens/verify" \
+            | python3 -c 'import json,sys; r=(json.load(sys.stdin).get("result") or {}); print(r["id"] if r.get("status") == "active" else "")' || true)
+          [ -n "$ID" ] && { KIND=$K; break; }
+        done
+        [ -n "$ID" ] || { echo "✗ token is not active (checked account and user endpoints) — nothing changed." >&2; exit 1; }
+        echo "✓ bootstrap token active ($KIND token)"
         # One-shot from here on, and held only in this process: it used to be
         # parked in SSM between steps, where a dead value outlived a failed run
         # and was picked up again (2026-10-30). Revoke it however the run ends.
-        ID=$(curl -sS -H "Authorization: Bearer $B" "$CF/user/tokens/verify" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["id"])')
         revoke() {
-          if curl -sS -X DELETE -H "Authorization: Bearer $B" "$CF/user/tokens/$ID" \
+          if curl -sS -X DELETE -H "Authorization: Bearer $B" "$CF/accounts/$ACCT/tokens/$ID" \
               | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("success") else 1)'; then
             echo "✓ bootstrap token revoked"
           else
-            echo "✗ couldn't revoke the bootstrap token — delete sharedpair-bootstrap at https://dash.cloudflare.com/profile/api-tokens" >&2
+            echo "✗ couldn't revoke the bootstrap token (a profile-page token can't delete itself) — delete sharedpair-bootstrap at https://dash.cloudflare.com/profile/api-tokens" >&2
           fi
         }
         trap revoke EXIT
