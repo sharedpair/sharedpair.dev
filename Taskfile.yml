@@ -114,9 +114,17 @@ tasks:
         # token API. An earlier gate also required GET /user/tokens, which
         # refused three correctly-built tokens (9109) on 2026-10-30/31 and
         # stopped them before this check or Terraform ever ran.
-        curl -sS -H "Authorization: Bearer $B" "$CF/accounts/f7e1e6cd8b3414a6d2226152533c21f2/tokens?per_page=1" \
-          | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("success") else 1)' \
-          || { echo "✗ token can't read the account's API tokens (Account → API Tokens: Edit) — nothing changed." >&2; exit 1; }
+        # Print Cloudflare's own errors on failure: the bare "can't read" message
+        # hid the cause through four failed runs (2026-10-30/31).
+        RESP=$(curl -sS -H "Authorization: Bearer $B" "$CF/accounts/f7e1e6cd8b3414a6d2226152533c21f2/tokens?per_page=1")
+        if ! printf "%s" "$RESP" | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("success") else 1)'; then
+          echo "✗ token can't read account f7e1e6cd8b3414a6d2226152533c21f2's API tokens (Account → Account API Tokens: Edit) — nothing changed." >&2
+          printf "%s" "$RESP" | python3 -c 'import json,sys; [print("  Cloudflare", e.get("code"), "-", e.get("message"), file=sys.stderr) for e in json.load(sys.stdin).get("errors") or []]' || true
+          curl -sS -H "Authorization: Bearer $B" "$CF/accounts?per_page=50" \
+            | python3 -c 'import json,sys; r=json.load(sys.stdin); print("  accounts this token can see:", ", ".join(a["name"] + " (" + a["id"] + ")" for a in r.get("result") or []) or "none", file=sys.stderr)' || true
+          echo "  Revoke it at https://dash.cloudflare.com/profile/api-tokens before minting another." >&2
+          exit 1
+        fi
         echo "✓ bootstrap token verified"
         # One-shot from here on, and held only in this process: it used to be
         # parked in SSM between steps, where a dead value outlived a failed run
