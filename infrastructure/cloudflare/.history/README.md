@@ -1,10 +1,16 @@
 | Date | Change |
 |------|--------|
+| [2026-10-31](https://github.com/sharedpair/sharedpair.dev/commit/091b939) | cf-token-rotate: record the unresolved 9109 bootstrap-token problem |
 | [2026-10-31](https://github.com/sharedpair/sharedpair.dev/commit/0141a36) | cf-token-rotate: keep the bootstrap token in memory, never in SSM |
 | [2026-10-30](https://github.com/sharedpair/sharedpair.dev/commit/b353674) | Restore apt directory indexes; add task cf-token-rotate |
 | [2026-10-30](https://github.com/sharedpair/sharedpair.dev/commit/360037e) | Hand apex/www custom domains to Terraform; document the infrastructure |
 
 <!--history-meta v1
+091b939	author	Will Norris
+091b939	added	4
+091b939	deleted	0
+091b939	files	1
+091b939	body	The template-made token was refused the same way as the custom-built\nones, so the template is not the fix. Prompt and README now say so.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqNkFPpiTzcu2Ec7m34
 0141a36	author	Will Norris
 0141a36	added	3
 0141a36	deleted	3
